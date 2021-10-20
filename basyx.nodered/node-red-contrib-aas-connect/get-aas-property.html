@@ -1,0 +1,50 @@
+<script type="text/javascript">
+    RED.nodes.registerType('get-aas-property', {
+        category: 'network',
+        defaults: {
+            name: { value: '' },
+            property: { value: 'temperature', required: true },
+            period: { value: 1, required: true }
+        },
+        inputs: 1,
+        outputs: 1,
+        color: '#C3D6F2',
+        align: 'left',
+        label: function() {
+            return this.name || "Get AAS property";
+        },
+        palettelabel: function() {
+            return this.name || "Get AAS property";
+        },
+        icon: 'logo-BaSys4.png',
+    })
+</script>
+
+<script type="text/html" data-template-name="get-aas-property">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Node name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-property"><i class="fa fa-rss"></i> Property</label>
+        <input type="text" id="node-input-property" placeholder="Property">
+    </div>
+    <div class="form-row">
+        <label for="node-input-period">
+            <i class="fa fa-clock-o"></i> Interval <br/><span style="font-size:0.8em">(in seconds)</span>
+        </label>
+        <input type="text" id="node-input-period" placeholder="Interval">
+    </div>
+    <!-- <div class="form-tips"><b>Tip:</b> This is here to help.</div> -->
+</script>
+
+<script type="text/html" data-help-name="get-aas-property">
+    <p>This node monitors (periodically retrives) the value of an AAS property</p>
+    <h3>Outputs</h3>
+    <dl class="message-properties">
+        <dt>payload
+            <span class="property-type">object</span>
+        </dt>
+        <dd> the payload of the message containing the property value (in the 'value' key) and the timestamp (in the 'tstamp' key). </dd>
+    </dl>
+ </script>

@@ -1,0 +1,66 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.eclipse.basyx</groupId>
+		<artifactId>basyx.components.docker</artifactId>
+		<version>1.0.1</version>
+	</parent>
+	
+	<artifactId>basyx.components.AASWrapper</artifactId>
+	<name>BaSyx AAS Wrapper</name>
+	
+	<properties>
+		<!--  
+			basyx.components.executable is the executable class with the definition of the public void main(String[]).
+			It is needed when building the jar in the maven-jar-plugin (see basyx.components.docker/pom.xml) 
+		-->
+		<basyx.components.executable>org.eclipse.basyx.wrapper.AASWrapperExecutable</basyx.components.executable>
+	</properties>
+	
+	<packaging>jar</packaging>
+	
+	<!-- Define additional plugins that are not included by default -->
+	<!-- Plugin configuration is done in parent project(s) -->
+	<build>
+		<plugins>
+			<!-- Attach sources to jar file -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+	
+	<profiles>
+		<profile>
+			<!-- 
+				"Docker" profile - do not build & install docker images by default
+				Run "mvn install -Pdocker" in order to include docker  
+			-->
+			<id>docker</id>
+			<build>
+				<plugins>
+					<!-- Read maven properties from file -->
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>properties-maven-plugin</artifactId>
+					</plugin>
+				
+					<!-- Copy the dependencies necessary to run the jar -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-dependency-plugin</artifactId>
+					</plugin>
+				
+					<!-- Build the docker image -->
+					<plugin>
+						<groupId>com.spotify</groupId>
+						<artifactId>dockerfile-maven-plugin</artifactId>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+</project>

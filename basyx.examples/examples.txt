@@ -1,0 +1,60 @@
+Product AAS
+- Application, e.g. ERP system creates a product AAS
+  - Loads product AAS on server
+  - Registers product AAS with registry
+  - Lookup product AAS descriptor from server
+  - Access product AAS, read "idShort" property
+
+
+Device AAS 1
+- A new device is added
+  - Device transfers its AAS to server
+  - Device transfers its status sub model to sub model server
+  - Device registers AAS on server in registry
+  - Device updates property "ready" of status sub model
+  - Dashboard looks up device AAS
+  - Dashboard retrieves status sub model end point from AAS descriptor
+  - Dashboard connects to status sub model provider
+  - Dashboard queries "ready" property of sub model
+
+
+Device AAS 2
+- A new device is added
+  - Administrator transfers device AAS, device sub model, and registers AAS on server in registry
+  - Device updates property "ready" of status sub model
+  - Dashboard looks up device AAS
+  - Dashboard retrieves status sub model end point from AAS descriptor
+  - Dashboard connects to status sub model provider
+  - Dashboard queries "ready" property of sub model
+   
+
+Device status
+- Device publishes its status in non-standard VAB data object
+  - Active device status AAS sub model continuously queries device state and writes device state into AAS sub model property
+  - Dashboard connects to device status sub model
+  - Dashboard reads "status" property, indicates device not available
+  - Device comes online, updates its status in local VAB object to ready
+  - Active device status AAS sub model continuously queries device state and writes device state into AAS sub model property
+  - Dashboard reads "status" property, indicates device is ready
+
+
+Controlling device (sub model)
+- Read device end point from AAS sub model
+  - Connect to device end point (device exports conforming sub model)
+  - Read device status
+  - Set device mode
+
+  
+Controlling device (VAB object)
+- Read device end point from AAS sub model
+  - Connect to device end point via VAB (device does not export conforming sub model)
+  - Read device status
+  - Set device mode
+
+  
+  
+  
+----------------
+Bugs:
+- BaSys connector sollte stabiler werden bzgl '/' am ende/anfang von Pfadsegment
+- Leerzeichen in Padnamen funktionieren nicht

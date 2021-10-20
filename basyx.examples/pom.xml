@@ -1,0 +1,133 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.eclipse.basyx</groupId>
+  <artifactId>basyx.examples</artifactId>
+  <version>1.0.1</version>
+  <packaging>jar</packaging>
+  <name>BaSyx Examples</name>
+  
+  
+  	<properties>
+  		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	
+   <build>
+    <sourceDirectory>src/main/java</sourceDirectory>
+    <testSourceDirectory>src/test/java</testSourceDirectory>
+    
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.7.0</version>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+      </plugin>
+     
+      <!-- Attach sources to jar file -->
+      <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <version>3.1.0</version>
+            <executions>
+                   <execution>
+                          <id>attach-sources</id>
+                          <goals>
+                                 <goal>jar</goal>
+                          </goals>
+                   </execution>
+            </executions>
+      </plugin> 
+	 <plugin>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>3.0.0</version>
+    <!--     <configuration>
+          <warSourceDirectory>WebContent</warSourceDirectory>
+        </configuration> -->
+      </plugin> 
+      
+      <plugin>
+         <groupId>org.apache.maven.plugins</groupId>
+         <artifactId>maven-surefire-plugin</artifactId>
+         <version>3.0.0-M3</version>
+          <configuration>
+    		<excludes>
+      			<exclude>**/*contexts*</exclude>
+      			<!--  Ignore all inner subclasses -->
+      			<exclude>**/*$*</exclude>
+      			<exclude>**/*Manager*</exclude>
+      			<exclude>**/*Mockup*</exclude>
+      			<exclude>**/*Task*</exclude>
+      			<exclude>**/*TailoredBaSyxSupplier*</exclude>
+      			<exclude>**/*Context*</exclude>
+      			<exclude>**/*Application*</exclude>
+      			<exclude>**/*mockup*/**</exclude>
+    		</excludes>
+    		<includes>
+				<include>**/**</include>
+			</includes>
+  		 </configuration>
+       </plugin>
+       
+       <plugin>
+		  <groupId>org.apache.maven.plugins</groupId>
+		  <artifactId>maven-failsafe-plugin</artifactId>
+		  <version>3.0.0-M3</version>
+		  <configuration>
+		    <includes>
+		      <include>**/*HTTP*</include>
+		      <include>**/*TCP*</include>
+		    </includes>
+		  </configuration>
+		  <executions>
+		    <execution>
+		      <goals>
+		        <goal>integration-test</goal>
+		        <goal>verify</goal>
+		      </goals>
+		    </execution>
+		  </executions>
+		</plugin>   
+    </plugins>
+  </build>
+  
+  <dependencies>
+  		<!-- JUnit 4 for running JUnit tests -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+		</dependency>
+				
+		<!-- Add BaSys components from local repository. Maven build of SDK must generate a jar and place it into the repository to update -->
+		<dependency>
+			<groupId>org.eclipse.basyx</groupId>
+			<artifactId>basyx.components.lib</artifactId>
+			<version>1.0.1</version>
+		</dependency>
+		
+		<!-- Add explicit SQLRegistry dependency -->
+		<dependency>
+			<groupId>org.eclipse.basyx</groupId>
+			<artifactId>basyx.components.registry</artifactId>
+			<version>1.0.3</version>
+		</dependency>
+				
+		<!-- Add explicit AAS Server component dependency -->
+		<dependency>
+			<groupId>org.eclipse.basyx</groupId>
+			<artifactId>basyx.components.AASServer</artifactId>
+			<version>1.0.1</version>
+		</dependency>
+		
+		<!-- Adds additional classes of the BaSys SDK for tests -->
+		<dependency>
+			<groupId>org.eclipse.basyx</groupId>
+			<artifactId>basyx.sdk</artifactId>
+			<version>1.0.1</version>
+			<classifier>tests</classifier>
+			<scope>test</scope>
+		</dependency>
+  </dependencies>
+</project>

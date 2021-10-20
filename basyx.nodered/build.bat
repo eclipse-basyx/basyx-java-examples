@@ -1,0 +1,1 @@
+docker build -t eclipsebasyx/examples-dataflow-nodered:1.0.1 .

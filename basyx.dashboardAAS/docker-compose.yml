@@ -1,0 +1,17 @@
+version: '3'
+services:
+
+  registry:
+    image: eclipsebasyx/aas-registry:1.0.1
+    container_name: dashboard-registry
+    ports:
+      - 4000:4000
+
+  dashboard-aas:
+    image: eclipsebasyx/dashboard-aas:0.1.0-SNAPSHOT
+    container_name: dashboard-aas
+    environment:
+      - BaSyxDashboardSubmodel_Min=15
+#      - BaSyxDashboardSubmodel_Max=30
+    ports:
+      - 6400:6400
