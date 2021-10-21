@@ -18,17 +18,17 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.eclipse.basyx.aas.aggregator.proxy.AASAggregatorProxy;
+import org.eclipse.basyx.aas.bundle.AASBundle;
+import org.eclipse.basyx.aas.bundle.AASBundleHelper;
+import org.eclipse.basyx.aas.factory.aasx.AASXToMetamodelConverter;
 import org.eclipse.basyx.aas.registration.proxy.AASRegistryProxy;
 import org.eclipse.basyx.components.IComponent;
 import org.eclipse.basyx.components.aas.AASServerComponent;
-import org.eclipse.basyx.components.aas.aasx.AASXPackageManager;
 import org.eclipse.basyx.components.configuration.BaSyxContextConfiguration;
 import org.eclipse.basyx.components.registry.RegistryComponent;
 import org.eclipse.basyx.components.registry.configuration.BaSyxRegistryConfiguration;
 import org.eclipse.basyx.components.registry.configuration.RegistryBackend;
 import org.eclipse.basyx.submodel.metamodel.map.Submodel;
-import org.eclipse.basyx.support.bundle.AASBundle;
-import org.eclipse.basyx.support.bundle.AASBundleHelper;
 import org.xml.sax.SAXException;
 
 /**
@@ -67,7 +67,7 @@ public class StaticDynamicScenario {
 		startAASServer();
 		
 		// Load Bundles from .aasx file
-		AASXPackageManager packageManager = new AASXPackageManager("aasx/01_Festo.aasx");
+		AASXToMetamodelConverter packageManager = new AASXToMetamodelConverter("aasx/01_Festo.aasx");
 		Set<AASBundle> bundles = packageManager.retrieveAASBundles();
 		
 		// Create static Submodel
@@ -78,7 +78,7 @@ public class StaticDynamicScenario {
 		
 		// Add the new Submodel to the Bundle
 		bundle.getSubmodels().add(sm);
-		
+
 		// Load the new Bundles to the Server
 		AASBundleHelper.integrate(new AASAggregatorProxy(SERVER_URL), bundles);
 		

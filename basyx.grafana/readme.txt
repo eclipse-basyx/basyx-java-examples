@@ -26,3 +26,9 @@ URL -> http://aas-wrapper:6500/grafana/
 - Dashboards -> Manage -> BaSyx Temperature
 - Optional: Set auto-refresh to 1s
 
+HINT
+----
+- if you get a conflict when starting the containers, 
+  make sure any other monitoring examples and their containers are shut down
+  (run the stop.bat/stop.sh command in the respective example folder)
+

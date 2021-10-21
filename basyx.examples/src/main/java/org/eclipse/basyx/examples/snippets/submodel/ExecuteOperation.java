@@ -48,7 +48,7 @@ public class ExecuteOperation {
 		IOperation operation = (IOperation) element;
 		
 		// Invoke the Operation and return the Result
-		return operation.invoke(operationParameters);
+		return operation.invokeSimple(operationParameters);
 	}
 	
 }
