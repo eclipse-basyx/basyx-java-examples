@@ -21,4 +21,4 @@ jobs:
         distribution: 'adopt'
         cache: maven
     - name: Build with Maven
-      run: mvn -B verify --file basyx.examples/pom.xml
+      run: mvn -B package --file basyx.examples/pom.xml
