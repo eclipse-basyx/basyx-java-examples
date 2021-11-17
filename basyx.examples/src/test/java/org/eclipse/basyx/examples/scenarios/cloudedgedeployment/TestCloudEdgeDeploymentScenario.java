@@ -25,6 +25,8 @@ import org.eclipse.basyx.aas.metamodel.map.descriptor.SubmodelDescriptor;
 import org.eclipse.basyx.aas.registration.api.IAASRegistry;
 import org.eclipse.basyx.aas.registration.proxy.AASRegistryProxy;
 import org.eclipse.basyx.submodel.metamodel.api.ISubmodel;
+import org.eclipse.basyx.submodel.metamodel.api.submodelelement.dataelement.IProperty;
+import org.eclipse.basyx.submodel.metamodel.api.submodelelement.operation.IOperation;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -131,7 +133,17 @@ public class TestCloudEdgeDeploymentScenario {
 		
 		// Check if it has the correct idShort, and 1 SubmodelElement
 		assertEquals(ComponentBuilder.EDGESM_ID_SHORT, edgeSM.getIdShort());
-		assertEquals(1, edgeSM.getSubmodelElements().size());
+		assertEquals(4, edgeSM.getSubmodelElements().size());
+		
+		int expectedTemp = 555;
+		
+		// Execute Operation to set target temp
+		IOperation setTempOp = (IOperation) edgeSM.getSubmodelElement(ComponentBuilder.EDGESM_OP_SET_TEMP_ID_SHORT);
+		setTempOp.invokeSimple(expectedTemp);
+		
+		// Check if target temp has expected value
+		IProperty targetTemp = (IProperty) edgeSM.getSubmodelElement(ComponentBuilder.EDGESM_TARGET_TEMP_ID_SHORT);
+		assertEquals(expectedTemp, targetTemp.getValue());
 	}
 	
 	/**
