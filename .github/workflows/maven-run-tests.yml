@@ -30,6 +30,11 @@ jobs:
         distribution: 'adopt'
         cache: maven
     - name: Install BaSyx Components
-      run: mvn -B clean install --file components/basyx.components/pom.xml -DskipTests 
+      run: |
+          mkdir -p ~/.m2
+          echo "<settings><servers><server><id>Eclipse BaSyx SDK GitHub Packages</id><username>x-access-token</username><password>${GITHUB_TOKEN}</password></server></servers></settings>" > ~/.m2/settings.xml
+          mvn -B clean install --file components/basyx.components/pom.xml -DskipTests 
+      env:       
+        GITHUB_TOKEN: ${{ github.token }}
     - name: Build Examples with Maven
       run: mvn -B package --file main/basyx.examples/pom.xml
