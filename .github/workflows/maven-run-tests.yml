@@ -12,6 +12,20 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    # Service containers to run with `container-job`
+    services:
+          
+      keycloak:
+        # KeyCloak Docker Hub image
+        image: jboss/keycloak
+        # Provide the username, password for KeyCloak
+        env:
+          KEYCLOAK_USER: admin
+          KEYCLOAK_PASSWORD: admin
+        # Maps tcp port 9006 on service container to the host
+        ports:
+          - 9006:8080
+
     steps:
     - name: Checkout Examples
       uses: actions/checkout@v2
@@ -29,6 +43,8 @@ jobs:
         java-version: '11'
         distribution: 'adopt'
         cache: maven
+    - name: Check status of KeyCloak container
+      run: docker ps | grep jboss/keycloak
     - name: Install BaSyx Components
       run: |
           mkdir -p ~/.m2
