@@ -77,40 +77,40 @@ public class KeyCloakRestService {
 
 	@SuppressWarnings("unchecked")
 	private void createRealm() throws RealmCreationException, IOException, NotFoundException {        
-        MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
-        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-        headers.add(HttpHeaders.ACCEPT_CHARSET, CHARSET);
-        headers.add(HttpHeaders.AUTHORIZATION, BEARER + getAccessToken());
+        MultiValueMap<String, String> headers = createHeaderWithAuthorizationParameter(MediaType.APPLICATION_JSON_VALUE, CHARSET, BEARER + getAccessToken());
         
         String realmJsonDataAsString = readFileAsString(FILE_BASE_PATH + "/" + REALM_FILE_NAME);
         
         ResponseEntity<Object> response = (ResponseEntity<Object>) restProvider(REST_BASE_URL , headers, realmJsonDataAsString, HttpMethod.POST);
         
-        if(response.getStatusCodeValue() == HttpURLConnection.HTTP_CREATED) {
-        	logger.info(SUCCESS_MESSAGE + " : " + response.getStatusCodeValue() + " : Realm created successfully");
+        if(response.getStatusCodeValue() != HttpURLConnection.HTTP_CREATED) {
+        	throw new RealmCreationException("Exception in creating realm : " + response.getStatusCode().toString());	
         }
-        else {
-        	throw new RealmCreationException("Exception in creating realm : " + response.getStatusCode().toString());
-        }
+        
+        logger.info(SUCCESS_MESSAGE + " : " + response.getStatusCodeValue() + " : Realm created successfully");
+	}
+
+	private MultiValueMap<String, String> createHeaderWithAuthorizationParameter(String contentType, String acceptCharset, String authorizationBearerToken) throws NotFoundException {
+		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
+        headers.add(HttpHeaders.CONTENT_TYPE, contentType);
+        headers.add(HttpHeaders.ACCEPT_CHARSET, acceptCharset);
+        headers.add(HttpHeaders.AUTHORIZATION, authorizationBearerToken);
+		return headers;
 	}
 
 	@SuppressWarnings("unchecked")
 	private void addClientToRealm() throws AddClientException, NotFoundException, IOException {        
-        MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
-        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-        headers.add(HttpHeaders.ACCEPT_CHARSET, CHARSET);
-        headers.add(HttpHeaders.AUTHORIZATION, BEARER + getAccessToken());
+        MultiValueMap<String, String> headers = createHeaderWithAuthorizationParameter(MediaType.APPLICATION_JSON_VALUE, CHARSET, BEARER + getAccessToken());
         
         String clientJsonDataAsString = readFileAsString(FILE_BASE_PATH + "/" + CLIENT_FILE_NAME);
         
         ResponseEntity<Object> response = (ResponseEntity<Object>) restProvider(CLIENT_URL, headers, clientJsonDataAsString, HttpMethod.POST);
         
-        if(response.getStatusCodeValue() == HttpURLConnection.HTTP_CREATED) {
-        	logger.info(SUCCESS_MESSAGE + " : " + response.getStatusCodeValue() + " : Client added successfully");
+        if(response.getStatusCodeValue() != HttpURLConnection.HTTP_CREATED) {
+        	throw new AddClientException("Exception in adding client to the realm : " + response.getStatusCode().toString());	
         }
-        else {
-        	throw new AddClientException("Exception in adding client to the realm : " + response.getStatusCode().toString());
-        }
+        
+        logger.info(SUCCESS_MESSAGE + " : " + response.getStatusCodeValue() + " : Client added successfully");
 	}
 	
 	private static String readFileAsString(String file)throws IOException {
@@ -121,22 +121,19 @@ public class KeyCloakRestService {
 	public String getClientSecret() throws NotFoundException, ParseException {
         String url = CLIENT_URL + "/" + retrieveIdOfTheClient() + "/" + CLIENT_SECRET;
         
-        MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
-        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE);
-        headers.add(HttpHeaders.ACCEPT_CHARSET, CHARSET);
-        headers.add(HttpHeaders.AUTHORIZATION, BEARER + getAccessToken());
+        MultiValueMap<String, String> headers = createHeaderWithAuthorizationParameter(MediaType.APPLICATION_FORM_URLENCODED_VALUE, CHARSET, BEARER + getAccessToken());
         
         String body = null;
         
-        ResponseEntity<JSONObject> response = (ResponseEntity<JSONObject>) restProvider(url, headers, body, HttpMethod.GET);;
+        ResponseEntity<JSONObject> response = (ResponseEntity<JSONObject>) restProvider(url, headers, body, HttpMethod.GET);
         
-        if(response.getStatusCodeValue() == HttpURLConnection.HTTP_OK) {
-        	JSONObject responseBody = new JSONObject(response.getBody());
-        	
-        	return (String) responseBody.get(CLIENT_SECRET_FIELD_NAME);
+        if(response.getStatusCodeValue() != HttpURLConnection.HTTP_OK) {
+        	throw new NotFoundException("Exception message : "  + response.getStatusCode().toString());
         }
         
-        throw new NotFoundException("Exception message : "  + response.getStatusCode().toString()); 
+        JSONObject responseBody = new JSONObject(response.getBody());
+    	
+    	return (String) responseBody.get(CLIENT_SECRET_FIELD_NAME);
 	}
 	
 	private String retrieveIdOfTheClient() throws NotFoundException, ParseException {
@@ -147,20 +144,17 @@ public class KeyCloakRestService {
 	
 	@SuppressWarnings("unchecked")
 	private ResponseEntity<Object> getAllClients() throws NotFoundException {        
-        MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
-        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE);
-        headers.add(HttpHeaders.ACCEPT_CHARSET, CHARSET);
-        headers.add(HttpHeaders.AUTHORIZATION, BEARER + getAccessToken());
+		MultiValueMap<String, String> headers = createHeaderWithAuthorizationParameter(MediaType.APPLICATION_FORM_URLENCODED_VALUE, CHARSET, BEARER + getAccessToken());
         
         String body = null;
         
         ResponseEntity<Object> response = (ResponseEntity<Object>) restProvider(CLIENT_URL, headers, body, HttpMethod.GET);
         
-        if(response.getStatusCodeValue() == HttpURLConnection.HTTP_OK) {
-        	return response;
+        if(response.getStatusCodeValue() != HttpURLConnection.HTTP_OK) {
+        	throw new NotFoundException("Exception in retrieving clients : "  + response.getStatusCode().toString()); 
         }
         
-        throw new NotFoundException("Exception in retrieving clients : "  + response.getStatusCode().toString()); 
+        return response;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -170,20 +164,16 @@ public class KeyCloakRestService {
 		Optional<String> idOfTheClient = responseBody.stream()
 				.filter(map -> map.get(CLIENT_FIELD_NAME).equals(CLIENT_NAME)).map(id -> id.get(ID)).findFirst();
 		
-		if(idOfTheClient != null) {
-			return idOfTheClient.get();
-		}
-		else {
+		if(idOfTheClient == null) {
 			throw new NotFoundException("Exception in retrieving Client Id from the response : "  + response.getStatusCode().toString()); 
 		}
+		
+		return idOfTheClient.get();
 	}
 	
 	@SuppressWarnings("unchecked")
 	private String getAccessToken() throws NotFoundException {        
-        MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
-        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE);
-        headers.add(HttpHeaders.ACCEPT_CHARSET, CHARSET);
-        headers.add(HttpHeaders.ACCEPT, MediaType.APPLICATION_FORM_URLENCODED_VALUE);
+        MultiValueMap<String, String> headers = createHeaderWithAcceptParameter(MediaType.APPLICATION_FORM_URLENCODED_VALUE, CHARSET, MediaType.APPLICATION_FORM_URLENCODED_VALUE);
         
         MultiValueMap<String, String> body = new LinkedMultiValueMap<String, String>();
         body.add(GRANT_TYPE_FIELD, GRANT_TYPE_VALUE);
@@ -193,13 +183,22 @@ public class KeyCloakRestService {
         
         ResponseEntity<Object> response = (ResponseEntity<Object>) restProvider(TOKEN_ENDPOINT_URL, headers, body, HttpMethod.POST);
         
-        if(response.getStatusCodeValue() == HttpURLConnection.HTTP_OK) {
-        	JSONObject responseBody = new JSONObject((Map<String, String>) response.getBody());
-        	
-        	return (String) responseBody.get(ACCESS_TOKEN);
+        if(response.getStatusCodeValue() != HttpURLConnection.HTTP_OK) {
+        	throw new NotFoundException("Exception in getting access token : "  + response.getStatusCode().toString());
         }
+        
+        JSONObject responseBody = new JSONObject((Map<String, String>) response.getBody());
+    	
+    	return (String) responseBody.get(ACCESS_TOKEN);         
+	}
 
-        throw new NotFoundException("Exception in getting access token : "  + response.getStatusCode().toString()); 
+	private MultiValueMap<String, String> createHeaderWithAcceptParameter(String contentType, String acceptCharset, String accept) {
+		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
+        headers.add(HttpHeaders.CONTENT_TYPE, contentType);
+        headers.add(HttpHeaders.ACCEPT_CHARSET, acceptCharset);
+        headers.add(HttpHeaders.ACCEPT, accept);
+        
+		return headers;
 	}
 	
 	private ResponseEntity<?> restProvider(String url, MultiValueMap<String, String> headers, Object body, HttpMethod httpMethod) {
@@ -214,20 +213,16 @@ public class KeyCloakRestService {
 	public void deleteRealm() throws RealmCreationException, IOException, NotFoundException, RealmDeletionException {
 		String url = REST_BASE_URL + "/" + REALM_NAME;
 		
-        MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
-        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-        headers.add(HttpHeaders.ACCEPT_CHARSET, CHARSET);
-        headers.add(HttpHeaders.AUTHORIZATION, BEARER + getAccessToken());
+        MultiValueMap<String, String> headers = createHeaderWithAuthorizationParameter(MediaType.APPLICATION_JSON_VALUE, CHARSET, BEARER + getAccessToken());
         
         String body = null;
         
         ResponseEntity<Object> response = (ResponseEntity<Object>) restProvider(url , headers, body, HttpMethod.DELETE);
         
-        if(response.getStatusCodeValue() == HttpURLConnection.HTTP_NO_CONTENT) {
-        	logger.info(SUCCESS_MESSAGE + " : " + response.getStatusCodeValue() + " : Realm deleted successfully");
-        }
-        else {
+        if(response.getStatusCodeValue() != HttpURLConnection.HTTP_NO_CONTENT) {
         	throw new RealmDeletionException("Exception in deleting the realm : " + response.getStatusCode().toString());
         }
+        
+        logger.info(SUCCESS_MESSAGE + " : " + response.getStatusCodeValue() + " : Realm deleted successfully");
 	}
 }

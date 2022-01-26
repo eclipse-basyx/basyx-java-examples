@@ -49,7 +49,7 @@ import org.eclipse.basyx.vab.protocol.http.server.BaSyxContext;
  * @author danish
  *
  */
-public class SetupRegistryWithAuthorization {
+public class AuthorizedRegistryScenario {
 		private static final String CLOUD_ENDPOINT = "http://localhost:8081/cloud";
 		protected static final String REGISTRY_ENDPOINT = "http://localhost:8080/registry";
 		private static final String AUTHORIZED_REGISTRY_CONTEXT_PATH = "AuthorizedRegistryContext.properties";
@@ -74,21 +74,20 @@ public class SetupRegistryWithAuthorization {
 		public static void main(String[] args) throws RealmCreationException, IOException, NotFoundException, 
 							AddClientException, ParseException, RealmDeletionException {
 			
-			new SetupRegistryWithAuthorization();
+			new AuthorizedRegistryScenario();
 		}
 		
-		public SetupRegistryWithAuthorization() throws RealmCreationException, IOException, NotFoundException, 
+		public AuthorizedRegistryScenario() throws RealmCreationException, IOException, NotFoundException, 
 				AddClientException, ParseException, RealmDeletionException {
+			startAuthorizedRegistryServer();
 			
-			startRegistryServer();
+			createAuthorizedAASRegistryProxy();
 			
-			instantiateAuthorizedAASRegistry();
-			
-			startServers();
+			startAASAndSubmodelServer();
 
-			createAssetAdministrationShell();
+			createAssetAdministrationShellOnCloudServer();
 			
-			createSubmodel();
+			createSubmodelOnEdgeServer();
 			
 			registerAasIdentifierIntoAuthorizedRegistry();
 		}
@@ -97,31 +96,31 @@ public class SetupRegistryWithAuthorization {
 			registry.register(aasIdentifier, ComponentBuilder.getEdgeSubmodelDescriptor());
 		}
 
-		private void instantiateAuthorizedAASRegistry() throws RealmCreationException, IOException, NotFoundException,
+		private void createAuthorizedAASRegistryProxy() throws RealmCreationException, IOException, NotFoundException,
 				AddClientException, ParseException, RealmDeletionException {
 			registry = new AuthorizedAASRegistryProxy(REGISTRY_ENDPOINT, authorizationProvider.getAuthorizationSupplier());
 		}
 
-		private void createSubmodel() {
+		private void createSubmodelOnEdgeServer() {
 			Submodel docuSubmodel = ComponentBuilder.getDocuSM();
 			
 			aasManager.createSubmodel(aasIdentifier, docuSubmodel);
 		}
 
-		private void createAssetAdministrationShell() {
+		private void createAssetAdministrationShellOnCloudServer() {
 			IConnectorFactory connectorFactory = new HTTPConnectorFactory();
 			aasManager = new ConnectedAssetAdministrationShellManager(registry, connectorFactory);
 			
 			aasManager.createAAS(ComponentBuilder.getAAS(), CLOUD_ENDPOINT);
 		}
 
-		private void startServers() {
+		private void startAASAndSubmodelServer() {
 			startEdgeServer();
 			
 			startCloudServer();
 		}
 		
-		private void startRegistryServer() {
+		private void startAuthorizedRegistryServer() {
 			BaSyxContextConfiguration contextConfig = new BaSyxContextConfiguration();
 			
 			contextConfig.loadFromResource(AUTHORIZED_REGISTRY_CONTEXT_PATH);
@@ -139,10 +138,10 @@ public class SetupRegistryWithAuthorization {
 
 		private IComponent startRegistryComponent(BaSyxContextConfiguration contextConfig,
 				BaSyxRegistryConfiguration registryConfig) {
-			IComponent component = new RegistryComponent(contextConfig, registryConfig);
-			component.startComponent();
+			IComponent registryComponent = new RegistryComponent(contextConfig, registryConfig);
+			registryComponent.startComponent();
 			
-			return component;
+			return registryComponent;
 		}
 
 		private BaSyxRegistryConfiguration configureAuthorizedBasyxRegistry() {

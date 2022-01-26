@@ -36,22 +36,22 @@ import org.junit.Test;
 import javassist.NotFoundException;
 
 /**
- * Tests the SetupRegistryWithAuthorization implementation.
+ * Tests the AuthorizedRegistryScenario implementation.
  * 
  * @author danish
  *
  */
-public class TestSetupRegistryWithAuthorization {
+public class TestAuthorizedRegistryScenario {
 	private static final int EXPECTED_TEMP = 555;
 	private static final String ENDPOINT_KEY = "address";
 
-	private static SetupRegistryWithAuthorization scenario;
+	private static AuthorizedRegistryScenario scenario;
 	
 	private static AuthorizationProvider authorizationProvider = new AuthorizationProvider();
 	
 	@BeforeClass
 	public static void startup() throws Exception {
-		scenario = new SetupRegistryWithAuthorization();
+		scenario = new AuthorizedRegistryScenario();
 	}
 	
 	@AfterClass
@@ -64,7 +64,7 @@ public class TestSetupRegistryWithAuthorization {
 	private IAASRegistry getRegistry() throws RealmCreationException, IOException, NotFoundException, 
 						AddClientException, ParseException, RealmDeletionException {
 		
-		return new AuthorizedAASRegistryProxy(SetupRegistryWithAuthorization.REGISTRY_ENDPOINT, authorizationProvider.getAuthorizationSupplier());
+		return new AuthorizedAASRegistryProxy(AuthorizedRegistryScenario.REGISTRY_ENDPOINT, authorizationProvider.getAuthorizationSupplier());
 	}
 	
 	@Test
@@ -73,7 +73,7 @@ public class TestSetupRegistryWithAuthorization {
 		
 		ConnectedAssetAdministrationShellManager manager = getConnectedAssetAdministrationShellManager();
 		
-		IAssetAdministrationShell aas = manager.retrieveAAS(SetupRegistryWithAuthorization.aasIdentifier);
+		IAssetAdministrationShell aas = manager.retrieveAAS(AuthorizedRegistryScenario.aasIdentifier);
 		
 		assertEquals(ComponentBuilder.AAS_ID_SHORT, aas.getIdShort());
 	}
@@ -137,7 +137,7 @@ public class TestSetupRegistryWithAuthorization {
 		
 		ConnectedAssetAdministrationShellManager manager = getConnectedAssetAdministrationShellManager();
 		
-		IAssetAdministrationShell aas = manager.retrieveAAS(SetupRegistryWithAuthorization.aasIdentifier);
+		IAssetAdministrationShell aas = manager.retrieveAAS(AuthorizedRegistryScenario.aasIdentifier);
 		
 		Map<String, ISubmodel> submodels = manager.retrieveSubmodels(aas.getIdentification());
 		
@@ -167,7 +167,7 @@ public class TestSetupRegistryWithAuthorization {
 	}
 	
 	private ISubmodel getDocuSubmodel(ConnectedAssetAdministrationShellManager manager) {
-		ISubmodel docuSM = manager.retrieveSubmodel(SetupRegistryWithAuthorization.aasIdentifier, SetupRegistryWithAuthorization.docuSubmodelIdentifier);
+		ISubmodel docuSM = manager.retrieveSubmodel(AuthorizedRegistryScenario.aasIdentifier, AuthorizedRegistryScenario.docuSubmodelIdentifier);
 		return docuSM;
 	}
 	
@@ -220,7 +220,7 @@ public class TestSetupRegistryWithAuthorization {
 	}
 	
 	private ISubmodel getEdgeSubmodel(ConnectedAssetAdministrationShellManager manager) {
-		ISubmodel edgeSM = manager.retrieveSubmodel(SetupRegistryWithAuthorization.aasIdentifier, SetupRegistryWithAuthorization.edgeSubmodelIdentifier);
+		ISubmodel edgeSM = manager.retrieveSubmodel(AuthorizedRegistryScenario.aasIdentifier, AuthorizedRegistryScenario.edgeSubmodelIdentifier);
 		return edgeSM;
 	}
 	

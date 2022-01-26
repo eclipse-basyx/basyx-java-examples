@@ -236,7 +236,7 @@ public class ComponentBuilder {
 	private static ConnectedAssetAdministrationShellManager getManagerWithAuthorization() throws RealmCreationException, IOException, 
 					NotFoundException, AddClientException, ParseException, RealmDeletionException {
 		
-		IAASRegistry registry = new AuthorizedAASRegistryProxy(SetupRegistryWithAuthorization.REGISTRY_ENDPOINT, authorizationProvider.getAuthorizationSupplier());
+		IAASRegistry registry = new AuthorizedAASRegistryProxy(AuthorizedRegistryScenario.REGISTRY_ENDPOINT, authorizationProvider.getAuthorizationSupplier());
 		
 		return new ConnectedAssetAdministrationShellManager(registry);
 	}
