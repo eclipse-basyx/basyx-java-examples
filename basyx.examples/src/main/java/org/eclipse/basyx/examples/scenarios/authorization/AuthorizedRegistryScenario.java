@@ -71,14 +71,12 @@ public class AuthorizedRegistryScenario {
 		
 		private BaSyxHTTPServer edgeServer;
 
-		public static void main(String[] args) throws RealmCreationException, IOException, NotFoundException, 
-							AddClientException, ParseException, RealmDeletionException {
+		public static void main(String[] args) {
 			
 			new AuthorizedRegistryScenario();
 		}
 		
-		public AuthorizedRegistryScenario() throws RealmCreationException, IOException, NotFoundException, 
-				AddClientException, ParseException, RealmDeletionException {
+		public AuthorizedRegistryScenario() {
 			startAuthorizedRegistryServer();
 			
 			createAuthorizedAASRegistryProxy();
@@ -96,8 +94,7 @@ public class AuthorizedRegistryScenario {
 			registry.register(aasIdentifier, ComponentBuilder.getEdgeSubmodelDescriptor());
 		}
 
-		private void createAuthorizedAASRegistryProxy() throws RealmCreationException, IOException, NotFoundException,
-				AddClientException, ParseException, RealmDeletionException {
+		private void createAuthorizedAASRegistryProxy() {
 			registry = new AuthorizedAASRegistryProxy(REGISTRY_ENDPOINT, authorizationProvider.getAuthorizationSupplier());
 		}
 

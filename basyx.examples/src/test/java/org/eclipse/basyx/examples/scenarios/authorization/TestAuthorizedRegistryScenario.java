@@ -50,27 +50,23 @@ public class TestAuthorizedRegistryScenario {
 	private static AuthorizationProvider authorizationProvider = new AuthorizationProvider();
 	
 	@BeforeClass
-	public static void startup() throws Exception {
+	public static void startup() {
 		scenario = new AuthorizedRegistryScenario();
 	}
 	
 	@AfterClass
-	public static void tearDown() throws RealmCreationException, IOException, NotFoundException, RealmDeletionException {
+	public static void tearDown() throws RealmDeletionException {
 		authorizationProvider.deleteRealm();
 		
 		scenario.stop();
 	}
 
-	private IAASRegistry getRegistry() throws RealmCreationException, IOException, NotFoundException, 
-						AddClientException, ParseException, RealmDeletionException {
-		
+	private IAASRegistry getRegistry() {
 		return new AuthorizedAASRegistryProxy(AuthorizedRegistryScenario.REGISTRY_ENDPOINT, authorizationProvider.getAuthorizationSupplier());
 	}
 	
 	@Test
-	public void checkIfAasHasTheCorrectIdShort() throws RealmCreationException, IOException, 
-				NotFoundException, AddClientException, ParseException, RealmDeletionException {
-		
+	public void checkIfAasHasTheCorrectIdShort() {
 		ConnectedAssetAdministrationShellManager manager = getConnectedAssetAdministrationShellManager();
 		
 		IAssetAdministrationShell aas = manager.retrieveAAS(AuthorizedRegistryScenario.aasIdentifier);
@@ -79,16 +75,12 @@ public class TestAuthorizedRegistryScenario {
 	}
 	
 	@Test
-	public void checkTheSizeOfAasDescriptors() throws RealmCreationException, IOException, 
-				NotFoundException, AddClientException, ParseException, RealmDeletionException {
-		
+	public void checkTheSizeOfAasDescriptors() {
 		assertEquals(1, getAasDescriptors().size());
 	}
 	
 	@Test
-	public void checkIfAasDescriptorHasCorrectNumberOfSmDescriptors() throws RealmCreationException, IOException, 
-				NotFoundException, AddClientException, ParseException, RealmDeletionException {
-		
+	public void checkIfAasDescriptorHasCorrectNumberOfSmDescriptors() {
 		AASDescriptor aasDescriptor = getAasDescriptor();
 		
 		checkEndpoint(ComponentBuilder.AAS_ENDPOINT, aasDescriptor.getEndpoints());
@@ -97,9 +89,7 @@ public class TestAuthorizedRegistryScenario {
 	}
 
 	@Test
-	public void checkIfExpectedIdShortAndEndpointArePresentInSmDescriptor() throws RealmCreationException, IOException, 
-				NotFoundException, AddClientException, ParseException, RealmDeletionException {
-		
+	public void checkIfExpectedIdShortAndEndpointArePresentInSmDescriptor() {
 		AASDescriptor aasDescriptor = getAasDescriptor();
 		
 		for(SubmodelDescriptor smDescriptor: aasDescriptor.getSubmodelDescriptors()) {
@@ -115,26 +105,20 @@ public class TestAuthorizedRegistryScenario {
 		}
 	}
 
-	private AASDescriptor getAasDescriptor() throws RealmCreationException, IOException, NotFoundException,
-			AddClientException, ParseException, RealmDeletionException {
-		
+	private AASDescriptor getAasDescriptor() {
 		AASDescriptor aasDescriptor = getAasDescriptors().get(0);
 		
 		return aasDescriptor;
 	}
 
-	private List<AASDescriptor> getAasDescriptors() throws RealmCreationException, IOException, NotFoundException,
-			AddClientException, ParseException, RealmDeletionException {
-		
+	private List<AASDescriptor> getAasDescriptors() {
 		List<AASDescriptor> aasDescriptors = getRegistry().lookupAll();
 		
 		return aasDescriptors;
 	}
 	
 	@Test
-	public void checkIfEdgeSmAndDocuSmArePresentInSubmodel() throws RealmCreationException, IOException, NotFoundException, 
-				AddClientException, ParseException, RealmDeletionException {
-		
+	public void checkIfEdgeSmAndDocuSmArePresentInSubmodel() {
 		ConnectedAssetAdministrationShellManager manager = getConnectedAssetAdministrationShellManager();
 		
 		IAssetAdministrationShell aas = manager.retrieveAAS(AuthorizedRegistryScenario.aasIdentifier);
@@ -145,9 +129,7 @@ public class TestAuthorizedRegistryScenario {
 	}
 	
 	@Test
-	public void checkIfDocuSmHasCorrectIdShort() throws RealmCreationException, IOException, NotFoundException, 
-				AddClientException, ParseException, RealmDeletionException {
-		
+	public void checkIfDocuSmHasCorrectIdShort() {
 		ConnectedAssetAdministrationShellManager manager = getConnectedAssetAdministrationShellManager();
 		
 		ISubmodel docuSM = getDocuSubmodel(manager);
@@ -156,9 +138,7 @@ public class TestAuthorizedRegistryScenario {
 	}
 	
 	@Test
-	public void checkIfCorrectNumberOfSubmodelElementsArePresentInDocuSm() throws RealmCreationException, IOException, 
-				NotFoundException, AddClientException, ParseException, RealmDeletionException {
-		
+	public void checkIfCorrectNumberOfSubmodelElementsArePresentInDocuSm() {
 		ConnectedAssetAdministrationShellManager manager = getConnectedAssetAdministrationShellManager();
 		
 		ISubmodel docuSM = getDocuSubmodel(manager);
@@ -172,9 +152,7 @@ public class TestAuthorizedRegistryScenario {
 	}
 	
 	@Test
-	public void checkIfEdgeSmHasCorrectIdShort() throws RealmCreationException, IOException, NotFoundException, 
-				AddClientException, ParseException, RealmDeletionException {
-		
+	public void checkIfEdgeSmHasCorrectIdShort() {
 		ConnectedAssetAdministrationShellManager manager = getConnectedAssetAdministrationShellManager();
 
 		ISubmodel edgeSM = getEdgeSubmodel(manager);
@@ -183,9 +161,7 @@ public class TestAuthorizedRegistryScenario {
 	}
 	
 	@Test
-	public void checkIfEdgeSmHasCorrectNumberOfSubmodelElements() throws RealmCreationException, IOException, 
-				NotFoundException, AddClientException, ParseException, RealmDeletionException {
-		
+	public void checkIfEdgeSmHasCorrectNumberOfSubmodelElements() {
 		ConnectedAssetAdministrationShellManager manager = getConnectedAssetAdministrationShellManager();
 
 		ISubmodel edgeSM = getEdgeSubmodel(manager);
@@ -194,9 +170,7 @@ public class TestAuthorizedRegistryScenario {
 	}
 	
 	@Test
-	public void checkIfTheTemperatureIsSetProperlyAfterSettingTargetTemp() throws RealmCreationException, IOException, 
-				NotFoundException, AddClientException, ParseException, RealmDeletionException {
-		
+	public void checkIfTheTemperatureIsSetProperlyAfterSettingTargetTemp() {
 		ConnectedAssetAdministrationShellManager manager = getConnectedAssetAdministrationShellManager();
 
 		ISubmodel edgeSM = getEdgeSubmodel(manager);
@@ -208,9 +182,7 @@ public class TestAuthorizedRegistryScenario {
 		assertEquals(EXPECTED_TEMP, targetTemp.getValue());
 	}
 	
-	private void setTargetTemperatureToEdgeSubmodelElement() throws RealmCreationException, IOException, NotFoundException, 
-				 AddClientException, ParseException, RealmDeletionException {
-		
+	private void setTargetTemperatureToEdgeSubmodelElement() {
 		ConnectedAssetAdministrationShellManager manager = getConnectedAssetAdministrationShellManager();
 
 		ISubmodel edgeSM = getEdgeSubmodel(manager);
@@ -224,10 +196,7 @@ public class TestAuthorizedRegistryScenario {
 		return edgeSM;
 	}
 	
-	private ConnectedAssetAdministrationShellManager getConnectedAssetAdministrationShellManager()
-			throws RealmCreationException, IOException, NotFoundException, AddClientException, ParseException,
-			RealmDeletionException {
-		
+	private ConnectedAssetAdministrationShellManager getConnectedAssetAdministrationShellManager() {
 		ConnectedAssetAdministrationShellManager manager =
 				new ConnectedAssetAdministrationShellManager(getRegistry());
 		

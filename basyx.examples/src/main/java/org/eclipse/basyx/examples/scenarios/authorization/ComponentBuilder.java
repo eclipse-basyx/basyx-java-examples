@@ -164,8 +164,7 @@ public class ComponentBuilder {
 			ConnectedAssetAdministrationShellManager manager = null;
 			try {
 				manager = getManagerWithAuthorization();
-			} catch (RealmCreationException | IOException | NotFoundException | AddClientException | ParseException
-					| RealmDeletionException e) {
+			} catch (RealmCreationException | AddClientException | RealmDeletionException e) {
 				e.printStackTrace();
 			}
 			ISubmodel sm = manager.retrieveSubmodel(new ModelUrn(AAS_ID), new ModelUrn(EDGESM_ID));
@@ -198,8 +197,7 @@ public class ComponentBuilder {
 			ConnectedAssetAdministrationShellManager manager = null;
 			try {
 				manager = getManagerWithAuthorization();
-			} catch (RealmCreationException | IOException | NotFoundException | AddClientException | ParseException
-					| RealmDeletionException e) {
+			} catch (RealmCreationException | AddClientException | RealmDeletionException e) {
 				e.printStackTrace();
 			}
 			ISubmodel sm = manager.retrieveSubmodel(new ModelUrn(AAS_ID), new ModelUrn(EDGESM_ID));
@@ -233,8 +231,7 @@ public class ComponentBuilder {
 	 * @throws IOException 
 	 * @throws RealmCreationException 
 	 */
-	private static ConnectedAssetAdministrationShellManager getManagerWithAuthorization() throws RealmCreationException, IOException, 
-					NotFoundException, AddClientException, ParseException, RealmDeletionException {
+	private static ConnectedAssetAdministrationShellManager getManagerWithAuthorization() throws RealmCreationException, AddClientException, RealmDeletionException {
 		
 		IAASRegistry registry = new AuthorizedAASRegistryProxy(AuthorizedRegistryScenario.REGISTRY_ENDPOINT, authorizationProvider.getAuthorizationSupplier());
 		

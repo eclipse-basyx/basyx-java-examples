@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.basyx.examples.scenarios.authorization;
 
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 import org.eclipse.basyx.examples.scenarios.authorization.exception.AddClientException;
@@ -17,8 +16,6 @@ import org.eclipse.basyx.examples.scenarios.authorization.exception.RealmCreatio
 import org.eclipse.basyx.examples.scenarios.authorization.exception.RealmDeletionException;
 import org.eclipse.basyx.vab.protocol.http.connector.IAuthorizationSupplier;
 import org.eclipse.basyx.vab.protocol.http.connector.OAuth2ClientCredentialsBasedAuthorizationSupplier;
-import org.json.simple.parser.ParseException;
-import javassist.NotFoundException;
 
 /**
  * Class for providing OAuth based Authorization.
@@ -40,15 +37,12 @@ public class AuthorizationProvider {
 		}
 	}
 	
-	public IAuthorizationSupplier getAuthorizationSupplier() throws RealmCreationException, IOException, NotFoundException, 
-			AddClientException, ParseException, RealmDeletionException {
+	public IAuthorizationSupplier getAuthorizationSupplier() {
 		
 		Set<String> scopes = prepareClientScopes();
 		
-		IAuthorizationSupplier oAuthCredentials = new OAuth2ClientCredentialsBasedAuthorizationSupplier(
+		return new OAuth2ClientCredentialsBasedAuthorizationSupplier(
 				TOKEN_ENDPOINT_URL, KeycloakServiceProvider.REALM_NAME, restService.getClientSecret(), scopes);
-		
-		return oAuthCredentials;
 	}
 	
 	private Set<String> prepareClientScopes() {
@@ -59,7 +53,7 @@ public class AuthorizationProvider {
 		return scopes;
 	}
 	
-	public void deleteRealm() throws RealmCreationException, IOException, NotFoundException, RealmDeletionException {
+	public void deleteRealm() throws RealmDeletionException {
 		restService.deleteRealm();
 	}
 }
