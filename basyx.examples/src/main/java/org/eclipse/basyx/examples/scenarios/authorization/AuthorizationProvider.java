@@ -26,16 +26,16 @@ import javassist.NotFoundException;
  * @author danish
  */
 public class AuthorizationProvider {
-	private static final String TOKEN_ENDPOINT_URL = KeyCloakRestService.SERVER_ADDRESS + "/auth/realms/" + KeyCloakRestService.REALM_NAME + "/protocol/openid-connect/token";
+	private static final String TOKEN_ENDPOINT_URL = KeycloakServiceProvider.SERVER_ADDRESS + "/auth/realms/" + KeycloakServiceProvider.REALM_NAME + "/protocol/openid-connect/token";
 	private static final String AUTHORITY_READ = "urn:org.eclipse.basyx:scope:aas-registry:read";
 	private static final String AUTHORITY_WRITE = "urn:org.eclipse.basyx:scope:aas-registry:write";
 	
-	private static KeyCloakRestService restService;
+	private static KeycloakServiceProvider restService;
 	
 	static {
 		try {
-			restService = new KeyCloakRestService();
-		} catch (RealmCreationException | IOException | NotFoundException | AddClientException e) {
+			restService = new KeycloakServiceProvider();
+		} catch (RealmCreationException | AddClientException e) {
 			e.printStackTrace();
 		}
 	}
@@ -46,7 +46,7 @@ public class AuthorizationProvider {
 		Set<String> scopes = prepareClientScopes();
 		
 		IAuthorizationSupplier oAuthCredentials = new OAuth2ClientCredentialsBasedAuthorizationSupplier(
-				TOKEN_ENDPOINT_URL, KeyCloakRestService.REALM_NAME, restService.getClientSecret(), scopes);
+				TOKEN_ENDPOINT_URL, KeycloakServiceProvider.REALM_NAME, restService.getClientSecret(), scopes);
 		
 		return oAuthCredentials;
 	}

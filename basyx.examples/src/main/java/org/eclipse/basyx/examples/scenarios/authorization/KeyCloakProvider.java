@@ -111,7 +111,7 @@ public class KeyCloakProvider {
 //		 System.out.println(keycloak.realm("basyx-demo").clients().get("basyx-demo").getSecret().toString());
 		 System.out.println(keycloak.realm("basyx-demo").clients().findByClientId("basyx-demo").toString());
 		 List<ClientRepresentation> clr = keycloak.realm("basyx-demo").clients().findByClientId("basyx-demo");
-		 System.out.println();
+		 System.out.println("clr id = " + clr.get(0).getId());
 		 ClientsResource CR = keycloak.realm("basyx-demo").clients();
 		 System.out.println(CR.findByClientId("basyx-demo"));
 		 ClientResource cres = keycloak.realm("basyx-demo").clients().get("3d750102-fbe2-40eb-9a24-ca379e7dbfbb");
