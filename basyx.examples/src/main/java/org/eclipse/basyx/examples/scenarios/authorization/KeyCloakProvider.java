@@ -1,4 +1,6 @@
 package org.eclipse.basyx.examples.scenarios.authorization;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 
 import org.junit.Test;
@@ -7,8 +9,11 @@ import org.keycloak.admin.client.KeycloakBuilder;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.RealmRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
+import org.keycloak.util.JsonSerialization;
 public class KeyCloakProvider {
-	
+	private static final String FILE_BASE_PATH = "src/main/resources";
+	private static final String REALM_FILE_NAME = "Test_realm.json";
+	private static final String CLIENT_FILE_NAME = "Test_client.json";
 	@Test
 	public void createRealm() {
 		Keycloak keycloak = KeycloakBuilder.builder()
@@ -20,11 +25,16 @@ public class KeyCloakProvider {
 	            .build();
 		
 		RealmRepresentation rr = new RealmRepresentation();
-		rr.setId("test-realm");
-		rr.setRealm("test-realm");
-		rr.setEnabled(true);
-
-		keycloak.realms().create(rr);
+		createRealmFromJson(keycloak);
+//		rr.setId("basyx-demo");
+//		rr.setRealm("basyx-demo");
+//		rr.setDefaultSignatureAlgorithm("RS256");
+//		rr.setRevokeRefreshToken(false);
+//		rr.setEnabled(true);
+//
+//		keycloak.realms().create(rr);
+		
+		
 		
 		CredentialRepresentation credential = new CredentialRepresentation();
 		credential.setType(CredentialRepresentation.PASSWORD);
@@ -41,5 +51,21 @@ public class KeyCloakProvider {
 
 		keycloak.realm("test-realm").users().create(user);
 	}
+	
+	 public void createRealmFromJson(Keycloak keycloak) {
+		 	System.out.println(KeyCloakProvider.class.getResourceAsStream("/Test_realm.json"));
+	        RealmRepresentation rep = loadJson(KeyCloakProvider.class.getResourceAsStream("/Test_realm.json"), RealmRepresentation.class);
+//	        System.out.println(rep);
+	        keycloak.realms().create(rep);
+
+	    }
+
+	 public static <T> T loadJson(InputStream is, Class<T> type) {
+	        try {
+	            return JsonSerialization.readValue(is, type);
+	        } catch (IOException e) {
+	            throw new RuntimeException("Failed to parse json", e);
+	        }
+	    }
 
 }
