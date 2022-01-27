@@ -38,7 +38,7 @@ import org.eclipse.basyx.submodel.metamodel.map.submodelelement.operation.Operat
  * @author conradi
  *
  */
-public class ComponentBuilder {
+public class ComponentFactory {
 	public static final String AAS_ID_SHORT = "oven";
 	public static final String AAS_ID = "basyx.examples.oven";
 	public static final String AAS_ENDPOINT = "http://localhost:8081/cloud/shells/" + AAS_ID + "/aas";
@@ -65,7 +65,7 @@ public class ComponentBuilder {
 	 * 
 	 * @return the created AAS
 	 */
-	public static AssetAdministrationShell getAAS() {
+	public AssetAdministrationShell getAAS() {
 		// Create the oven asset
 		Asset ovenAsset = new Asset("OvenAsset", new CustomId("basyx.examples.OvenAsset"), AssetKind.INSTANCE);
 
@@ -81,7 +81,7 @@ public class ComponentBuilder {
 	 * 
 	 * @return the created Submodel
 	 */
-	public static Submodel getDocuSM() {
+	public Submodel getDocuSM() {
 		// Create the documentation Submodel
 		Submodel docuSm = new Submodel(DOCUSM_ID_SHORT, new CustomId(DOCUSM_ID));
 
@@ -97,7 +97,7 @@ public class ComponentBuilder {
 	 * 
 	 * @return the created SubmodelDescriptor
 	 */
-	public static SubmodelDescriptor getDocuSMDescriptor() {
+	public SubmodelDescriptor getDocuSMDescriptor() {
 		return new SubmodelDescriptor(getDocuSM(), DOCUSM_ENDPOINT);
 	}
 	
@@ -107,7 +107,7 @@ public class ComponentBuilder {
 	 * 
 	 * @return the created Submodel
 	 */
-	public static Submodel createEdgeSubmodel() {
+	public Submodel createEdgeSubmodel() {
 		// Create the edge submodel
 		Submodel edgeSm = new Submodel(EDGESM_ID_SHORT, new CustomId(EDGESM_ID));
 		
@@ -133,7 +133,7 @@ public class ComponentBuilder {
 	 * 
 	 * @return Operation
 	 */
-	private static Operation getSetTargetTempOperation() {
+	private Operation getSetTargetTempOperation() {
 		
 		Operation operation = new Operation(EDGESM_OP_SET_TEMP_ID_SHORT);
 		
@@ -166,7 +166,7 @@ public class ComponentBuilder {
 	 * 
 	 * @return Operation
 	 */
-	private static Operation getGetCurrTempOperation() {
+	private Operation getGetCurrTempOperation() {
 		Operation operation = new Operation(EDGESM_OP_GET_TEMP_ID_SHORT);
 		
 		// Create a Property to be used as output variable
@@ -197,7 +197,7 @@ public class ComponentBuilder {
 	 * 
 	 * @return the created SubmodelDescriptor
 	 */
-	public static SubmodelDescriptor getEdgeSubmodelDescriptor() {
+	public SubmodelDescriptor getEdgeSubmodelDescriptor() {
 		Identifier identifier = new Identifier(IdentifierType.CUSTOM, EDGESM_ID);
 		return new SubmodelDescriptor(EDGESM_ID_SHORT, identifier, EDGESM_ENDPOINT);
 	}
@@ -207,7 +207,7 @@ public class ComponentBuilder {
 	 * 
 	 * @return ConnectedAssetAdministrationShellManager
 	 */
-	private static ConnectedAssetAdministrationShellManager getManager() {
+	private ConnectedAssetAdministrationShellManager getManager() {
 		// Create a InMemoryRegistry to be used by the manager
 		IAASRegistry registry = new AASRegistryProxy(CloudEdgeDeploymentScenario.registryPath);
 		

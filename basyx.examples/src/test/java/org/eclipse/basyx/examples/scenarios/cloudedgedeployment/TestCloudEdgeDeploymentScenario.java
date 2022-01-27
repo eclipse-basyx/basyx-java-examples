@@ -61,7 +61,7 @@ public class TestCloudEdgeDeploymentScenario {
 		AASDescriptor aasDescriptor = aasDescriptors.get(0);
 		
 		// Check if aasDescriptor has the correct endpoint
-		checkEndpoint(ComponentBuilder.AAS_ENDPOINT, aasDescriptor.getEndpoints());
+		checkEndpoint(ComponentFactory.AAS_ENDPOINT, aasDescriptor.getEndpoints());
 		
 		// Check if aasDescriptor has the correct number of SMDescriptors
 		assertEquals(2, aasDescriptor.getSubmodelDescriptors().size());
@@ -69,10 +69,10 @@ public class TestCloudEdgeDeploymentScenario {
 		// Iterate over the Collection of SMDescriptors and
 		// test if both have the expected idShort and endpoint
 		for(SubmodelDescriptor smDescriptor: aasDescriptor.getSubmodelDescriptors()) {
-			if(smDescriptor.getIdShort().equals(ComponentBuilder.EDGESM_ID_SHORT)) {
-				checkEndpoint(ComponentBuilder.EDGESM_ENDPOINT, smDescriptor.getEndpoints());
-			} else if(smDescriptor.getIdShort().equals(ComponentBuilder.DOCUSM_ID_SHORT)) {
-				checkEndpoint(ComponentBuilder.DOCUSM_ENDPOINT, smDescriptor.getEndpoints());
+			if(smDescriptor.getIdShort().equals(ComponentFactory.EDGESM_ID_SHORT)) {
+				checkEndpoint(ComponentFactory.EDGESM_ENDPOINT, smDescriptor.getEndpoints());
+			} else if(smDescriptor.getIdShort().equals(ComponentFactory.DOCUSM_ID_SHORT)) {
+				checkEndpoint(ComponentFactory.DOCUSM_ENDPOINT, smDescriptor.getEndpoints());
 			} else {
 				// There is a SMDescriptor with an unexpected idShort
 				fail();
@@ -90,16 +90,16 @@ public class TestCloudEdgeDeploymentScenario {
 		ConnectedAssetAdministrationShellManager manager =
 				new ConnectedAssetAdministrationShellManager(getRegistry());
 		
-		IAssetAdministrationShell aas = manager.retrieveAAS(CloudEdgeDeploymentScenario.aasIdentifier);
+		IAssetAdministrationShell aas = manager.retrieveAAS(scenario.aasIdentifier);
 		
 		// Check if it has the correct idShort
-		assertEquals(ComponentBuilder.AAS_ID_SHORT, aas.getIdShort());
+		assertEquals(ComponentFactory.AAS_ID_SHORT, aas.getIdShort());
 		
 		// Get the Submodels and check if both expected SMs are present 
 		Map<String, ISubmodel> submodels = aas.getSubmodels();
 		
-		assertTrue(submodels.containsKey(ComponentBuilder.EDGESM_ID_SHORT));
-		assertTrue(submodels.containsKey(ComponentBuilder.DOCUSM_ID_SHORT));
+		assertTrue(submodels.containsKey(ComponentFactory.EDGESM_ID_SHORT));
+		assertTrue(submodels.containsKey(ComponentFactory.DOCUSM_ID_SHORT));
 	}
 	
 	/**
@@ -112,10 +112,10 @@ public class TestCloudEdgeDeploymentScenario {
 		ConnectedAssetAdministrationShellManager manager =
 				new ConnectedAssetAdministrationShellManager(getRegistry());
 		
-		ISubmodel docuSM = manager.retrieveSubmodel(CloudEdgeDeploymentScenario.aasIdentifier, CloudEdgeDeploymentScenario.docuSmIdentifier);
+		ISubmodel docuSM = manager.retrieveSubmodel(scenario.aasIdentifier, scenario.docuSmIdentifier);
 		
 		// Check if it has the correct idShort, and 1 SubmodelElement
-		assertEquals(ComponentBuilder.DOCUSM_ID_SHORT, docuSM.getIdShort());
+		assertEquals(ComponentFactory.DOCUSM_ID_SHORT, docuSM.getIdShort());
 		assertEquals(1, docuSM.getSubmodelElements().size());
 	}
 	
@@ -129,20 +129,20 @@ public class TestCloudEdgeDeploymentScenario {
 		ConnectedAssetAdministrationShellManager manager =
 				new ConnectedAssetAdministrationShellManager(getRegistry());
 		
-		ISubmodel edgeSM = manager.retrieveSubmodel(CloudEdgeDeploymentScenario.aasIdentifier, CloudEdgeDeploymentScenario.edgeSmIdentifier);
+		ISubmodel edgeSM = manager.retrieveSubmodel(scenario.aasIdentifier, scenario.edgeSmIdentifier);
 		
 		// Check if it has the correct idShort, and 1 SubmodelElement
-		assertEquals(ComponentBuilder.EDGESM_ID_SHORT, edgeSM.getIdShort());
+		assertEquals(ComponentFactory.EDGESM_ID_SHORT, edgeSM.getIdShort());
 		assertEquals(4, edgeSM.getSubmodelElements().size());
 		
 		int expectedTemp = 555;
 		
 		// Execute Operation to set target temp
-		IOperation setTempOp = (IOperation) edgeSM.getSubmodelElement(ComponentBuilder.EDGESM_OP_SET_TEMP_ID_SHORT);
+		IOperation setTempOp = (IOperation) edgeSM.getSubmodelElement(ComponentFactory.EDGESM_OP_SET_TEMP_ID_SHORT);
 		setTempOp.invokeSimple(expectedTemp);
 		
 		// Check if target temp has expected value
-		IProperty targetTemp = (IProperty) edgeSM.getSubmodelElement(ComponentBuilder.EDGESM_TARGET_TEMP_ID_SHORT);
+		IProperty targetTemp = (IProperty) edgeSM.getSubmodelElement(ComponentFactory.EDGESM_TARGET_TEMP_ID_SHORT);
 		assertEquals(expectedTemp, targetTemp.getValue());
 	}
 	
