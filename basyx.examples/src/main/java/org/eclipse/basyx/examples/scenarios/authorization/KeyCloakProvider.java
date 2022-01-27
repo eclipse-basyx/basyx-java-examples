@@ -6,6 +6,8 @@ import java.util.Arrays;
 import org.junit.Test;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
+import org.keycloak.admin.client.resource.RealmResource;
+import org.keycloak.representations.idm.ClientRepresentation;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.RealmRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
@@ -15,7 +17,7 @@ public class KeyCloakProvider {
 	private static final String REALM_FILE_NAME = "Test_realm.json";
 	private static final String CLIENT_FILE_NAME = "Test_client.json";
 	@Test
-	public void createRealm() {
+	public void createRealm() throws IOException {
 		Keycloak keycloak = KeycloakBuilder.builder()
 	            .serverUrl("http://127.0.0.1:9006/auth/")
 	            .realm("master")
@@ -25,7 +27,8 @@ public class KeyCloakProvider {
 	            .build();
 		
 		RealmRepresentation rr = new RealmRepresentation();
-		createRealmFromJson(keycloak);
+//		createRealmFromJson(keycloak);
+		createClient(keycloak);
 //		rr.setId("basyx-demo");
 //		rr.setRealm("basyx-demo");
 //		rr.setDefaultSignatureAlgorithm("RS256");
@@ -67,5 +70,16 @@ public class KeyCloakProvider {
 	            throw new RuntimeException("Failed to parse json", e);
 	        }
 	    }
+	 
+	 public boolean createClient(Keycloak keycloak) throws IOException {
+			RealmResource createdRealmResource = keycloak.realms().realm("basyx-demo");
+			ClientRepresentation clientRepresentation = loadJson(KeyCloakProvider.class.getResourceAsStream("/Test_client.json"), ClientRepresentation.class);
+//			clientRepresentation.setClientId(clientId);
+//			clientRepresentation.setProtocol("openid-connect");
+//			clientRepresentation.setSecret(clientId);
+			createdRealmResource.clients().create(clientRepresentation);
+
+		    return true;
+		}
 
 }
