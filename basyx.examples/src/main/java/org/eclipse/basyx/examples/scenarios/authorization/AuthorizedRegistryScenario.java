@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.basyx.examples.scenarios.authorization;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.basyx.aas.manager.ConnectedAssetAdministrationShellManager;
@@ -23,16 +22,10 @@ import org.eclipse.basyx.components.registry.RegistryComponent;
 import org.eclipse.basyx.components.registry.configuration.BaSyxRegistryConfiguration;
 import org.eclipse.basyx.components.registry.configuration.RegistryBackend;
 import org.eclipse.basyx.components.servlet.submodel.SubmodelServlet;
-import org.eclipse.basyx.examples.scenarios.authorization.exception.AddClientException;
-import org.eclipse.basyx.examples.scenarios.authorization.exception.RealmCreationException;
-import org.eclipse.basyx.examples.scenarios.authorization.exception.RealmDeletionException;
 import org.eclipse.basyx.extensions.aas.registration.authorization.AuthorizedAASRegistryProxy;
 import org.eclipse.basyx.submodel.metamodel.api.identifier.IIdentifier;
 import org.eclipse.basyx.submodel.metamodel.map.Submodel;
 import org.eclipse.basyx.vab.protocol.http.server.BaSyxHTTPServer;
-import org.json.simple.parser.ParseException;
-import javassist.NotFoundException;
-
 import org.eclipse.basyx.vab.protocol.api.IConnectorFactory;
 import org.eclipse.basyx.vab.protocol.http.connector.HTTPConnectorFactory;
 import org.eclipse.basyx.vab.protocol.http.server.BaSyxContext;
@@ -61,13 +54,13 @@ public class AuthorizedRegistryScenario {
 		
 		private ConnectedAssetAdministrationShellManager aasManager;
 		
-		private ComponentFactory componentFactory = new ComponentFactory();
+		private static AuthorizedComponentFactory componentFactory = new AuthorizedComponentFactory();
 		
-		public IIdentifier aasIdentifier = componentFactory.getAAS().getIdentification();
+		public static final IIdentifier aasIdentifier = componentFactory.getAAS().getIdentification();
 
-		public IIdentifier docuSubmodelIdentifier = componentFactory.getDocuSMDescriptor().getIdentifier();
+		public static final IIdentifier docuSubmodelIdentifier = componentFactory.getDocuSMDescriptor().getIdentifier();
 
-		public IIdentifier edgeSubmodelIdentifier = componentFactory.getEdgeSubmodelDescriptor().getIdentifier();
+		public static final IIdentifier edgeSubmodelIdentifier = componentFactory.getEdgeSubmodelDescriptor().getIdentifier();
 
 		private List<IComponent> startedComponents = new ArrayList<>();
 		
@@ -163,7 +156,7 @@ public class AuthorizedRegistryScenario {
 			
 			SubmodelServlet smServlet = new SubmodelServlet(edgeSubmodel);
 			
-			context.addServletMapping("/oven/" + componentFactory.EDGESM_ID_SHORT + "/*", smServlet);
+			context.addServletMapping("/oven/" + AuthorizedComponentFactory.EDGESM_ID_SHORT + "/*", smServlet);
 			
 			startEdgeServer(context);
 		}

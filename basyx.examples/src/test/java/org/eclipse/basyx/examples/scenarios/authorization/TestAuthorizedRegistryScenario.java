@@ -62,7 +62,7 @@ public class TestAuthorizedRegistryScenario {
 	}
 
 	private IAASRegistry getRegistry() {
-		return new AuthorizedAASRegistryProxy(scenario.REGISTRY_ENDPOINT, authorizationProvider.getAuthorizationSupplier());
+		return new AuthorizedAASRegistryProxy(AuthorizedRegistryScenario.REGISTRY_ENDPOINT, authorizationProvider.getAuthorizationSupplier());
 	}
 	
 	@Test
@@ -71,7 +71,7 @@ public class TestAuthorizedRegistryScenario {
 		
 		IAssetAdministrationShell aas = manager.retrieveAAS(scenario.aasIdentifier);
 		
-		assertEquals(ComponentFactory.AAS_ID_SHORT, aas.getIdShort());
+		assertEquals(AuthorizedComponentFactory.AAS_ID_SHORT, aas.getIdShort());
 	}
 	
 	@Test
@@ -83,7 +83,7 @@ public class TestAuthorizedRegistryScenario {
 	public void checkIfAasDescriptorHasCorrectNumberOfSmDescriptors() {
 		AASDescriptor aasDescriptor = getAasDescriptor();
 		
-		checkEndpoint(ComponentFactory.AAS_ENDPOINT, aasDescriptor.getEndpoints());
+		checkEndpoint(AuthorizedComponentFactory.AAS_ENDPOINT, aasDescriptor.getEndpoints());
 		
 		assertEquals(2, aasDescriptor.getSubmodelDescriptors().size());
 	}
@@ -93,11 +93,11 @@ public class TestAuthorizedRegistryScenario {
 		AASDescriptor aasDescriptor = getAasDescriptor();
 		
 		for(SubmodelDescriptor smDescriptor: aasDescriptor.getSubmodelDescriptors()) {
-			if(smDescriptor.getIdShort().equals(ComponentFactory.EDGESM_ID_SHORT)) {
-				checkEndpoint(ComponentFactory.EDGESM_ENDPOINT, smDescriptor.getEndpoints());
+			if(smDescriptor.getIdShort().equals(AuthorizedComponentFactory.EDGESM_ID_SHORT)) {
+				checkEndpoint(AuthorizedComponentFactory.EDGESM_ENDPOINT, smDescriptor.getEndpoints());
 			} 
-			else if(smDescriptor.getIdShort().equals(ComponentFactory.DOCUSM_ID_SHORT)) {
-				checkEndpoint(ComponentFactory.DOCUSM_ENDPOINT, smDescriptor.getEndpoints());
+			else if(smDescriptor.getIdShort().equals(AuthorizedComponentFactory.DOCUSM_ID_SHORT)) {
+				checkEndpoint(AuthorizedComponentFactory.DOCUSM_ENDPOINT, smDescriptor.getEndpoints());
 			} 
 			else {
 				fail("The SMDescriptor with idShort " + smDescriptor.getIdShort() + " has an unexpected idShort");
@@ -125,7 +125,7 @@ public class TestAuthorizedRegistryScenario {
 		
 		Map<String, ISubmodel> submodels = manager.retrieveSubmodels(aas.getIdentification());
 		
-		assertTrue(submodels.containsKey(ComponentFactory.EDGESM_ID_SHORT) && submodels.containsKey(ComponentFactory.DOCUSM_ID_SHORT));
+		assertTrue(submodels.containsKey(AuthorizedComponentFactory.EDGESM_ID_SHORT) && submodels.containsKey(AuthorizedComponentFactory.DOCUSM_ID_SHORT));
 	}
 	
 	@Test
@@ -134,7 +134,7 @@ public class TestAuthorizedRegistryScenario {
 		
 		ISubmodel docuSM = getDocuSubmodel(manager);
 		
-		assertEquals(ComponentFactory.DOCUSM_ID_SHORT, docuSM.getIdShort());
+		assertEquals(AuthorizedComponentFactory.DOCUSM_ID_SHORT, docuSM.getIdShort());
 	}
 	
 	@Test
@@ -157,7 +157,7 @@ public class TestAuthorizedRegistryScenario {
 
 		ISubmodel edgeSM = getEdgeSubmodel(manager);
 		
-		assertEquals(ComponentFactory.EDGESM_ID_SHORT, edgeSM.getIdShort());
+		assertEquals(AuthorizedComponentFactory.EDGESM_ID_SHORT, edgeSM.getIdShort());
 	}
 	
 	@Test
@@ -177,7 +177,7 @@ public class TestAuthorizedRegistryScenario {
 		
 		setTargetTemperatureToEdgeSubmodelElement();
 		
-		IProperty targetTemp = (IProperty) edgeSM.getSubmodelElement(ComponentFactory.EDGESM_TARGET_TEMP_ID_SHORT);
+		IProperty targetTemp = (IProperty) edgeSM.getSubmodelElement(AuthorizedComponentFactory.EDGESM_TARGET_TEMP_ID_SHORT);
 		
 		assertEquals(EXPECTED_TEMP, targetTemp.getValue());
 	}
@@ -187,7 +187,7 @@ public class TestAuthorizedRegistryScenario {
 
 		ISubmodel edgeSM = getEdgeSubmodel(manager);
 		
-		IOperation setTempOperation = (IOperation) edgeSM.getSubmodelElement(ComponentFactory.EDGESM_OP_SET_TEMP_ID_SHORT);
+		IOperation setTempOperation = (IOperation) edgeSM.getSubmodelElement(AuthorizedComponentFactory.EDGESM_OP_SET_TEMP_ID_SHORT);
 		setTempOperation.invokeSimple(EXPECTED_TEMP);
 	}
 	

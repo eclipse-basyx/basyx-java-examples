@@ -156,7 +156,7 @@ public class CloudEdgeDeploymentScenario {
 		SubmodelServlet smServlet = new SubmodelServlet(edgeSubmodel);
 		
 		// Add the SubmodelServlet mapping to the context at the path "/oven/curr_temp"
-		context.addServletMapping("/oven/" + componentFactory.EDGESM_ID_SHORT + "/*", smServlet);
+		context.addServletMapping("/oven/" + ComponentFactory.EDGESM_ID_SHORT + "/*", smServlet);
 		
 		
 		// Create and start a HTTP server with the context created above
