@@ -61,7 +61,7 @@ public class AuthorizedRegistryScenario {
 		
 		private ConnectedAssetAdministrationShellManager aasManager;
 		
-		ComponentFactory componentFactory = new ComponentFactory();
+		private ComponentFactory componentFactory = new ComponentFactory();
 		
 		public IIdentifier aasIdentifier = componentFactory.getAAS().getIdentification();
 

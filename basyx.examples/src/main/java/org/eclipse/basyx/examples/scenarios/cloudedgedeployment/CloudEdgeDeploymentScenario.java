@@ -56,7 +56,7 @@ public class CloudEdgeDeploymentScenario {
 	 */
 	private ConnectedAssetAdministrationShellManager aasManager;
 	
-	ComponentFactory componentFactory = new ComponentFactory();
+	private ComponentFactory componentFactory = new ComponentFactory();
 	
 	/**
 	 * Identifier of the AAS hosted in the cloud.

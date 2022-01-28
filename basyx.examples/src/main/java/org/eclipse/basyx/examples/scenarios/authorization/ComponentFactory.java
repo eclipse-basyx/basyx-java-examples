@@ -58,7 +58,7 @@ public class ComponentFactory extends org.eclipse.basyx.examples.scenarios.cloud
 	 * @throws IOException 
 	 * @throws RealmCreationException 
 	 */
-	public ConnectedAssetAdministrationShellManager getManager() {
+	protected ConnectedAssetAdministrationShellManager getManager() {
 		
 		IAASRegistry registry = new AuthorizedAASRegistryProxy(AuthorizedRegistryScenario.REGISTRY_ENDPOINT, authorizationProvider.getAuthorizationSupplier());
 		
