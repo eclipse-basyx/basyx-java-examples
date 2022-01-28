@@ -28,6 +28,7 @@ public class AuthorizedComponentFactory extends ComponentFactory {
 	 * Creates a ConnectedAssetAdministrationShellManager connected to the Authorized AASServer 
 	 * 
 	 */
+	@Override
 	protected ConnectedAssetAdministrationShellManager getManager() {
 		
 		IAASRegistry registry = new AuthorizedAASRegistryProxy(AuthorizedRegistryScenario.REGISTRY_ENDPOINT, authorizationProvider.getAuthorizationSupplier());

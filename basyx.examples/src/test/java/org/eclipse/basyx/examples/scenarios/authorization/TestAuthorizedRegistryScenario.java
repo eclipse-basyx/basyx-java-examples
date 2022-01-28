@@ -12,7 +12,6 @@ package org.eclipse.basyx.examples.scenarios.authorization;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -22,18 +21,14 @@ import org.eclipse.basyx.aas.metamodel.api.IAssetAdministrationShell;
 import org.eclipse.basyx.aas.metamodel.map.descriptor.AASDescriptor;
 import org.eclipse.basyx.aas.metamodel.map.descriptor.SubmodelDescriptor;
 import org.eclipse.basyx.aas.registration.api.IAASRegistry;
-import org.eclipse.basyx.examples.scenarios.authorization.exception.AddClientException;
-import org.eclipse.basyx.examples.scenarios.authorization.exception.RealmCreationException;
 import org.eclipse.basyx.examples.scenarios.authorization.exception.RealmDeletionException;
 import org.eclipse.basyx.extensions.aas.registration.authorization.AuthorizedAASRegistryProxy;
 import org.eclipse.basyx.submodel.metamodel.api.ISubmodel;
 import org.eclipse.basyx.submodel.metamodel.api.submodelelement.dataelement.IProperty;
 import org.eclipse.basyx.submodel.metamodel.api.submodelelement.operation.IOperation;
-import org.json.simple.parser.ParseException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import javassist.NotFoundException;
 
 /**
  * Tests the AuthorizedRegistryScenario implementation.
@@ -69,7 +64,7 @@ public class TestAuthorizedRegistryScenario {
 	public void checkIfAasHasTheCorrectIdShort() {
 		ConnectedAssetAdministrationShellManager manager = getConnectedAssetAdministrationShellManager();
 		
-		IAssetAdministrationShell aas = manager.retrieveAAS(scenario.aasIdentifier);
+		IAssetAdministrationShell aas = manager.retrieveAAS(AuthorizedRegistryScenario.aasIdentifier);
 		
 		assertEquals(AuthorizedComponentFactory.AAS_ID_SHORT, aas.getIdShort());
 	}
@@ -121,7 +116,7 @@ public class TestAuthorizedRegistryScenario {
 	public void checkIfEdgeSmAndDocuSmArePresentInSubmodel() {
 		ConnectedAssetAdministrationShellManager manager = getConnectedAssetAdministrationShellManager();
 		
-		IAssetAdministrationShell aas = manager.retrieveAAS(scenario.aasIdentifier);
+		IAssetAdministrationShell aas = manager.retrieveAAS(AuthorizedRegistryScenario.aasIdentifier);
 		
 		Map<String, ISubmodel> submodels = manager.retrieveSubmodels(aas.getIdentification());
 		
@@ -147,7 +142,7 @@ public class TestAuthorizedRegistryScenario {
 	}
 	
 	private ISubmodel getDocuSubmodel(ConnectedAssetAdministrationShellManager manager) {
-		ISubmodel docuSM = manager.retrieveSubmodel(scenario.aasIdentifier, scenario.docuSubmodelIdentifier);
+		ISubmodel docuSM = manager.retrieveSubmodel(AuthorizedRegistryScenario.aasIdentifier, AuthorizedRegistryScenario.docuSubmodelIdentifier);
 		return docuSM;
 	}
 	
@@ -192,7 +187,7 @@ public class TestAuthorizedRegistryScenario {
 	}
 	
 	private ISubmodel getEdgeSubmodel(ConnectedAssetAdministrationShellManager manager) {
-		ISubmodel edgeSM = manager.retrieveSubmodel(scenario.aasIdentifier, scenario.edgeSubmodelIdentifier);
+		ISubmodel edgeSM = manager.retrieveSubmodel(AuthorizedRegistryScenario.aasIdentifier, AuthorizedRegistryScenario.edgeSubmodelIdentifier);
 		return edgeSM;
 	}
 	
