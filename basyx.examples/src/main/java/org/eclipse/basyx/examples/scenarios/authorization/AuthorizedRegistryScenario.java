@@ -33,11 +33,25 @@ import org.eclipse.basyx.vab.protocol.http.server.BaSyxContext;
 /**
  * Example scenario demonstrating a deployment with two servers with Authorized AAS Registry
  * 
+ * <p>
  * Server A is created as an empty server in the cloud.
  * An AAS and a Submodel is pushed to it.
  * 
  * Server B is created as a server hosted near a machine.
  * It provides a Submodel containing sensor value.
+ * </p>
+ * 
+ * <p>
+ * Note :
+ * Keycloak instance should be running before working with this scenario.
+ * <br/>
+ * 
+ * Keycloak instance running on : 127.0.0.1:9006 <br/>
+ * KEYCLOAK_USER=admin <br/>
+ * KEYCLOAK_PASSWORD=admin <br/>
+ * </p>
+ * @see <a href="https://hub.docker.com/r/jboss/keycloak/">Keycloak Docker Hub</a>
+ * @see <a href="https://www.keycloak.org/documentation">Keycloak Documentation</a>
  * 
  * @author danish
  *
