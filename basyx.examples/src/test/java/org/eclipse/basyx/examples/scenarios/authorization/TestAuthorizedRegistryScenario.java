@@ -62,16 +62,16 @@ public class TestAuthorizedRegistryScenario {
 	}
 
 	private IAASRegistry getRegistry() {
-		return new AuthorizedAASRegistryProxy(AuthorizedRegistryScenario.REGISTRY_ENDPOINT, authorizationProvider.getAuthorizationSupplier());
+		return new AuthorizedAASRegistryProxy(scenario.REGISTRY_ENDPOINT, authorizationProvider.getAuthorizationSupplier());
 	}
 	
 	@Test
 	public void checkIfAasHasTheCorrectIdShort() {
 		ConnectedAssetAdministrationShellManager manager = getConnectedAssetAdministrationShellManager();
 		
-		IAssetAdministrationShell aas = manager.retrieveAAS(AuthorizedRegistryScenario.aasIdentifier);
+		IAssetAdministrationShell aas = manager.retrieveAAS(scenario.aasIdentifier);
 		
-		assertEquals(ComponentBuilder.AAS_ID_SHORT, aas.getIdShort());
+		assertEquals(ComponentFactory.AAS_ID_SHORT, aas.getIdShort());
 	}
 	
 	@Test
@@ -83,7 +83,7 @@ public class TestAuthorizedRegistryScenario {
 	public void checkIfAasDescriptorHasCorrectNumberOfSmDescriptors() {
 		AASDescriptor aasDescriptor = getAasDescriptor();
 		
-		checkEndpoint(ComponentBuilder.AAS_ENDPOINT, aasDescriptor.getEndpoints());
+		checkEndpoint(ComponentFactory.AAS_ENDPOINT, aasDescriptor.getEndpoints());
 		
 		assertEquals(2, aasDescriptor.getSubmodelDescriptors().size());
 	}
@@ -93,11 +93,11 @@ public class TestAuthorizedRegistryScenario {
 		AASDescriptor aasDescriptor = getAasDescriptor();
 		
 		for(SubmodelDescriptor smDescriptor: aasDescriptor.getSubmodelDescriptors()) {
-			if(smDescriptor.getIdShort().equals(ComponentBuilder.EDGESM_ID_SHORT)) {
-				checkEndpoint(ComponentBuilder.EDGESM_ENDPOINT, smDescriptor.getEndpoints());
+			if(smDescriptor.getIdShort().equals(ComponentFactory.EDGESM_ID_SHORT)) {
+				checkEndpoint(ComponentFactory.EDGESM_ENDPOINT, smDescriptor.getEndpoints());
 			} 
-			else if(smDescriptor.getIdShort().equals(ComponentBuilder.DOCUSM_ID_SHORT)) {
-				checkEndpoint(ComponentBuilder.DOCUSM_ENDPOINT, smDescriptor.getEndpoints());
+			else if(smDescriptor.getIdShort().equals(ComponentFactory.DOCUSM_ID_SHORT)) {
+				checkEndpoint(ComponentFactory.DOCUSM_ENDPOINT, smDescriptor.getEndpoints());
 			} 
 			else {
 				fail("The SMDescriptor with idShort " + smDescriptor.getIdShort() + " has an unexpected idShort");
@@ -121,11 +121,11 @@ public class TestAuthorizedRegistryScenario {
 	public void checkIfEdgeSmAndDocuSmArePresentInSubmodel() {
 		ConnectedAssetAdministrationShellManager manager = getConnectedAssetAdministrationShellManager();
 		
-		IAssetAdministrationShell aas = manager.retrieveAAS(AuthorizedRegistryScenario.aasIdentifier);
+		IAssetAdministrationShell aas = manager.retrieveAAS(scenario.aasIdentifier);
 		
 		Map<String, ISubmodel> submodels = manager.retrieveSubmodels(aas.getIdentification());
 		
-		assertTrue(submodels.containsKey(ComponentBuilder.EDGESM_ID_SHORT) && submodels.containsKey(ComponentBuilder.DOCUSM_ID_SHORT));
+		assertTrue(submodels.containsKey(ComponentFactory.EDGESM_ID_SHORT) && submodels.containsKey(ComponentFactory.DOCUSM_ID_SHORT));
 	}
 	
 	@Test
@@ -134,7 +134,7 @@ public class TestAuthorizedRegistryScenario {
 		
 		ISubmodel docuSM = getDocuSubmodel(manager);
 		
-		assertEquals(ComponentBuilder.DOCUSM_ID_SHORT, docuSM.getIdShort());
+		assertEquals(ComponentFactory.DOCUSM_ID_SHORT, docuSM.getIdShort());
 	}
 	
 	@Test
@@ -147,7 +147,7 @@ public class TestAuthorizedRegistryScenario {
 	}
 	
 	private ISubmodel getDocuSubmodel(ConnectedAssetAdministrationShellManager manager) {
-		ISubmodel docuSM = manager.retrieveSubmodel(AuthorizedRegistryScenario.aasIdentifier, AuthorizedRegistryScenario.docuSubmodelIdentifier);
+		ISubmodel docuSM = manager.retrieveSubmodel(scenario.aasIdentifier, scenario.docuSubmodelIdentifier);
 		return docuSM;
 	}
 	
@@ -157,7 +157,7 @@ public class TestAuthorizedRegistryScenario {
 
 		ISubmodel edgeSM = getEdgeSubmodel(manager);
 		
-		assertEquals(ComponentBuilder.EDGESM_ID_SHORT, edgeSM.getIdShort());
+		assertEquals(ComponentFactory.EDGESM_ID_SHORT, edgeSM.getIdShort());
 	}
 	
 	@Test
@@ -177,7 +177,7 @@ public class TestAuthorizedRegistryScenario {
 		
 		setTargetTemperatureToEdgeSubmodelElement();
 		
-		IProperty targetTemp = (IProperty) edgeSM.getSubmodelElement(ComponentBuilder.EDGESM_TARGET_TEMP_ID_SHORT);
+		IProperty targetTemp = (IProperty) edgeSM.getSubmodelElement(ComponentFactory.EDGESM_TARGET_TEMP_ID_SHORT);
 		
 		assertEquals(EXPECTED_TEMP, targetTemp.getValue());
 	}
@@ -187,12 +187,12 @@ public class TestAuthorizedRegistryScenario {
 
 		ISubmodel edgeSM = getEdgeSubmodel(manager);
 		
-		IOperation setTempOperation = (IOperation) edgeSM.getSubmodelElement(ComponentBuilder.EDGESM_OP_SET_TEMP_ID_SHORT);
+		IOperation setTempOperation = (IOperation) edgeSM.getSubmodelElement(ComponentFactory.EDGESM_OP_SET_TEMP_ID_SHORT);
 		setTempOperation.invokeSimple(EXPECTED_TEMP);
 	}
 	
 	private ISubmodel getEdgeSubmodel(ConnectedAssetAdministrationShellManager manager) {
-		ISubmodel edgeSM = manager.retrieveSubmodel(AuthorizedRegistryScenario.aasIdentifier, AuthorizedRegistryScenario.edgeSubmodelIdentifier);
+		ISubmodel edgeSM = manager.retrieveSubmodel(scenario.aasIdentifier, scenario.edgeSubmodelIdentifier);
 		return edgeSM;
 	}
 	

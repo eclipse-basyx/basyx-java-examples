@@ -207,7 +207,7 @@ public class ComponentFactory {
 	 * 
 	 * @return ConnectedAssetAdministrationShellManager
 	 */
-	private ConnectedAssetAdministrationShellManager getManager() {
+	public ConnectedAssetAdministrationShellManager getManager() {
 		// Create a InMemoryRegistry to be used by the manager
 		IAASRegistry registry = new AASRegistryProxy(CloudEdgeDeploymentScenario.registryPath);
 		

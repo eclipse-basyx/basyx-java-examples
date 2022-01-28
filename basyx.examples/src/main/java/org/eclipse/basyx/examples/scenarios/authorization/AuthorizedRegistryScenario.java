@@ -61,11 +61,13 @@ public class AuthorizedRegistryScenario {
 		
 		private ConnectedAssetAdministrationShellManager aasManager;
 		
-		public static IIdentifier aasIdentifier = ComponentBuilder.getAAS().getIdentification();
+		ComponentFactory componentFactory = new ComponentFactory();
+		
+		public IIdentifier aasIdentifier = componentFactory.getAAS().getIdentification();
 
-		public static IIdentifier docuSubmodelIdentifier = ComponentBuilder.getDocuSMDescriptor().getIdentifier();
+		public IIdentifier docuSubmodelIdentifier = componentFactory.getDocuSMDescriptor().getIdentifier();
 
-		public static IIdentifier edgeSubmodelIdentifier = ComponentBuilder.getEdgeSubmodelDescriptor().getIdentifier();
+		public IIdentifier edgeSubmodelIdentifier = componentFactory.getEdgeSubmodelDescriptor().getIdentifier();
 
 		private List<IComponent> startedComponents = new ArrayList<>();
 		
@@ -91,7 +93,7 @@ public class AuthorizedRegistryScenario {
 		}
 
 		private void registerAasIdentifierIntoAuthorizedRegistry() {
-			registry.register(aasIdentifier, ComponentBuilder.getEdgeSubmodelDescriptor());
+			registry.register(aasIdentifier, componentFactory.getEdgeSubmodelDescriptor());
 		}
 
 		private void createAuthorizedAASRegistryProxy() {
@@ -99,7 +101,7 @@ public class AuthorizedRegistryScenario {
 		}
 
 		private void createSubmodelOnEdgeServer() {
-			Submodel docuSubmodel = ComponentBuilder.getDocuSM();
+			Submodel docuSubmodel = componentFactory.getDocuSM();
 			
 			aasManager.createSubmodel(aasIdentifier, docuSubmodel);
 		}
@@ -108,7 +110,7 @@ public class AuthorizedRegistryScenario {
 			IConnectorFactory connectorFactory = new HTTPConnectorFactory();
 			aasManager = new ConnectedAssetAdministrationShellManager(registry, connectorFactory);
 			
-			aasManager.createAAS(ComponentBuilder.getAAS(), CLOUD_ENDPOINT);
+			aasManager.createAAS(componentFactory.getAAS(), CLOUD_ENDPOINT);
 		}
 
 		private void startAASAndSubmodelServer() {
@@ -157,11 +159,11 @@ public class AuthorizedRegistryScenario {
 			
 			BaSyxContext context = contextConfig.createBaSyxContext();
 
-			Submodel edgeSubmodel = ComponentBuilder.createEdgeSubmodel();
+			Submodel edgeSubmodel = componentFactory.createEdgeSubmodel();
 			
 			SubmodelServlet smServlet = new SubmodelServlet(edgeSubmodel);
 			
-			context.addServletMapping("/oven/" + ComponentBuilder.EDGESM_ID_SHORT + "/*", smServlet);
+			context.addServletMapping("/oven/" + componentFactory.EDGESM_ID_SHORT + "/*", smServlet);
 			
 			startEdgeServer(context);
 		}
