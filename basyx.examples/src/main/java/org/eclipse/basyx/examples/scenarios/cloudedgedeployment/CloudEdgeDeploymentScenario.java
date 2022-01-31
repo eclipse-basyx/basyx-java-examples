@@ -56,22 +56,24 @@ public class CloudEdgeDeploymentScenario {
 	 */
 	private ConnectedAssetAdministrationShellManager aasManager;
 	
+	private ComponentFactory componentFactory = new ComponentFactory();
+	
 	/**
 	 * Identifier of the AAS hosted in the cloud.
 	 */
-	public static IIdentifier aasIdentifier = ComponentBuilder.getAAS().getIdentification();
+	public IIdentifier aasIdentifier = componentFactory.getAAS().getIdentification();
 
 	/**
 	 * Identifier of the SM hosted in the cloud.
 	 * It contains never changing properties of the machine.
 	 */
-	public static IIdentifier docuSmIdentifier = ComponentBuilder.getDocuSMDescriptor().getIdentifier();
+	public IIdentifier docuSmIdentifier = componentFactory.getDocuSMDescriptor().getIdentifier();
 
 	/**
 	 * Identifier of the SM hosted near the machine.
 	 * It contains constantly changing sensor data.
 	 */
-	public static IIdentifier edgeSmIdentifier = ComponentBuilder.getEdgeSubmodelDescriptor().getIdentifier();
+	public IIdentifier edgeSmIdentifier = componentFactory.getEdgeSubmodelDescriptor().getIdentifier();
 
 	// Used for shutting down the scenario
 	private List<IComponent> startedComponents = new ArrayList<>();
@@ -105,11 +107,11 @@ public class CloudEdgeDeploymentScenario {
 		
 		// Push the AAS to the cloud server
 		// The manager automatically registers it in the registry
-		aasManager.createAAS(ComponentBuilder.getAAS(), "http://localhost:8081/cloud");
+		aasManager.createAAS(componentFactory.getAAS(), "http://localhost:8081/cloud");
 		
 		
-		// Get the docuSubmodel from the ComponentBuilder
-		Submodel docuSubmodel = ComponentBuilder.getDocuSM();
+		// Get the docuSubmodel from the ComponentFactory
+		Submodel docuSubmodel = componentFactory.getDocuSM();
 		
 		// Push the docuSubmodel to the cloud
 		// The manager automatically registers it in the registry
@@ -117,7 +119,7 @@ public class CloudEdgeDeploymentScenario {
 		
 
 		// Add the already existing edgeSM to the descriptor of the aas
-		registry.register(aasIdentifier, ComponentBuilder.getEdgeSubmodelDescriptor());
+		registry.register(aasIdentifier, componentFactory.getEdgeSubmodelDescriptor());
 	}
 	
 	/**
@@ -147,14 +149,14 @@ public class CloudEdgeDeploymentScenario {
 		BaSyxContextConfiguration contextConfig = new BaSyxContextConfiguration(8082, "");
 		BaSyxContext context = contextConfig.createBaSyxContext();
 		
-		// Get the edgeSubmodel from the ComponentBuilder
-		Submodel edgeSubmodel = ComponentBuilder.createEdgeSubmodel();
+		// Get the edgeSubmodel from the ComponentFactory
+		Submodel edgeSubmodel = componentFactory.createEdgeSubmodel();
 		
 		// Create a new SubmodelServlet containing the edgeSubmodel
 		SubmodelServlet smServlet = new SubmodelServlet(edgeSubmodel);
 		
 		// Add the SubmodelServlet mapping to the context at the path "/oven/curr_temp"
-		context.addServletMapping("/oven/" + ComponentBuilder.EDGESM_ID_SHORT + "/*", smServlet);
+		context.addServletMapping("/oven/" + ComponentFactory.EDGESM_ID_SHORT + "/*", smServlet);
 		
 		
 		// Create and start a HTTP server with the context created above
