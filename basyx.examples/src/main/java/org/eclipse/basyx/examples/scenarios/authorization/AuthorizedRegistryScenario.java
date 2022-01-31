@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2021 the Eclipse BaSyx Authors
+ * Copyright (C) 2022 the Eclipse BaSyx Authors
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -81,7 +81,6 @@ public class AuthorizedRegistryScenario {
 		private BaSyxHTTPServer edgeServer;
 
 		public static void main(String[] args) {
-			
 			new AuthorizedRegistryScenario();
 		}
 		
@@ -94,12 +93,12 @@ public class AuthorizedRegistryScenario {
 
 			createAssetAdministrationShellOnCloudServer();
 			
-			createSubmodelOnEdgeServer();
+			createSubmodelOnAasCloudServer();
 			
-			registerAasIdentifierIntoAuthorizedRegistry();
+			registerEdgeSubmodelIdentifierIntoAuthorizedRegistry();
 		}
 
-		private void registerAasIdentifierIntoAuthorizedRegistry() {
+		private void registerEdgeSubmodelIdentifierIntoAuthorizedRegistry() {
 			registry.register(aasIdentifier, componentFactory.getEdgeSubmodelDescriptor());
 		}
 
@@ -107,7 +106,7 @@ public class AuthorizedRegistryScenario {
 			registry = new AuthorizedAASRegistryProxy(REGISTRY_ENDPOINT, authorizationProvider.getAuthorizationSupplier());
 		}
 
-		private void createSubmodelOnEdgeServer() {
+		private void createSubmodelOnAasCloudServer() {
 			Submodel docuSubmodel = componentFactory.getDocuSM();
 			
 			aasManager.createSubmodel(aasIdentifier, docuSubmodel);
@@ -135,10 +134,6 @@ public class AuthorizedRegistryScenario {
 			
 			IComponent component = startRegistryComponent(contextConfig, registryConfig);
 			
-			addStartedComponentToList(component);
-		}
-
-		private void addStartedComponentToList(IComponent component) {
 			startedComponents.add(component);
 		}
 
@@ -192,7 +187,7 @@ public class AuthorizedRegistryScenario {
 			
 			cloudServer.startComponent();
 			
-			addStartedComponentToList(cloudServer);
+			startedComponents.add(cloudServer);
 		}
 
 		public void stop() {
