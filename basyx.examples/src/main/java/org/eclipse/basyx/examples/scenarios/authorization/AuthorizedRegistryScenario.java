@@ -11,7 +11,7 @@ package org.eclipse.basyx.examples.scenarios.authorization;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.eclipse.basyx.aas.manager.ConnectedAssetAdministrationShellManager;
+
 import org.eclipse.basyx.aas.registration.api.IAASRegistry;
 import org.eclipse.basyx.components.IComponent;
 import org.eclipse.basyx.components.aas.AASServerComponent;
@@ -22,13 +22,12 @@ import org.eclipse.basyx.components.registry.RegistryComponent;
 import org.eclipse.basyx.components.registry.configuration.BaSyxRegistryConfiguration;
 import org.eclipse.basyx.components.registry.configuration.RegistryBackend;
 import org.eclipse.basyx.components.servlet.submodel.SubmodelServlet;
+import org.eclipse.basyx.extensions.aas.manager.authorized.AuthorizedConnectedAASManager;
 import org.eclipse.basyx.extensions.aas.registration.authorization.AuthorizedAASRegistryProxy;
 import org.eclipse.basyx.submodel.metamodel.api.identifier.IIdentifier;
 import org.eclipse.basyx.submodel.metamodel.map.Submodel;
-import org.eclipse.basyx.vab.protocol.http.server.BaSyxHTTPServer;
-import org.eclipse.basyx.vab.protocol.api.IConnectorFactory;
-import org.eclipse.basyx.vab.protocol.http.connector.HTTPConnectorFactory;
 import org.eclipse.basyx.vab.protocol.http.server.BaSyxContext;
+import org.eclipse.basyx.vab.protocol.http.server.BaSyxHTTPServer;
 
 /**
  * Example scenario demonstrating a deployment with two servers with Authorized AAS Registry
@@ -66,7 +65,7 @@ public class AuthorizedRegistryScenario {
 		
 		private static AuthorizationProvider authorizationProvider = new AuthorizationProvider();
 		
-		private ConnectedAssetAdministrationShellManager aasManager;
+		private AuthorizedConnectedAASManager aasManager;
 		
 		private static AuthorizedComponentFactory componentFactory = new AuthorizedComponentFactory();
 		
@@ -113,8 +112,7 @@ public class AuthorizedRegistryScenario {
 		}
 
 		private void createAssetAdministrationShellOnCloudServer() {
-			IConnectorFactory connectorFactory = new HTTPConnectorFactory();
-			aasManager = new ConnectedAssetAdministrationShellManager(registry, connectorFactory);
+			aasManager = new AuthorizedConnectedAASManager(registry, authorizationProvider.getAuthorizationSupplier());
 			
 			aasManager.createAAS(componentFactory.getAAS(), CLOUD_ENDPOINT);
 		}
