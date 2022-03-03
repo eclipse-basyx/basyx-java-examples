@@ -12,16 +12,18 @@ package org.eclipse.basyx.examples.scenarios.authorization;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import org.eclipse.basyx.aas.manager.ConnectedAssetAdministrationShellManager;
+
 import org.eclipse.basyx.aas.metamodel.api.IAssetAdministrationShell;
 import org.eclipse.basyx.aas.metamodel.map.descriptor.AASDescriptor;
 import org.eclipse.basyx.aas.metamodel.map.descriptor.SubmodelDescriptor;
 import org.eclipse.basyx.aas.registration.api.IAASRegistry;
 import org.eclipse.basyx.examples.scenarios.authorization.exception.RealmDeletionException;
+import org.eclipse.basyx.extensions.aas.manager.authorized.AuthorizedConnectedAASManager;
 import org.eclipse.basyx.extensions.aas.registration.authorization.AuthorizedAASRegistryProxy;
 import org.eclipse.basyx.submodel.metamodel.api.ISubmodel;
 import org.eclipse.basyx.submodel.metamodel.api.submodelelement.dataelement.IProperty;
@@ -62,7 +64,7 @@ public class TestAuthorizedRegistryScenario {
 	
 	@Test
 	public void checkIfAasHasTheCorrectIdShort() {
-		ConnectedAssetAdministrationShellManager manager = getConnectedAssetAdministrationShellManager();
+		AuthorizedConnectedAASManager manager = getAuthorizedConnectedAASManager();
 		
 		IAssetAdministrationShell aas = manager.retrieveAAS(AuthorizedRegistryScenario.aasIdentifier);
 		
@@ -114,7 +116,7 @@ public class TestAuthorizedRegistryScenario {
 	
 	@Test
 	public void checkIfEdgeSmAndDocuSmArePresentInSubmodel() {
-		ConnectedAssetAdministrationShellManager manager = getConnectedAssetAdministrationShellManager();
+		AuthorizedConnectedAASManager manager = getAuthorizedConnectedAASManager();
 		
 		IAssetAdministrationShell aas = manager.retrieveAAS(AuthorizedRegistryScenario.aasIdentifier);
 		
@@ -125,7 +127,7 @@ public class TestAuthorizedRegistryScenario {
 	
 	@Test
 	public void checkIfDocuSmHasCorrectIdShort() {
-		ConnectedAssetAdministrationShellManager manager = getConnectedAssetAdministrationShellManager();
+		AuthorizedConnectedAASManager manager = getAuthorizedConnectedAASManager();
 		
 		ISubmodel docuSM = getDocuSubmodel(manager);
 		
@@ -134,21 +136,21 @@ public class TestAuthorizedRegistryScenario {
 	
 	@Test
 	public void checkIfCorrectNumberOfSubmodelElementsArePresentInDocuSm() {
-		ConnectedAssetAdministrationShellManager manager = getConnectedAssetAdministrationShellManager();
+		AuthorizedConnectedAASManager manager = getAuthorizedConnectedAASManager();
 		
 		ISubmodel docuSM = getDocuSubmodel(manager);
 		
 		assertEquals(1, docuSM.getSubmodelElements().size());
 	}
 	
-	private ISubmodel getDocuSubmodel(ConnectedAssetAdministrationShellManager manager) {
+	private ISubmodel getDocuSubmodel(AuthorizedConnectedAASManager manager) {
 		ISubmodel docuSM = manager.retrieveSubmodel(AuthorizedRegistryScenario.aasIdentifier, AuthorizedRegistryScenario.docuSubmodelIdentifier);
 		return docuSM;
 	}
 	
 	@Test
 	public void checkIfEdgeSmHasCorrectIdShort() {
-		ConnectedAssetAdministrationShellManager manager = getConnectedAssetAdministrationShellManager();
+		AuthorizedConnectedAASManager manager = getAuthorizedConnectedAASManager();
 
 		ISubmodel edgeSM = getEdgeSubmodel(manager);
 		
@@ -157,7 +159,7 @@ public class TestAuthorizedRegistryScenario {
 	
 	@Test
 	public void checkIfEdgeSmHasCorrectNumberOfSubmodelElements() {
-		ConnectedAssetAdministrationShellManager manager = getConnectedAssetAdministrationShellManager();
+		AuthorizedConnectedAASManager manager = getAuthorizedConnectedAASManager();
 
 		ISubmodel edgeSM = getEdgeSubmodel(manager);
 		
@@ -166,7 +168,7 @@ public class TestAuthorizedRegistryScenario {
 	
 	@Test
 	public void checkIfTheTemperatureIsSetProperlyAfterSettingTargetTemp() {
-		ConnectedAssetAdministrationShellManager manager = getConnectedAssetAdministrationShellManager();
+		AuthorizedConnectedAASManager manager = getAuthorizedConnectedAASManager();
 
 		ISubmodel edgeSM = getEdgeSubmodel(manager);
 		
@@ -178,7 +180,7 @@ public class TestAuthorizedRegistryScenario {
 	}
 	
 	private void setTargetTemperatureToEdgeSubmodelElement() {
-		ConnectedAssetAdministrationShellManager manager = getConnectedAssetAdministrationShellManager();
+		AuthorizedConnectedAASManager manager = getAuthorizedConnectedAASManager();
 
 		ISubmodel edgeSM = getEdgeSubmodel(manager);
 		
@@ -186,15 +188,13 @@ public class TestAuthorizedRegistryScenario {
 		setTempOperation.invokeSimple(EXPECTED_TEMP);
 	}
 	
-	private ISubmodel getEdgeSubmodel(ConnectedAssetAdministrationShellManager manager) {
+	private ISubmodel getEdgeSubmodel(AuthorizedConnectedAASManager manager) {
 		ISubmodel edgeSM = manager.retrieveSubmodel(AuthorizedRegistryScenario.aasIdentifier, AuthorizedRegistryScenario.edgeSubmodelIdentifier);
 		return edgeSM;
 	}
 	
-	private ConnectedAssetAdministrationShellManager getConnectedAssetAdministrationShellManager() {
-		ConnectedAssetAdministrationShellManager manager =
-				new ConnectedAssetAdministrationShellManager(getRegistry());
-		
+	private AuthorizedConnectedAASManager getAuthorizedConnectedAASManager() {
+		AuthorizedConnectedAASManager manager = new AuthorizedConnectedAASManager(getRegistry(), authorizationProvider.getAuthorizationSupplier());
 		return manager;
 	}
 	
