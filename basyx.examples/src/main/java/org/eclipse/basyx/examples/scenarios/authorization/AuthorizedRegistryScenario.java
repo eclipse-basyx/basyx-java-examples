@@ -145,7 +145,7 @@ public class AuthorizedRegistryScenario {
 
 		private BaSyxRegistryConfiguration configureAuthorizedBasyxRegistry() {
 			BaSyxRegistryConfiguration registryConfig = new BaSyxRegistryConfiguration(RegistryBackend.INMEMORY);
-			registryConfig.setAuthorizationEnabled(true);
+			registryConfig.enableAuthorization();
 			
 			return registryConfig;
 		}
@@ -180,6 +180,7 @@ public class AuthorizedRegistryScenario {
 			contextConfig.loadFromResource(CLOUD_EDGE_DEPLOYMENT_SCENARIO_CONTEXT_FILE_PATH);
 
 			BaSyxAASServerConfiguration aasServerConfig = new BaSyxAASServerConfiguration(AASServerBackend.INMEMORY, "", REGISTRY_ENDPOINT);
+			aasServerConfig.enableAuthorization();
 
 			AASServerComponent cloudServer = new AASServerComponent(contextConfig, aasServerConfig);
 			

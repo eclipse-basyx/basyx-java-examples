@@ -99,7 +99,11 @@
         "roles",
         "profile",
         "email",
-        "aas-registry"
+        "aas-registry",
+        "aas-api",
+        "aas-aggregator",
+        "sm-api",
+        "sm-aggregator"
     ],
     "optionalClientScopes": [
         "address",
@@ -107,7 +111,15 @@
         "offline_access",
         "microprofile-jwt",
         "urn:org.eclipse.basyx:scope:aas-registry:read",
-        "urn:org.eclipse.basyx:scope:aas-registry:write"
+        "urn:org.eclipse.basyx:scope:aas-registry:write",
+        "urn:org.eclipse.basyx:scope:aas-api:read",
+        "urn:org.eclipse.basyx:scope:aas-api:write",
+        "urn:org.eclipse.basyx:scope:aas-aggregator:read",
+        "urn:org.eclipse.basyx:scope:aas-aggregator:write",
+        "urn:org.eclipse.basyx:scope:sm-api:read",
+        "urn:org.eclipse.basyx:scope:sm-api:write",
+        "urn:org.eclipse.basyx:scope:sm-aggregator:read",
+        "urn:org.eclipse.basyx:scope:sm-aggregator:write"
     ],
     "access": {
         "view": true,
