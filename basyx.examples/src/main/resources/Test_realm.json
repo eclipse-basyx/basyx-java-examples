@@ -464,6 +464,98 @@
       ]
     },
     {
+      "id": "0cc4faa5-a5a8-4a67-ae75-0081d7151588",
+      "name": "aas-api",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "true"
+      },
+      "protocolMappers": [
+        {
+          "id": "015c4711-97a5-44a3-acdd-98c1ce94043b",
+          "name": "aas-api",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "consentRequired": false,
+          "config": {
+            "included.client.audience": "basyx-demo",
+            "id.token.claim": "false",
+            "access.token.claim": "true"
+          }
+        }
+      ]
+    },
+    {
+      "id": "5cc4faa5-a5a8-4a67-ae75-0081d7151588",
+      "name": "aas-aggregator",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "true"
+      },
+      "protocolMappers": [
+        {
+          "id": "515c4711-97a5-44a3-acdd-98c1ce94043b",
+          "name": "aas-aggregator",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "consentRequired": false,
+          "config": {
+            "included.client.audience": "basyx-demo",
+            "id.token.claim": "false",
+            "access.token.claim": "true"
+          }
+        }
+      ]
+    },
+    {
+      "id": "acc4faa5-a5a8-4a67-ae75-0081d7151588",
+      "name": "sm-api",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "true"
+      },
+      "protocolMappers": [
+        {
+          "id": "a15c4711-97a5-44a3-acdd-98c1ce94043b",
+          "name": "sm-api",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "consentRequired": false,
+          "config": {
+            "included.client.audience": "basyx-demo",
+            "id.token.claim": "false",
+            "access.token.claim": "true"
+          }
+        }
+      ]
+    },
+    {
+      "id": "6cc4faa5-a5a8-4a67-ae75-0081d7151588",
+      "name": "sm-aggregator",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "true"
+      },
+      "protocolMappers": [
+        {
+          "id": "615c4711-97a5-44a3-acdd-98c1ce94043b",
+          "name": "sm-aggregator",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "consentRequired": false,
+          "config": {
+            "included.client.audience": "basyx-demo",
+            "id.token.claim": "false",
+            "access.token.claim": "true"
+          }
+        }
+      ]
+    },
+    {
       "id": "fcccf718-04b2-4723-9d0d-f48294cd8f38",
       "name": "web-origins",
       "description": "OpenID Connect scope for add allowed web origins to the access token",
@@ -539,6 +631,98 @@
         {
           "id": "989416cf-53b7-496a-8fe6-77216f14f4b1",
           "name": "urn:org.eclipse.basyx:scope:aas-registry:read",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "consentRequired": false,
+          "config": {
+            "included.client.audience": "basyx-demo",
+            "id.token.claim": "false",
+            "access.token.claim": "true"
+          }
+        }
+      ]
+    },
+    {
+      "id": "0e2b1f02-37d0-4564-89d1-32a1db8962a8",
+      "name": "urn:org.eclipse.basyx:scope:aas-api:read",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "true"
+      },
+      "protocolMappers": [
+        {
+          "id": "089416cf-53b7-496a-8fe6-77216f14f4b1",
+          "name": "urn:org.eclipse.basyx:scope:aas-api:read",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "consentRequired": false,
+          "config": {
+            "included.client.audience": "basyx-demo",
+            "id.token.claim": "false",
+            "access.token.claim": "true"
+          }
+        }
+      ]
+    },
+    {
+      "id": "5e2b1f02-37d0-4564-89d1-32a1db8962a8",
+      "name": "urn:org.eclipse.basyx:scope:aas-aggregator:read",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "true"
+      },
+      "protocolMappers": [
+        {
+          "id": "589416cf-53b7-496a-8fe6-77216f14f4b1",
+          "name": "urn:org.eclipse.basyx:scope:aas-aggregator:read",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "consentRequired": false,
+          "config": {
+            "included.client.audience": "basyx-demo",
+            "id.token.claim": "false",
+            "access.token.claim": "true"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ae2b1f02-37d0-4564-89d1-32a1db8962a8",
+      "name": "urn:org.eclipse.basyx:scope:sm-api:read",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "true"
+      },
+      "protocolMappers": [
+        {
+          "id": "a89416cf-53b7-496a-8fe6-77216f14f4b1",
+          "name": "urn:org.eclipse.basyx:scope:sm-api:read",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "consentRequired": false,
+          "config": {
+            "included.client.audience": "basyx-demo",
+            "id.token.claim": "false",
+            "access.token.claim": "true"
+          }
+        }
+      ]
+    },
+    {
+      "id": "6e2b1f02-37d0-4564-89d1-32a1db8962a8",
+      "name": "urn:org.eclipse.basyx:scope:sm-aggregator:read",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "true"
+      },
+      "protocolMappers": [
+        {
+          "id": "689416cf-53b7-496a-8fe6-77216f14f4b1",
+          "name": "urn:org.eclipse.basyx:scope:sm-aggregator:read",
           "protocol": "openid-connect",
           "protocolMapper": "oidc-audience-mapper",
           "consentRequired": false,
@@ -638,6 +822,98 @@
         {
           "id": "d2b3d44a-38f9-447f-b6a1-1f0ba1cc7d85",
           "name": "urn:org.eclipse.basyx:scope:aas-registry:write",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "consentRequired": false,
+          "config": {
+            "included.client.audience": "basyx-demo",
+            "id.token.claim": "false",
+            "access.token.claim": "true"
+          }
+        }
+      ]
+    },
+    {
+      "id": "0671bbf7-cd75-4d72-acd6-b6d152b11754",
+      "name": "urn:org.eclipse.basyx:scope:aas-api:write",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "true"
+      },
+      "protocolMappers": [
+        {
+          "id": "02b3d44a-38f9-447f-b6a1-1f0ba1cc7d85",
+          "name": "urn:org.eclipse.basyx:scope:aas-api:write",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "consentRequired": false,
+          "config": {
+            "included.client.audience": "basyx-demo",
+            "id.token.claim": "false",
+            "access.token.claim": "true"
+          }
+        }
+      ]
+    },
+    {
+      "id": "5671bbf7-cd75-4d72-acd6-b6d152b11754",
+      "name": "urn:org.eclipse.basyx:scope:aas-aggregator:write",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "true"
+      },
+      "protocolMappers": [
+        {
+          "id": "52b3d44a-38f9-447f-b6a1-1f0ba1cc7d85",
+          "name": "urn:org.eclipse.basyx:scope:aas-aggregator:write",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "consentRequired": false,
+          "config": {
+            "included.client.audience": "basyx-demo",
+            "id.token.claim": "false",
+            "access.token.claim": "true"
+          }
+        }
+      ]
+    },
+    {
+      "id": "a671bbf7-cd75-4d72-acd6-b6d152b11754",
+      "name": "urn:org.eclipse.basyx:scope:sm-api:write",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "true"
+      },
+      "protocolMappers": [
+        {
+          "id": "a2b3d44a-38f9-447f-b6a1-1f0ba1cc7d85",
+          "name": "urn:org.eclipse.basyx:scope:sm-api:write",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "consentRequired": false,
+          "config": {
+            "included.client.audience": "basyx-demo",
+            "id.token.claim": "false",
+            "access.token.claim": "true"
+          }
+        }
+      ]
+    },
+    {
+      "id": "7671bbf7-cd75-4d72-acd6-b6d152b11754",
+      "name": "urn:org.eclipse.basyx:scope:sm-aggregator:write",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "true"
+      },
+      "protocolMappers": [
+        {
+          "id": "72b3d44a-38f9-447f-b6a1-1f0ba1cc7d85",
+          "name": "urn:org.eclipse.basyx:scope:sm-aggregator:write",
           "protocol": "openid-connect",
           "protocolMapper": "oidc-audience-mapper",
           "consentRequired": false,
