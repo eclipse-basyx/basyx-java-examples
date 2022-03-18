@@ -11,8 +11,8 @@ services:
     image: eclipsebasyx/dashboard-aas:0.1.0-SNAPSHOT
     container_name: dashboard-aas
     environment:
-      - BaSyxDashboardSubmodel_Min=15
-#      - BaSyxDashboardSubmodel_Max=30
+      - baSyxdashboardsubmodel_min=15
+#      - baSyxdashboardsubmodel_max=30
     ports:
       - 6400:6400
 
