@@ -3,9 +3,9 @@ services:
   registry:
     image: eclipsebasyx/aas-registry:1.0.2
     environment:
-        - BaSyxRegistry_registry.backend=InMemory
-        - BaSyxContext_contextPath=/registry
-        - BaSyxContext_contextPort=4000
+        - basyxregistry_registry_backend=InMemory
+        - basyxcontext_contextpath=/registry
+        - basyxcontext_contextport=4000
     container_name: registry
     ports:
       - 4000:4000
@@ -16,9 +16,9 @@ services:
     ports:
       - 4001:4001
     environment:
-        - BaSyxAAS_registry.path=http://registry:4000/registry/
-        - BaSyxAAS_aas.backend=InMemory
-        - BaSyxContext_contextPath=/aasServer
-        - BaSyxContext_contextPort=4001
-        - BaSyxAAS_aas.source=aasx/01_Festo.aasx
-        - WAITING_FOR=[{"host":"registry","port":"4000"}]
+        - basyxaas_registry_path=http://registry:4000/registry/
+        - basyxaas_aas_backend=InMemory
+        - basyxcontext_contextpath=/aasServer
+        - basyxcontext_contextport=4001
+        - basyxaas_aas_source=aasx/01_Festo.aasx
+        - waiting_for=[{"host":"registry","port":"4000"}]
