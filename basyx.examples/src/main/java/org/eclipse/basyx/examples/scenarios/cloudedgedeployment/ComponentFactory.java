@@ -156,7 +156,7 @@ public class ComponentFactory {
 		// The ValueType is determined by the type of the given value
 		// here 0, which results in ValueType Integer
 		Property newTargetTemp = new Property(OP_SET_TEMP_IN_VAR_ID_SHORT, 0);
-		newTargetTemp.setModelingKind(ModelingKind.TEMPLATE);
+		newTargetTemp.setKind(ModelingKind.TEMPLATE);
 		
 		OperationVariable var = new OperationVariable(newTargetTemp);
 		
@@ -188,7 +188,7 @@ public class ComponentFactory {
 		// The ValueType is determined by the type of the given value
 		// here 0, which results in ValueType Integer
 		Property currentTemp = new Property(OP_GET_TEMP_OUT_VAR_ID_SHORT, 0);
-		currentTemp.setModelingKind(ModelingKind.TEMPLATE);
+		currentTemp.setKind(ModelingKind.TEMPLATE);
 		
 		OperationVariable var = new OperationVariable(currentTemp);
 		
