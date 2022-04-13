@@ -49,37 +49,35 @@ public class TestAddSubmodelToAAS extends AbstractSnippetTest {
 
 	private static final String NEW_SM_ID_SHORT = "smIdShort_New";
 	private static final String NEW_SM_ID = "smId_New";
-	
+
 	private static final String NEW_SM_ENDPOINT = AAS_ENDPOINT + "/submodels/" + NEW_SM_ID_SHORT + "/submodel";
-	
+
 	@Test
 	public void testAddSubmodelToAAS() {
-		
+
 		// Get the example AAS and Submodel
 		Submodel submodel = ExampleComponentBuilder.buildExampleSubmodel(NEW_SM_ID_SHORT, NEW_SM_ID);
 
 		// Get the Identifiers for the AAS and the Submodel
 		IIdentifier aasIdentifier = new Identifier(IdentifierType.CUSTOM, AAS_ID);
 		IIdentifier smIdentifier = submodel.getIdentification();
-		
+
 		// Get the AAS as ConnectedAAS
 		ConnectedAssetAdministrationShellManager manager = getManager();
 		IAssetAdministrationShell aas = manager.retrieveAAS(aasIdentifier);
-		
+
 		// Add the Submodel to the AAS
 		AddSubmodelToAAS.addSubmodelToAAS(submodel, aas);
-		
-		
+
 		// Register the new Submodel
 		// This needs to be done to be able to retrieve it again
 		AASRegistryProxy registry = new AASRegistryProxy(registryComponent.getRegistryPath());
 		registry.register(aasIdentifier, new SubmodelDescriptor(submodel, NEW_SM_ENDPOINT));
-		
-		
+
 		// Check if the Submodel was correctly added
 		ISubmodel remoteSM = manager.retrieveSubmodel(aasIdentifier, smIdentifier);
 		assertEquals(NEW_SM_ID_SHORT, remoteSM.getIdShort());
-		
+
 	}
-	
+
 }

@@ -47,32 +47,32 @@ import org.junit.Test;
 public class TestStaticDynamicScenario {
 
 	private static StaticDynamicScenario scenario;
-	
+
 	@BeforeClass
 	public static void startup() throws Exception {
 		scenario = new StaticDynamicScenario();
 	}
-	
+
 	@AfterClass
 	public static void tearDown() {
 		scenario.stop();
 	}
-	
+
 	@Test
 	public void checkDynamicSubmodel() throws Exception {
-		
+
 		AASRegistryProxy proxy = new AASRegistryProxy(StaticDynamicScenario.REGISTRY_URL);
 		ConnectedAssetAdministrationShellManager manager = new ConnectedAssetAdministrationShellManager(proxy);
-		
+
 		Identifier AASIdentifier = new Identifier(IdentifierType.IRI, StaticDynamicScenario.AAS_ID);
-		
+
 		Map<String, ISubmodel> submodels = manager.retrieveSubmodels(AASIdentifier);
-		
+
 		// The aas should contain 6 SMs
 		assertEquals(6, submodels.size());
-		
+
 		ISubmodel staticSM = submodels.get(ExampleDynamicSubmodel.SM_ID_SHORT);
-		
+
 		// Get the Property from the Submodel
 		IProperty smElement = (IProperty) staticSM.getSubmodelElements().get(ExampleDynamicSubmodel.PROPERTY_ID_SHORT);
 

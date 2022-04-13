@@ -41,12 +41,12 @@ import org.slf4j.LoggerFactory;
  *
  */
 public class InfluxDBTask implements VABModelTask {
-	
+
 	/**
 	 * Initiates a logger using the current class
 	 */
 	private static final Logger logger = LoggerFactory.getLogger(InfluxDBTask.class);
-	
+
 	private String modelPath;
 	private String dbUrl;
 	private String dbName;

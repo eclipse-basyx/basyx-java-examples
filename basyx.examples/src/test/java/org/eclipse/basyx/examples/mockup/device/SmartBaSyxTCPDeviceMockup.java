@@ -59,49 +59,42 @@ import org.eclipse.basyx.vab.protocol.http.connector.HTTPConnectorFactory;
  */
 public class SmartBaSyxTCPDeviceMockup extends BaseSmartDevice {
 
-	
 	/**
 	 * Server port
 	 */
 	protected int serverPort = -1;
-	
-	
+
 	/**
 	 * BaSyx/TCP Server that exports the control component
 	 */
 	protected BaSyxTCPServer<VABMapProvider> server = null;
-	
-	
+
 	/**
 	 * AAS server connection
 	 */
 	protected VABElementProxy aasServerConnection = null;
 
 	protected String aasPath;
-	
-	
 
-	
 	/**
 	 * Constructor
 	 */
 	public SmartBaSyxTCPDeviceMockup(int port) {
 		// Invoke base constructor
 		super();
-		
+
 		// Store server port
 		serverPort = port;
 
 		// Register URNs of managed VAB objects
-		addShortcut("AAS",        new ModelUrn("urn:de.FHG:devices.es.iese:aas:1.0:3:x-509#001"));
-		addShortcut("Status",     new ModelUrn("urn:de.FHG:devices.es.iese:statusSM:1.0:3:x-509#001"));
+		addShortcut("AAS", new ModelUrn("urn:de.FHG:devices.es.iese:aas:1.0:3:x-509#001"));
+		addShortcut("Status", new ModelUrn("urn:de.FHG:devices.es.iese:statusSM:1.0:3:x-509#001"));
 
 		// Configure BaSyx service - registry and connection manager
 		setRegistry(new AASRegistryProxy("http://localhost:8080/" + BaSyxExamplesContext.REGISTRYURL));
 		setConnectionManager(new VABConnectionManager(new ExamplesPreconfiguredDirectory(), new HTTPConnectorFactory()));
 	}
 
-	
 	/**
 	 * Indicate a service invocation
 	 */
@@ -110,14 +103,13 @@ public class SmartBaSyxTCPDeviceMockup extends BaseSmartDevice {
 	protected void onServiceInvocation() {
 		// Base implementation
 		super.onServiceInvocation();
-		// Implement the device invocation counter - read and increment invocation counter
-		Map<String, Object> property = (Map<String, Object>) aasServerConnection
-				.getValue(aasPath + "/submodels/Status/submodel/" + MultiSubmodelElementProvider.ELEMENTS + "/invocations");
+		// Implement the device invocation counter - read and increment invocation
+		// counter
+		Map<String, Object> property = (Map<String, Object>) aasServerConnection.getValue(aasPath + "/submodels/Status/submodel/" + MultiSubmodelElementProvider.ELEMENTS + "/invocations");
 		int invocations = (int) property.get("value");
 		aasServerConnection.setValue(aasPath + "/submodels/Status/submodel/" + MultiSubmodelElementProvider.ELEMENTS + "/invocations/value", ++invocations);
 	}
 
-	
 	/**
 	 * Smart device control component indicates an execution state change
 	 */
@@ -125,14 +117,10 @@ public class SmartBaSyxTCPDeviceMockup extends BaseSmartDevice {
 	public void onChangedExecutionState(ExecutionState newExecutionState) {
 		// Invoke base implementation
 		super.onChangedExecutionState(newExecutionState);
-		
+
 		// Update property "properties/status" in external AAS
-		aasServerConnection.setValue(aasPath + "/submodels/Status/submodel/" + MultiSubmodelElementProvider.ELEMENTS + "/status/value",
-				newExecutionState.getValue());
+		aasServerConnection.setValue(aasPath + "/submodels/Status/submodel/" + MultiSubmodelElementProvider.ELEMENTS + "/status/value", newExecutionState.getValue());
 	}
-
-
-
 
 	/**
 	 * Start smart device
@@ -141,12 +129,10 @@ public class SmartBaSyxTCPDeviceMockup extends BaseSmartDevice {
 	public void start() {
 		// Invoke base implementation
 		super.start();
-		
-		
+
 		// Connect to AAS server
 		aasServerConnection = this.getConnectionManager().connectToVABElement("AASServer");
 
-		
 		// Create device AAS
 		// - Create device AAS
 		AssetAdministrationShell aas = new AssetAdministrationShell();
@@ -158,46 +144,43 @@ public class SmartBaSyxTCPDeviceMockup extends BaseSmartDevice {
 
 		aasPath = VABPathTools.concatenatePaths(AASAggregatorProvider.PREFIX, lookupURN("AAS").getEncodedURN(), "aas");
 
-		
-		// The device also brings a sub model structure with an own ID that is being pushed on the server
+		// The device also brings a sub model structure with an own ID that is being
+		// pushed on the server
 		// - Create generic sub model and add properties
 		Submodel statusSM = new Submodel();
 		statusSM.setIdShort("Status");
-		//   - Property status: indicate device status
+		// - Property status: indicate device status
 		Property statusProp = new Property("offline");
 		statusProp.setIdShort("status");
 		statusSM.addSubmodelElement(statusProp);
-		//   - Property statistics: export invocation statistics for every service
-		//     - invocations: indicate total service invocations. Properties are not persisted in this example,
-		//                    therefore we start counting always at 0.
+		// - Property statistics: export invocation statistics for every service
+		// - invocations: indicate total service invocations. Properties are not
+		// persisted in this example,
+		// therefore we start counting always at 0.
 		Property invocationsProp = new Property(0);
 		invocationsProp.setIdShort("invocations");
 		statusSM.addSubmodelElement(invocationsProp);
 		// - Transfer device sub model to server
 		aasServerConnection.setValue(aasPath + "/submodels/" + statusSM.getIdShort(), statusSM);
 
-		
 		// Register control component as local sub model
 		// - This sub model will stay with the device
 		server = new BaSyxTCPServer<>(new VABMapProvider(controlComponent), serverPort);
 		// - Start local BaSyx/TCP server
 		server.start();
 
-		
 		// Register AAS and sub models in directory (push AAS descriptor to server)
 		// - AAS repository server URL
 		String aasRepoURL = "http://localhost:8080" + BaSyxExamplesContext.AASSERVERURL + "/" + AASAggregatorProvider.PREFIX + "/" + lookupURN("AAS").getEncodedURN() + "/aas";
 		// - Build an AAS descriptor, add sub model descriptors
 		AASDescriptor deviceAASDescriptor = new AASDescriptor(lookupURN("AAS"), aasRepoURL);
 		// Create sub model descriptors
-		SubmodelDescriptor statusSMDescriptor = new SubmodelDescriptor("Status", lookupURN("Status"),
-				aasRepoURL + "/submodels/Status/submodel");
+		SubmodelDescriptor statusSMDescriptor = new SubmodelDescriptor("Status", lookupURN("Status"), aasRepoURL + "/submodels/Status/submodel");
 		// Add sub model descriptor to AAS descriptor
 		deviceAASDescriptor.addSubmodelDescriptor(statusSMDescriptor);
 		// - Push AAS descriptor to server
 		getRegistry().register(deviceAASDescriptor);
 	}
-
 
 	/**
 	 * Stop smart device
@@ -208,7 +191,6 @@ public class SmartBaSyxTCPDeviceMockup extends BaseSmartDevice {
 		server.stop();
 	}
 
-
 	/**
 	 * Wait for completion of all threads
 	 */
@@ -218,4 +200,3 @@ public class SmartBaSyxTCPDeviceMockup extends BaseSmartDevice {
 		server.waitFor();
 	}
 }
-

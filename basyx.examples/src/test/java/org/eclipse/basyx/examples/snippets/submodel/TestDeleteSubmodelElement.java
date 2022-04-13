@@ -47,31 +47,31 @@ public class TestDeleteSubmodelElement extends AbstractSnippetTest {
 
 	@Test
 	public void testDeleteSubmodelElement() {
-		
+
 		// Get the Identifier of the example AAS and Submodel
 		IIdentifier aasIdentifier = new Identifier(IdentifierType.CUSTOM, AAS_ID);
 		IIdentifier smIdentifier = new Identifier(IdentifierType.CUSTOM, SM_ID);
-		
+
 		// Delete the SubmodelElement
 		DeleteSubmodelElement.deleteSubmodelElement(ExampleComponentBuilder.PROPERTY_ID, smIdentifier, aasIdentifier, registryComponent.getRegistryPath());
-		
+
 		// Create a proxy pointing to the registry server
 		AASRegistryProxy registryProxy = new AASRegistryProxy(registryComponent.getRegistryPath());
-		
+
 		// Create a ConnectedAASManager using the registryProxy as its registry
-		ConnectedAssetAdministrationShellManager manager =
-				new ConnectedAssetAdministrationShellManager(registryProxy);
-		
+		ConnectedAssetAdministrationShellManager manager = new ConnectedAssetAdministrationShellManager(registryProxy);
+
 		// Retrieve the Submodel from the server as a ConnectedSubmodel
 		ISubmodel submodel = manager.retrieveSubmodel(aasIdentifier, smIdentifier);
-		
-		// Try to retrieve deleted SubmodelElement; should throw ResourceNotFoundException
+
+		// Try to retrieve deleted SubmodelElement; should throw
+		// ResourceNotFoundException
 		try {
 			submodel.getSubmodelElement(ExampleComponentBuilder.PROPERTY_ID);
 			fail();
 		} catch (ResourceNotFoundException e) {
 		}
-		
+
 	}
-	
+
 }

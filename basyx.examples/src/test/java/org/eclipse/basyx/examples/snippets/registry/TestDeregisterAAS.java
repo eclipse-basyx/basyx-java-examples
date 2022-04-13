@@ -44,20 +44,20 @@ public class TestDeregisterAAS extends AbstractSnippetTest {
 
 	@Test
 	public void testDeregisterAAS() {
-		
+
 		// Get the Identifier of the example AAS
 		IIdentifier aasIdentifier = new Identifier(IdentifierType.CUSTOM, AAS_ID);
-		
+
 		DeregisterAAS.registerAAS(aasIdentifier, registryComponent.getRegistryPath());
-		
+
 		// Lookup the AAS in the registry
 		AASRegistryProxy registry = new AASRegistryProxy(registryComponent.getRegistryPath());
-		
+
 		try {
 			registry.lookupAAS(aasIdentifier);
 			fail();
 		} catch (ResourceNotFoundException e) {
-		}	
+		}
 	}
-	
+
 }

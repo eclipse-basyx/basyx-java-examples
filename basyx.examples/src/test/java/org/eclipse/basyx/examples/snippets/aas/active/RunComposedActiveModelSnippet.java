@@ -37,12 +37,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class RunComposedActiveModelSnippet {
-	
+
 	/**
 	 * Initiates a logger using the current class
 	 */
 	private static final Logger logger = LoggerFactory.getLogger(RunComposedActiveModelSnippet.class);
-	
+
 	/**
 	 * Test active model computing and printing an average temperature property
 	 */
@@ -57,16 +57,14 @@ public class RunComposedActiveModelSnippet {
 		}, null));
 
 		// Create an active model based on the previously created IModelProvider
-		// => Could be any model provider here, also a connected model provider or one containing a submodel
+		// => Could be any model provider here, also a connected model provider or one
+		// containing a submodel
 		ActiveModel activeModel = new ActiveModel(modelProvider);
 
 		// Add a task group with multiple tasks to the active model
 		// The groups' update interval is set to 20x per second
 		// Then the group is started.
-		activeModel.createTaskGroup().addTask(new IncrementTask("/count"))
-				.addTask(new AverageTask(0.01f, "/temperature", "/average"))
-				.setUpdateInterval(50)
-				.start();
+		activeModel.createTaskGroup().addTask(new IncrementTask("/count")).addTask(new AverageTask(0.01f, "/temperature", "/average")).setUpdateInterval(50).start();
 
 		// Runs a task group with a single task (1x per second)
 		VABModelTaskGroup printerGroup = activeModel.runTask(1000, model -> {
@@ -84,7 +82,8 @@ public class RunComposedActiveModelSnippet {
 		Thread.sleep(5000);
 		printerGroup.stop();
 
-		// Wait again and then stop all groups. Then start only the printerGroup, but with a faster update interval
+		// Wait again and then stop all groups. Then start only the printerGroup, but
+		// with a faster update interval
 		Thread.sleep(5000);
 		activeModel.stopAll();
 		printerGroup.setUpdateInterval(100).start();

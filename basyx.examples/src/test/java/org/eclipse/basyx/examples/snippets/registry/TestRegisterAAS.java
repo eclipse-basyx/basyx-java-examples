@@ -40,25 +40,25 @@ import org.junit.Test;
  *
  */
 public class TestRegisterAAS extends AbstractSnippetTest {
-	
+
 	protected static final String NEW_AAS_ID_SHORT = "aasIdShort_New";
 	protected static final String NEW_AAS_ID = "aasId_New";
 	protected static final String NEW_AAS_ENDPOINT = "http://localhost:8080/aasComponent/shells/" + NEW_AAS_ID + "/aas";
-	
+
 	@Test
 	public void testRegisterAAS() {
-		
+
 		// Get the example AAS
 		AssetAdministrationShell aas = ExampleComponentBuilder.buildExampleAAS(NEW_AAS_ID_SHORT, NEW_AAS_ID);
-		
+
 		// Register this AAS
 		RegisterAAS.registerAAS(aas, NEW_AAS_ENDPOINT, registryComponent.getRegistryPath());
-		
+
 		// Check if the AAS was correctly registered
 		AASRegistryProxy registryProxy = new AASRegistryProxy(registryComponent.getRegistryPath());
 		AASDescriptor descriptor = registryProxy.lookupAAS(aas.getIdentification());
 		assertEquals(NEW_AAS_ENDPOINT, descriptor.getFirstEndpoint());
-		
+
 	}
-	
+
 }

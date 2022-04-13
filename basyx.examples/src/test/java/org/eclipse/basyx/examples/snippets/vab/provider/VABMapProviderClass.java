@@ -34,10 +34,11 @@ import org.eclipse.basyx.vab.modelprovider.map.VABMapProvider;
 import org.junit.Test;
 
 /**
- * Code snippet showing the use of the VABMapProvider. It can be used as a basic low level model provider for
- * arbitrary models based on HashMaps. The provider encapsulates the actual data and implements the abstract interface
- * IModelProvider so that the contained model can be accessed via the five VAB primitives create, retrieve, update,
- * delete and invoke.
+ * Code snippet showing the use of the VABMapProvider. It can be used as a basic
+ * low level model provider for arbitrary models based on HashMaps. The provider
+ * encapsulates the actual data and implements the abstract interface
+ * IModelProvider so that the contained model can be accessed via the five VAB
+ * primitives create, retrieve, update, delete and invoke.
  * 
  * @author espen
  *
@@ -45,7 +46,8 @@ import org.junit.Test;
 public class VABMapProviderClass {
 
 	/**
-	 * Snippet showing the programmatic approach for creating arbitrary local, static models using HashMaps
+	 * Snippet showing the programmatic approach for creating arbitrary local,
+	 * static models using HashMaps
 	 */
 	@Test
 	public void snippet() throws Exception {
@@ -62,16 +64,19 @@ public class VABMapProviderClass {
 		rootElement.put("operation", myFunction);
 
 		// Hierarchical structures are possible by nesting multiple HashMaps
-		// => Create a new HashMap with two elements and add it as a child to the root Map
+		// => Create a new HashMap with two elements and add it as a child to the root
+		// Map
 		HashMap<String, Object> childMap = new HashMap<>();
 		childMap.put("type", "boolean");
 		childMap.put("value", true);
 		rootElement.put("data", childMap);
 
-		// The provider then encapsulates the data and realizes the abstract IModelProvider interface
+		// The provider then encapsulates the data and realizes the abstract
+		// IModelProvider interface
 		IModelProvider provider = new VABMapProvider(rootElement);
 
-		// Child elements can now be accessed with a path that is mapped to actual data structure
+		// Child elements can now be accessed with a path that is mapped to actual data
+		// structure
 		assertEquals("myElement", provider.getValue("/name"));
 		assertEquals("boolean", provider.getValue("/data/type"));
 		assertEquals(true, provider.getValue("/data/value"));

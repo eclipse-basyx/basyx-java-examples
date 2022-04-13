@@ -26,21 +26,17 @@ package org.eclipse.basyx.examples.mockup.device;
 
 import org.eclipse.basyx.components.device.BaseTCPControllableDeviceAdapter;
 
-
-
-
 /**
- * This class implements a mockup of a controllable manufacturing device. 
+ * This class implements a mockup of a controllable manufacturing device.
  * 
- * The device is controlled by an external control component that issues commands to this device via TCP strings
+ * The device is controlled by an external control component that issues
+ * commands to this device via TCP strings
  * 
  * @author kuhn
  *
  */
 public class ControllableTCPDeviceMockup extends BaseTCPControllableDeviceAdapter {
 
-	
-	
 	/**
 	 * Constructor
 	 */
@@ -48,9 +44,7 @@ public class ControllableTCPDeviceMockup extends BaseTCPControllableDeviceAdapte
 		// Invoke base implementation
 		super(port);
 	}
-	
 
-	
 	/**
 	 * Indicate device status change to device manager
 	 */
@@ -58,8 +52,8 @@ public class ControllableTCPDeviceMockup extends BaseTCPControllableDeviceAdapte
 	protected void statusChange(String newStatus) {
 		// Invoke base implementation
 		super.statusChange(newStatus);
-		
+
 		// Write bytes to device manager
-		communicationClient.sendMessage("status:"+newStatus+"\n");
+		communicationClient.sendMessage("status:" + newStatus + "\n");
 	}
 }

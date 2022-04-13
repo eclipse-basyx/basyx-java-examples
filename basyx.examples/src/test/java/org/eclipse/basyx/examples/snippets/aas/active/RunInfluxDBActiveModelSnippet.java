@@ -60,9 +60,9 @@ public class RunInfluxDBActiveModelSnippet {
 		// Create the active model
 		ActiveModel activeModel = new ActiveModel(modelProvider);
 
-		// Add a task to the model that writes the temperature value to a database every 500ms
-		InfluxDBTask writeTemperatureTask = new InfluxDBTask("/temperature", "http://localhost:8086/", "mydb",
-				"temperature");
+		// Add a task to the model that writes the temperature value to a database every
+		// 500ms
+		InfluxDBTask writeTemperatureTask = new InfluxDBTask("/temperature", "http://localhost:8086/", "mydb", "temperature");
 		activeModel.runTask(50, writeTemperatureTask);
 
 		// Stop the model and clean it up

@@ -43,18 +43,17 @@ public class TestLookupSubmodel extends AbstractSnippetTest {
 
 	@Test
 	public void testLookupSubmodel() {
-		
+
 		// Get the Identifiers of the AAS and Submodel
 		IIdentifier aasIdentifier = new Identifier(IdentifierType.CUSTOM, AAS_ID);
 		IIdentifier smIdentifier = new Identifier(IdentifierType.CUSTOM, SM_ID);
-		
+
 		// Lookup the Submodel in the registry
-		SubmodelDescriptor descriptor = LookupSubmodel.lookupSubmodel(
-				smIdentifier, aasIdentifier, registryComponent.getRegistryPath());
-		
+		SubmodelDescriptor descriptor = LookupSubmodel.lookupSubmodel(smIdentifier, aasIdentifier, registryComponent.getRegistryPath());
+
 		// Check if the returned Descriptor is as expected
 		assertEquals(SM_ENDPOINT, descriptor.getFirstEndpoint());
-		
+
 	}
-	
+
 }

@@ -39,37 +39,34 @@ import org.eclipse.basyx.vab.modelprovider.VABElementProxy;
 import org.eclipse.basyx.vab.protocol.http.connector.HTTPConnectorFactory;
 
 /**
- * Example BaSys 4.0 application that monitors device (execution) status changes and device service invocation counters
+ * Example BaSys 4.0 application that monitors device (execution) status changes
+ * and device service invocation counters
  * 
  * @author kuhn
  *
  */
 public class ReceiveDeviceDashboardStatusApplication extends BaseBaSyxService {
 
-	
 	/**
 	 * AAS server connection
 	 */
 	protected VABElementProxy aasServerConnection = null;
 
-	
-	
 	/**
 	 * Constructor
 	 */
 	public ReceiveDeviceDashboardStatusApplication() {
 		// Create AAS registry for this service
 		setRegistry(new AASRegistryProxy("http://localhost:8080/" + BaSyxExamplesContext.REGISTRYURL));
-		
+
 		// Service connection manager
 		setConnectionManager(new VABConnectionManager(new ExamplesPreconfiguredDirectory(), new HTTPConnectorFactory()));
 
 		// Register URNs of used objects
-		addShortcut("AAS",        new ModelUrn("urn:de.FHG:devices.es.iese:aas:1.0:3:x-509#001"));
-		addShortcut("Status",     new ModelUrn("urn:de.FHG:devices.es.iese:statusSM:1.0:3:x-509#001"));
+		addShortcut("AAS", new ModelUrn("urn:de.FHG:devices.es.iese:aas:1.0:3:x-509#001"));
+		addShortcut("Status", new ModelUrn("urn:de.FHG:devices.es.iese:statusSM:1.0:3:x-509#001"));
 	}
 
-	
 	/**
 	 * Start application
 	 */
@@ -79,13 +76,13 @@ public class ReceiveDeviceDashboardStatusApplication extends BaseBaSyxService {
 		super.start();
 
 		// Create connection to device sub model
-		// - This code assumes that network location of device sub model does not change while application is running
-		AASDescriptor      aasDescriptor = getRegistry().lookupAAS(lookupURN("AAS"));
-		SubmodelDescriptor smDescriptor  = aasDescriptor.getSubmodelDescriptor(lookupURN("Status"));
+		// - This code assumes that network location of device sub model does not change
+		// while application is running
+		AASDescriptor aasDescriptor = getRegistry().lookupAAS(lookupURN("AAS"));
+		SubmodelDescriptor smDescriptor = aasDescriptor.getSubmodelDescriptor(lookupURN("Status"));
 		// - Connect to status sub model end point
-		aasServerConnection = getConnectionManager().connectToVABElementByPath(smDescriptor.getFirstEndpoint());		
+		aasServerConnection = getConnectionManager().connectToVABElementByPath(smDescriptor.getFirstEndpoint());
 	}
-	
 
 	/**
 	 * Receive device status
@@ -93,12 +90,10 @@ public class ReceiveDeviceDashboardStatusApplication extends BaseBaSyxService {
 	@SuppressWarnings("unchecked")
 	public String getDeviceStatus() {
 		// Read the status property
-		Map<String, Object> property = (Map<String, Object>) aasServerConnection
-				.getValue(MultiSubmodelElementProvider.ELEMENTS + "/status");
+		Map<String, Object> property = (Map<String, Object>) aasServerConnection.getValue(MultiSubmodelElementProvider.ELEMENTS + "/status");
 		// Return the value of the property
 		return property.get("value").toString();
 	}
-
 
 	/**
 	 * Receive device invocation counter
@@ -106,10 +101,8 @@ public class ReceiveDeviceDashboardStatusApplication extends BaseBaSyxService {
 	@SuppressWarnings("unchecked")
 	public int getDeviceInvocationCounter() {
 		// Read the invocation counter for device default service
-		Map<String, Object> property = (Map<String, Object>) aasServerConnection
-				.getValue(MultiSubmodelElementProvider.ELEMENTS + "/invocations");
+		Map<String, Object> property = (Map<String, Object>) aasServerConnection.getValue(MultiSubmodelElementProvider.ELEMENTS + "/invocations");
 		// Return the value of the property
 		return (int) property.get("value");
 	}
 }
-

@@ -25,8 +25,8 @@
 package org.eclipse.basyx.examples.scenarios.authorization.exception;
 
 /**
- * Used to indicate that the operation to delete a 
- * specific Realm from the KeyCloak server has been failed.
+ * Used to indicate that the operation to delete a specific Realm from the
+ * KeyCloak server has been failed.
  * 
  * @author danish
  *
@@ -35,7 +35,7 @@ public class RealmDeletionException extends Exception {
 	private static final long serialVersionUID = 1L;
 
 	public RealmDeletionException(String message) {
-        super(message);
-    }
+		super(message);
+	}
 
 }

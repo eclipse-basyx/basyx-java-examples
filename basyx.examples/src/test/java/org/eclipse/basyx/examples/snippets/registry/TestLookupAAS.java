@@ -43,16 +43,16 @@ public class TestLookupAAS extends AbstractSnippetTest {
 
 	@Test
 	public void testLookupAAS() {
-		
+
 		// Get the Identifier of the example AAS
 		IIdentifier aasIdentifier = new Identifier(IdentifierType.CUSTOM, AAS_ID);
-		
+
 		// Lookup the AAS in the registry
 		AASDescriptor descriptor = LookupAAS.lookupAAS(aasIdentifier, registryComponent.getRegistryPath());
-		
+
 		// Check if the returned Descriptor is as expected
 		assertEquals(AAS_ENDPOINT, descriptor.getFirstEndpoint());
-		
+
 	}
-	
+
 }

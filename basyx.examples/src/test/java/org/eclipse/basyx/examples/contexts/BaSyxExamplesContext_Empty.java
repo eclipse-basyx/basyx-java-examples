@@ -34,14 +34,13 @@ import org.eclipse.basyx.vab.protocol.http.server.BaSyxContext;
  */
 public class BaSyxExamplesContext_Empty extends BaSyxContext {
 
-	
 	/**
 	 * Version of serialized instance
 	 */
 	private static final long serialVersionUID = 1L;
 
 	public static final String CONTEXT = "/basys.examples";
-	
+
 	/**
 	 * Constructor
 	 */
@@ -50,4 +49,3 @@ public class BaSyxExamplesContext_Empty extends BaSyxContext {
 		super(CONTEXT, "");
 	}
 }
-

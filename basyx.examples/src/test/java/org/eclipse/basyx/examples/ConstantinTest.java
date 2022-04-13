@@ -50,7 +50,7 @@ public class ConstantinTest {
 		aggregator.createAAS(aas);
 
 		IAssetAdministrationShell shell = aggregator.getAAS(aas.getIdentification());
-		
+
 		Submodel sm = new Submodel("smIdShort", new CustomId("SMCustomId"));
 		Property p1 = new Property("prop1", "HelloWorld!");
 		sm.addSubmodelElement(p1);

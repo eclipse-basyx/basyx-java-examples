@@ -25,8 +25,8 @@
 package org.eclipse.basyx.examples.scenarios.authorization.exception;
 
 /**
- * Used to indicate that the operation to create a 
- * Realm on the KeyCloak server has been failed.
+ * Used to indicate that the operation to create a Realm on the KeyCloak server
+ * has been failed.
  * 
  * @author danish
  *
@@ -35,7 +35,7 @@ public class RealmCreationException extends Exception {
 	private static final long serialVersionUID = 1L;
 
 	public RealmCreationException(String message) {
-        super(message);
-    }
-	
+		super(message);
+	}
+
 }

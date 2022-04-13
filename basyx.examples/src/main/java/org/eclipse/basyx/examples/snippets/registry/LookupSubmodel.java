@@ -39,18 +39,21 @@ public class LookupSubmodel {
 	/**
 	 * Gets the Descriptor of the requested Submodel from a registry
 	 * 
-	 * @param smIdentifier the Identifier of the Submodel to be looked up in the registry
-	 * @param aasIdentifier the Identifier of the AAS the Submodel belongs to
-	 * @param registryServerURL the URL of the registry server
+	 * @param smIdentifier
+	 *            the Identifier of the Submodel to be looked up in the registry
+	 * @param aasIdentifier
+	 *            the Identifier of the AAS the Submodel belongs to
+	 * @param registryServerURL
+	 *            the URL of the registry server
 	 * @return the SubmodelDescriptor looked up in the registry
 	 */
 	public static SubmodelDescriptor lookupSubmodel(IIdentifier smIdentifier, IIdentifier aasIdentifier, String registryServerURL) {
-		
+
 		// Create a proxy pointing to the registry
 		AASRegistryProxy registryProxy = new AASRegistryProxy(registryServerURL);
-		
+
 		// Lookup the Submodel in the registry
 		return registryProxy.lookupSubmodel(aasIdentifier, smIdentifier);
 	}
-	
+
 }

@@ -37,33 +37,39 @@ import org.eclipse.basyx.submodel.metamodel.api.submodelelement.operation.IOpera
 public class ExecuteOperation {
 
 	/**
-	 * Executes an Operation with the given parameters and return the result.
-	 * The execution itself is run on the remote server
+	 * Executes an Operation with the given parameters and return the result. The
+	 * execution itself is run on the remote server
 	 * 
-	 * @param operationId the idShort of the Operation to be executed
-	 * @param operationParameters the parameters for the execution
-	 * @param smIdentifier the Identifier of the Submodel the Operation belongs to
-	 * @param aasIdentifier the Identifier of the AAS the Submodel belongs to
-	 * @param registryServerURL the URL of the registry server
+	 * @param operationId
+	 *            the idShort of the Operation to be executed
+	 * @param operationParameters
+	 *            the parameters for the execution
+	 * @param smIdentifier
+	 *            the Identifier of the Submodel the Operation belongs to
+	 * @param aasIdentifier
+	 *            the Identifier of the AAS the Submodel belongs to
+	 * @param registryServerURL
+	 *            the URL of the registry server
 	 * @return the result of the execution
-	 * @throws Exception thrown if the execution of the Operation threw an Exception
+	 * @throws Exception
+	 *             thrown if the execution of the Operation threw an Exception
 	 */
 	public static Object executeOperation(String operationId, Object[] operationParameters, IIdentifier smIdentifier, IIdentifier aasIdentifier, String registryServerURL) throws Exception {
 
 		// Get the Operation from the Submodel
 		ISubmodelElement element = RetrieveSubmodelElement.retrieveSubmodelElement(operationId, smIdentifier, aasIdentifier, registryServerURL);
-		
+
 		// Check if the element is really an Operation
-		if( ! (element instanceof IOperation)) {
+		if (!(element instanceof IOperation)) {
 			// The element with the given Id is not an Operation
 			throw new IllegalArgumentException("The SubmodelElement '" + operationId + "' is not an Operation");
 		}
-		
+
 		// Cast the retrieved ISubmodelElement to an IOperation
 		IOperation operation = (IOperation) element;
-		
+
 		// Invoke the Operation and return the Result
 		return operation.invokeSimple(operationParameters);
 	}
-	
+
 }

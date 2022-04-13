@@ -39,14 +39,13 @@ import org.eclipse.basyx.vab.protocol.http.server.BaSyxContext;
  */
 public class BaSyxExamplesContext extends BaSyxContext {
 
-	
 	/**
 	 * Version of serialized instance
 	 */
 	private static final long serialVersionUID = 1L;
 
 	private static final String CONTEXT = "/basys.examples";
-	
+
 	private static final String AASSERVERFRAGMENT = "/Components/AasServer/";
 	public static final String AASSERVERURL = CONTEXT + AASSERVERFRAGMENT;
 
@@ -59,10 +58,9 @@ public class BaSyxExamplesContext extends BaSyxContext {
 	public BaSyxExamplesContext() {
 		// Invoke base constructor to set up Tomcat server in basys.components context
 		super(CONTEXT, "");
-		
+
 		// Define Servlet infrastucture
 		addServletMapping(REGISTRYFRAGMENT + "*", new InMemoryRegistryServlet());
 		addServletMapping(AASSERVERFRAGMENT + "*", new AASAggregatorServlet());
 	}
 }
-

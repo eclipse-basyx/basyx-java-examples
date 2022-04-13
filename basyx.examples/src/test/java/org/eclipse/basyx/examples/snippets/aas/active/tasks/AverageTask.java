@@ -49,7 +49,7 @@ public class AverageTask implements VABModelTask {
 	public void execute(IModelProvider model) throws Exception {
 		double nextValue = (double) model.getValue(sourcePath);
 		double average = lastAverage;
-		if ( average == 0 ) {
+		if (average == 0) {
 			average = nextValue;
 		} else {
 			average = average * (1 - factor) + nextValue * factor;

@@ -43,8 +43,7 @@ public class ExampleDynamicSubmodel extends Submodel {
 
 	public static final String PROPERTY_ID_SHORT = "interval";
 	public static final String PROPERTY_VALUE = "2 months";
-	
-	
+
 	public ExampleDynamicSubmodel() {
 		// Create Property
 		Property interval = new Property();
@@ -56,7 +55,7 @@ public class ExampleDynamicSubmodel extends Submodel {
 
 		// Set the idShort
 		setIdShort(SM_ID_SHORT);
-		
+
 		// Set Identification
 		setIdentification(IdentifierType.CUSTOM, SM_ID);
 	}

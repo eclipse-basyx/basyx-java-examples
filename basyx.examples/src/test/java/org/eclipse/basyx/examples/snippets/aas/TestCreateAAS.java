@@ -44,25 +44,24 @@ public class TestCreateAAS extends AbstractSnippetTest {
 
 	private static final String AAS_ID_SHORT = "aasIdShort";
 	private static final String AAS_ID = "aasId";
-	
+
 	private static final String ASSET_ID_SHORT = "assetIdShort";
 	private static final String ASSET_ID = "assetId";
-	
-	
+
 	@Test
 	public void testCreateAAS() {
-		
+
 		// Create an example Asset to be used in the AAS
 		Asset asset = new Asset(ASSET_ID_SHORT, new Identifier(IdentifierType.CUSTOM, ASSET_ID), AssetKind.INSTANCE);
-		
+
 		// Create an AAS
 		AssetAdministrationShell aas = CreateAAS.createAAS(AAS_ID_SHORT, new Identifier(IdentifierType.CUSTOM, AAS_ID), asset);
-		
+
 		// Check the created AAS
 		assertEquals(AAS_ID_SHORT, aas.getIdShort());
 		assertEquals(AAS_ID, aas.getIdentification().getId());
 		assertEquals(ASSET_ID_SHORT, aas.getAsset().getIdShort());
 		assertEquals(ASSET_ID, aas.getAsset().getIdentification().getId());
 	}
-	
+
 }

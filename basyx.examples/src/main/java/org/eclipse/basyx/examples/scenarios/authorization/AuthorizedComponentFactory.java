@@ -30,23 +30,24 @@ import org.eclipse.basyx.examples.scenarios.cloudedgedeployment.ComponentFactory
 import org.eclipse.basyx.extensions.aas.registration.authorization.AuthorizedAASRegistryProxy;
 
 /**
- * A derived helper Class used to build the necessary objects. 
+ * A derived helper Class used to build the necessary objects.
  * 
  * @author danish
  *
  */
 public class AuthorizedComponentFactory extends ComponentFactory {
-	
+
 	private static AuthorizationProvider authorizationProvider = new AuthorizationProvider();
 
 	/**
-	 * Creates a ConnectedAssetAdministrationShellManager connected to the Authorized AASServer 
+	 * Creates a ConnectedAssetAdministrationShellManager connected to the
+	 * Authorized AASServer
 	 * 
 	 */
 	@Override
 	protected ConnectedAssetAdministrationShellManager getManager() {
 		IAASRegistry registry = new AuthorizedAASRegistryProxy(AuthorizedRegistryScenario.REGISTRY_ENDPOINT, authorizationProvider.getAuthorizationSupplier());
-		
+
 		return new ConnectedAssetAdministrationShellManager(registry);
 	}
 }

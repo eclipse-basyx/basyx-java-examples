@@ -25,8 +25,8 @@
 package org.eclipse.basyx.examples.scenarios.authorization.exception;
 
 /**
- * Used to indicate that the operation to add a 
- * client to the Realm has been failed.
+ * Used to indicate that the operation to add a client to the Realm has been
+ * failed.
  * 
  * @author danish
  *
@@ -35,6 +35,6 @@ public class AddClientException extends Exception {
 	private static final long serialVersionUID = 1L;
 
 	public AddClientException(String message) {
-        super(message);
-    }
+		super(message);
+	}
 }

@@ -43,20 +43,20 @@ public class TestDeleteAAS extends AbstractSnippetTest {
 
 	@Test
 	public void testDeleteAAS() {
-		
+
 		// Get the Identifier of the example AAS
 		IIdentifier aasIdentifier = new Identifier(IdentifierType.CUSTOM, AAS_ID);
-		
+
 		// Delete the AAS
 		DeleteAAS.deleteAAS(aasIdentifier, registryComponent.getRegistryPath());
-		
+
 		// Try to retrieve deleted AAS; should throw ResourceNotFoundException
 		try {
 			RetrieveAAS.retrieveRemoteAAS(aasIdentifier, registryComponent.getRegistryPath());
 			fail();
 		} catch (ResourceNotFoundException e) {
 		}
-		
+
 	}
-	
+
 }

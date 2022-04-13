@@ -39,17 +39,19 @@ public class LookupAAS {
 	/**
 	 * Gets the Descriptor of the requested AAS from a registry
 	 * 
-	 * @param aasIdentifier the Identifier of the AAS to be looked up in the registry
-	 * @param registryServerURL the URL of the registry server
+	 * @param aasIdentifier
+	 *            the Identifier of the AAS to be looked up in the registry
+	 * @param registryServerURL
+	 *            the URL of the registry server
 	 * @return the AASDescriptor looked up in the registry
 	 */
 	public static AASDescriptor lookupAAS(IIdentifier aasIdentifier, String registryServerURL) {
-		
+
 		// Create a proxy pointing to the registry
 		AASRegistryProxy registryProxy = new AASRegistryProxy(registryServerURL);
-		
+
 		// Lookup the AAS in the registry
 		return registryProxy.lookupAAS(aasIdentifier);
 	}
-	
+
 }

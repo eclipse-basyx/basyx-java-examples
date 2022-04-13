@@ -24,7 +24,6 @@
  ******************************************************************************/
 package org.eclipse.basyx.examples.snippets.submodel;
 
-
 import static org.junit.Assert.assertEquals;
 
 import org.eclipse.basyx.aas.metamodel.map.descriptor.CustomId;
@@ -56,7 +55,8 @@ public class TestHostPreconfiguredSubmodel {
 		server = HostPreconfiguredSubmodel.hostPreconfiguredSubmodel(contextConfig, sm);
 		String smPath = "http://localhost:4040/" + sm.getIdShort() + "/submodel";
 
-		// Here, for simplicity reason of the test, the ConnectedSubmodel is created by hand. 
+		// Here, for simplicity reason of the test, the ConnectedSubmodel is created by
+		// hand.
 		// In a real-world application, the AASManager would be used instead.
 		ConnectedSubmodel cSm = new ConnectedSubmodel(new VABElementProxy("", new JSONConnector(new HTTPConnector(smPath))));
 		assertEquals(sm.getIdentification(), cSm.getIdentification());

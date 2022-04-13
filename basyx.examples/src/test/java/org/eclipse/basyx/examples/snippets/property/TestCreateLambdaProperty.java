@@ -57,18 +57,21 @@ public class TestCreateLambdaProperty {
 
 	@Test
 	public void testCreateLambdaProperty() {
-		// The type cast in the setter is necessary due to the Consumer<Object> definition
+		// The type cast in the setter is necessary due to the Consumer<Object>
+		// definition
 		Property lambdaProp = CreateLambdaProperty.createLambdaProperty("lambdaProp", ValueType.Integer, () -> testValue, (v) -> testValue = (int) v);
 
 		// Package it in a test submodel and host it
 		Submodel sm = new Submodel("testSubmodelIdShort", new CustomId("testSubmodelId"));
 		sm.addSubmodelElement(lambdaProp);
-		
-		// Create the context configuration and host the submodel containg the lambda property
+
+		// Create the context configuration and host the submodel containg the lambda
+		// property
 		BaSyxContextConfiguration config = new BaSyxContextConfiguration(4040, "");
 		server = HostPreconfiguredSubmodel.hostPreconfiguredSubmodel(config, sm);
 
-		// Here, for simplicity reason of the test, the ConnectedSubmodel is created by hand.
+		// Here, for simplicity reason of the test, the ConnectedSubmodel is created by
+		// hand.
 		// In a real-world application, the AASManager would be used instead.
 		String smPath = "http://localhost:4040/" + sm.getIdShort() + "/submodel";
 

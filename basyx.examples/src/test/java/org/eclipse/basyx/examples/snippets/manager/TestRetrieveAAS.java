@@ -40,17 +40,16 @@ import org.junit.Test;
  *
  */
 public class TestRetrieveAAS extends AbstractSnippetTest {
-	
+
 	@Test
 	public void testRetrieveRemoteAAS() {
-		
+
 		// Get the Identifier of the example AAS
 		IIdentifier aasIdentifier = new Identifier(IdentifierType.CUSTOM, AAS_ID);
-		
+
 		// Retrieve the AAS from the server
-		IAssetAdministrationShell remoteAAS =
-				RetrieveAAS.retrieveRemoteAAS(aasIdentifier, registryComponent.getRegistryPath());
-		
+		IAssetAdministrationShell remoteAAS = RetrieveAAS.retrieveRemoteAAS(aasIdentifier, registryComponent.getRegistryPath());
+
 		// Check if the retrieved AAS can be used correctly
 		assertEquals(AAS_ID_SHORT, remoteAAS.getIdShort());
 	}

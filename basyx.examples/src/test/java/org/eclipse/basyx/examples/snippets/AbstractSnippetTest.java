@@ -41,53 +41,52 @@ import org.junit.Before;
  *
  */
 public abstract class AbstractSnippetTest {
-	
 
 	protected static final String AAS_ID_SHORT = "aasIdShort";
 	protected static final String AAS_ID = "aasId";
 	protected static final String AAS_ENDPOINT = "http://localhost:8080/aasComponent/shells/" + AAS_ID + "/aas";
-	
+
 	protected static final String SM_ID_SHORT = "smIdShort";
 	protected static final String SM_ID = "smId";
 	protected static final String SM_ENDPOINT = AAS_ENDPOINT + "/submodels/" + SM_ID_SHORT + "/submodel";
-	
+
 	protected ExampleAASComponent aasComponent;
 	protected ExampleRegistryComponent registryComponent;
-	
+
 	@Before
 	public void setupServers() {
 		registryComponent = new ExampleRegistryComponent(8081);
 		registryComponent.startupRegistry();
 		aasComponent = new ExampleAASComponent(8080, new AASRegistryProxy(registryComponent.getRegistryPath()));
 		aasComponent.startupAASServer();
-		
+
 		// Populate the Server with an example AAS/SM
 		populateServer();
 	}
-	
+
 	@After
 	public void shutdownServers() {
 		aasComponent.shutdownAASServer();
 		registryComponent.shutdownRegistry();
 	}
-	
+
 	/**
 	 * Pushes and registers an AAS and a Submodel to the test server
 	 */
 	private void populateServer() {
 		ConnectedAssetAdministrationShellManager manager = getManager();
-		
+
 		// Get the example AAS and Submodel
 		AssetAdministrationShell aas = ExampleComponentBuilder.buildExampleAAS(AAS_ID_SHORT, AAS_ID);
 		Submodel sm = ExampleComponentBuilder.buildExampleSubmodel(SM_ID_SHORT, SM_ID);
-		
+
 		// Push and register the AAS
 		manager.createAAS(aas, aasComponent.getAASServerPath());
-		
+
 		// Push and register the Submodel
 		manager.createSubmodel(aas.getIdentification(), sm);
 	}
-	
+
 	/**
 	 * Creates a ConnectedAASManager using the started registryComponent
 	 * 

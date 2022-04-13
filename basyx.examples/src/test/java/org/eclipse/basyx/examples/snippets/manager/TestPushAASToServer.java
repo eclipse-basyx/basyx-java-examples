@@ -40,23 +40,23 @@ import org.junit.Test;
  *
  */
 public class TestPushAASToServer extends AbstractSnippetTest {
-	
+
 	protected static final String NEW_AAS_ID_SHORT = "aasIdShort_New";
 	protected static final String NEW_AAS_ID = "aasId_New";
-	
+
 	@Test
 	public void testPushAAS() throws Exception {
-		
+
 		// Get the example AAS
 		AssetAdministrationShell aas = ExampleComponentBuilder.buildExampleAAS(NEW_AAS_ID_SHORT, NEW_AAS_ID);
-		
+
 		// Push the AAS to the server
 		PushAASToServer.pushAAS(aas, aasComponent.getAASServerPath(), registryComponent.getRegistryPath());
-		
+
 		// Check if the AAS is present on the server
 		ConnectedAssetAdministrationShellManager manager = getManager();
 		IAssetAdministrationShell remoteAAS = manager.retrieveAAS(aas.getIdentification());
 		assertEquals(NEW_AAS_ID_SHORT, remoteAAS.getIdShort());
 	}
-	
+
 }

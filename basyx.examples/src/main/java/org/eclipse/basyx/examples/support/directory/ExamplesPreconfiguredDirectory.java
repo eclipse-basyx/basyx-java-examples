@@ -27,14 +27,14 @@ package org.eclipse.basyx.examples.support.directory;
 import org.eclipse.basyx.vab.registry.memory.VABInMemoryRegistry;
 
 /**
- * Implement the examples directory service with pre-configured directory entries
+ * Implement the examples directory service with pre-configured directory
+ * entries
  * 
  * @author kuhn
  *
  */
 public class ExamplesPreconfiguredDirectory extends VABInMemoryRegistry {
 
-	
 	/**
 	 * Constructor - load all directory entries
 	 */
@@ -45,5 +45,5 @@ public class ExamplesPreconfiguredDirectory extends VABInMemoryRegistry {
 		// Define mappings
 		// - AAS server mapping
 		addMapping("AASServer", "http://localhost:8080/basys.examples/Components/AasServer/");
-	}	
+	}
 }

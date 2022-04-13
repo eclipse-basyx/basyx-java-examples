@@ -35,11 +35,11 @@ import org.eclipse.basyx.submodel.metamodel.map.submodelelement.dataelement.prop
 import org.eclipse.basyx.submodel.metamodel.map.submodelelement.dataelement.property.valuetype.ValueType;
 
 /**
- * This class is used to build AssetAdministrationShells and Submodels
- * for the scenarios and snippets.
+ * This class is used to build AssetAdministrationShells and Submodels for the
+ * scenarios and snippets.
  * 
- * Please note that the generated objects are just for showcasing,
- * several mandatory attributes are missing. 
+ * Please note that the generated objects are just for showcasing, several
+ * mandatory attributes are missing.
  * 
  * @author conradi
  *
@@ -52,38 +52,41 @@ public class ExampleComponentBuilder {
 	public static final String COLLECTION_ID = "collection";
 	public static final String COLLECTION_PROPERTY_ID = "propInCollection";
 	public static final String COLLECTION_PROPERTY_VALUE = "TheValue";
-	
+
 	/**
 	 * Builds a Submodel containing a Property and a Collection with a Property
 	 * 
-	 * @param idShort the idShort for the new Submodel
+	 * @param idShort
+	 *            the idShort for the new Submodel
 	 * @return the new Submodel
 	 */
 	public static Submodel buildExampleSubmodel(String idShort, String id) {
 		Submodel submodel = new Submodel(idShort, new Identifier(IdentifierType.CUSTOM, id));
-		
+
 		// Add a Property to the Submodel
 		Property property = new Property(PROPERTY_ID, ValueType.Int32);
 		property.setValue(PROPERTY_VALUE);
 		submodel.addSubmodelElement(property);
-				
+
 		// Add a SubmodelElementCollection
 		SubmodelElementCollection collection = new SubmodelElementCollection(COLLECTION_ID);
-		
+
 		// Add a Property to the SubmodelElementCollection
 		Property property2 = new Property(COLLECTION_PROPERTY_ID, ValueType.String);
 		property2.setValue(COLLECTION_PROPERTY_VALUE);
 		collection.addSubmodelElement(property2);
 		submodel.addSubmodelElement(collection);
-		
+
 		return submodel;
 	}
-	
+
 	/**
 	 * Builds an AssetAdministrationShell
 	 * 
-	 * @param idShort the idShort for the new AAS
-	 * @param id the id to be used in Identification
+	 * @param idShort
+	 *            the idShort for the new AAS
+	 * @param id
+	 *            the id to be used in Identification
 	 * @return the new AAS
 	 */
 	public static AssetAdministrationShell buildExampleAAS(String idShort, String id) {
@@ -91,8 +94,8 @@ public class ExampleComponentBuilder {
 		Identifier assetIdentifier = new Identifier(IdentifierType.CUSTOM, id + "asset");
 		Asset asset = new Asset(idShort + "asset", assetIdentifier, AssetKind.INSTANCE);
 		AssetAdministrationShell aas = new AssetAdministrationShell(idShort, aasIdentifier, asset);
-		
+
 		return aas;
 	}
-	
+
 }
