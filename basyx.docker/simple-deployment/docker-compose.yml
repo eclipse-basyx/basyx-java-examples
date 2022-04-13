@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   registry:
-    image: eclipsebasyx/aas-registry:1.0.2
+    image: eclipsebasyx/aas-registry:1.1.0
     environment:
         - basyxregistry_registry_backend=InMemory
         - basyxcontext_contextpath=/registry
@@ -11,7 +11,7 @@ services:
       - 4000:4000
 
   aas:
-    image: eclipsebasyx/aas-server:1.1.0-SNAPSHOT
+    image: eclipsebasyx/aas-server:1.1.0
     container_name: aas
     ports:
       - 4001:4001

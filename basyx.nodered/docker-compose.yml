@@ -2,13 +2,13 @@ version: '3'
 services:
 
   registry:
-    image: eclipsebasyx/aas-registry:1.0.1
+    image: eclipsebasyx/aas-registry:1.1.0
     container_name: dashboard-registry
     ports:
       - 4000:4000
 
   dashboard-aas:
-    image: eclipsebasyx/dashboard-aas:0.1.0-SNAPSHOT
+    image: eclipsebasyx/dashboard-aas:1.1.0
     container_name: dashboard-aas
     environment:
       - BaSyxDashboardSubmodel_Min=15
@@ -17,13 +17,13 @@ services:
       - 6400:6400
 
   aas-wrapper:
-    image: eclipsebasyx/aas-wrapper:0.1.0-SNAPSHOT
+    image: eclipsebasyx/aas-wrapper:1.1.0
     container_name: aas-wrapper
     ports:
       - 6500:6500
 
   node-red:
-    image: eclipsebasyx/examples-dataflow-nodered:0.1.0-SNAPSHOT
+    image: eclipsebasyx/examples-dataflow-nodered:1.1.0
     container_name: node-red
     ports:
       - 1880:1880
