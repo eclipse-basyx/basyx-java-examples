@@ -1,11 +1,26 @@
 /*******************************************************************************
  * Copyright (C) 2021 the Eclipse BaSyx Authors
  * 
- * This program and the accompanying materials are made
- * available under the terms of the Eclipse Public License 2.0
- * which is available at https://www.eclipse.org/legal/epl-2.0/
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
  * 
- * SPDX-License-Identifier: EPL-2.0
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * 
+ * SPDX-License-Identifier: MIT
  ******************************************************************************/
 package org.eclipse.basyx.examples.snippets.aas.active;
 
@@ -22,12 +37,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class RunComposedActiveModelSnippet {
-	
+
 	/**
 	 * Initiates a logger using the current class
 	 */
 	private static final Logger logger = LoggerFactory.getLogger(RunComposedActiveModelSnippet.class);
-	
+
 	/**
 	 * Test active model computing and printing an average temperature property
 	 */
@@ -42,16 +57,14 @@ public class RunComposedActiveModelSnippet {
 		}, null));
 
 		// Create an active model based on the previously created IModelProvider
-		// => Could be any model provider here, also a connected model provider or one containing a submodel
+		// => Could be any model provider here, also a connected model provider or one
+		// containing a submodel
 		ActiveModel activeModel = new ActiveModel(modelProvider);
 
 		// Add a task group with multiple tasks to the active model
 		// The groups' update interval is set to 20x per second
 		// Then the group is started.
-		activeModel.createTaskGroup().addTask(new IncrementTask("/count"))
-				.addTask(new AverageTask(0.01f, "/temperature", "/average"))
-				.setUpdateInterval(50)
-				.start();
+		activeModel.createTaskGroup().addTask(new IncrementTask("/count")).addTask(new AverageTask(0.01f, "/temperature", "/average")).setUpdateInterval(50).start();
 
 		// Runs a task group with a single task (1x per second)
 		VABModelTaskGroup printerGroup = activeModel.runTask(1000, model -> {
@@ -69,7 +82,8 @@ public class RunComposedActiveModelSnippet {
 		Thread.sleep(5000);
 		printerGroup.stop();
 
-		// Wait again and then stop all groups. Then start only the printerGroup, but with a faster update interval
+		// Wait again and then stop all groups. Then start only the printerGroup, but
+		// with a faster update interval
 		Thread.sleep(5000);
 		activeModel.stopAll();
 		printerGroup.setUpdateInterval(100).start();
