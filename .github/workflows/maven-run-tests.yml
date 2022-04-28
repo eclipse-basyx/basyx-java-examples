@@ -5,20 +5,58 @@ name: Java CI with Maven
 
 on:
   pull_request:
-    branches: [ main, development**, bugfix**, feature** ]
+    branches: [ development** ]
 
 jobs:
   build:
 
     runs-on: ubuntu-latest
 
+    # Service containers to run with `container-job`
+    services:
+          
+      keycloak:
+        # KeyCloak Docker Hub image
+        image: jboss/keycloak
+        # Provide the username, password for KeyCloak
+        env:
+          KEYCLOAK_USER: admin
+          KEYCLOAK_PASSWORD: admin
+        # Maps tcp port 9006 on service container to the host
+        ports:
+          - 9006:8080
+
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout Examples
+      uses: actions/checkout@v2
+      with:
+        path: main
+    - name: Checkout BaSyx Components - Development Branch  
+      uses: actions/checkout@v2
+      with:
+        repository: eclipse-basyx/basyx-java-components
+        path: components
+        ref: development
     - name: Set up JDK 11
       uses: actions/setup-java@v2
       with:
         java-version: '11'
         distribution: 'adopt'
         cache: maven
-    - name: Build with Maven
-      run: mvn -B package --file basyx.examples/pom.xml
+    - name: Check status of KeyCloak container
+      run: docker ps | grep jboss/keycloak
+    - name: Install BaSyx Components
+      run: |
+          mkdir -p ~/.m2
+          echo "<settings><servers><server><id>Eclipse BaSyx SDK GitHub Packages</id><username>x-access-token</username><password>${GITHUB_TOKEN}</password></server></servers></settings>" > ~/.m2/settings.xml
+          mvn -B clean install --file components/basyx.components/pom.xml -DskipTests 
+      env:       
+        GITHUB_TOKEN: ${{ github.token }}
+    - name: Build Examples with Maven
+      run: mvn -B package --file main/basyx.examples/pom.xml
+    - name: Build AasWrapper with Maven
+      run: mvn -B package --file main/basyx.aasWrapper/pom.xml -Dmaven.javadoc.skip=true
+    - name: Build DashboardAas with Maven
+      run: mvn -B package --file main/basyx.dashboardAAS/pom.xml
+    - name: Build Hello_world with Maven
+      run: mvn -B package --file main/basyx.hello_world/pom.xml

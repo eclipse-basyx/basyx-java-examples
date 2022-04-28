@@ -10,3 +10,9 @@ HowTo: First Setup
 3. Import dashboard from JSON (drag & drop possible)
 
 4. Run Streamsheet
+
+HINT
+----
+- if you get a conflict when starting the containers, 
+  make sure any other monitoring examples and their containers are shut down
+  (run the stop.bat/stop.sh command in the respective example folder)

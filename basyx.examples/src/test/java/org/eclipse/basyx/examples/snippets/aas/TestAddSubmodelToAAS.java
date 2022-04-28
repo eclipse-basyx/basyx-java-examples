@@ -1,11 +1,26 @@
 /*******************************************************************************
  * Copyright (C) 2021 the Eclipse BaSyx Authors
  * 
- * This program and the accompanying materials are made
- * available under the terms of the Eclipse Public License 2.0
- * which is available at https://www.eclipse.org/legal/epl-2.0/
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
  * 
- * SPDX-License-Identifier: EPL-2.0
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * 
+ * SPDX-License-Identifier: MIT
  ******************************************************************************/
 package org.eclipse.basyx.examples.snippets.aas;
 
@@ -34,37 +49,35 @@ public class TestAddSubmodelToAAS extends AbstractSnippetTest {
 
 	private static final String NEW_SM_ID_SHORT = "smIdShort_New";
 	private static final String NEW_SM_ID = "smId_New";
-	
+
 	private static final String NEW_SM_ENDPOINT = AAS_ENDPOINT + "/submodels/" + NEW_SM_ID_SHORT + "/submodel";
-	
+
 	@Test
 	public void testAddSubmodelToAAS() {
-		
+
 		// Get the example AAS and Submodel
 		Submodel submodel = ExampleComponentBuilder.buildExampleSubmodel(NEW_SM_ID_SHORT, NEW_SM_ID);
 
 		// Get the Identifiers for the AAS and the Submodel
 		IIdentifier aasIdentifier = new Identifier(IdentifierType.CUSTOM, AAS_ID);
 		IIdentifier smIdentifier = submodel.getIdentification();
-		
+
 		// Get the AAS as ConnectedAAS
 		ConnectedAssetAdministrationShellManager manager = getManager();
 		IAssetAdministrationShell aas = manager.retrieveAAS(aasIdentifier);
-		
+
 		// Add the Submodel to the AAS
 		AddSubmodelToAAS.addSubmodelToAAS(submodel, aas);
-		
-		
+
 		// Register the new Submodel
 		// This needs to be done to be able to retrieve it again
 		AASRegistryProxy registry = new AASRegistryProxy(registryComponent.getRegistryPath());
 		registry.register(aasIdentifier, new SubmodelDescriptor(submodel, NEW_SM_ENDPOINT));
-		
-		
+
 		// Check if the Submodel was correctly added
 		ISubmodel remoteSM = manager.retrieveSubmodel(aasIdentifier, smIdentifier);
 		assertEquals(NEW_SM_ID_SHORT, remoteSM.getIdShort());
-		
+
 	}
-	
+
 }
