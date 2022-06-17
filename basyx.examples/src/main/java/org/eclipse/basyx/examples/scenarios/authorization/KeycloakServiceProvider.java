@@ -29,6 +29,7 @@ import java.io.InputStream;
 import org.eclipse.basyx.examples.scenarios.authorization.exception.AddClientException;
 import org.eclipse.basyx.examples.scenarios.authorization.exception.RealmCreationException;
 import org.eclipse.basyx.examples.scenarios.authorization.exception.RealmDeletionException;
+import org.eclipse.basyx.examples.snippets.configuration.KeycloakConfiguration;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
 import org.keycloak.admin.client.resource.ClientResource;
@@ -45,8 +46,6 @@ import org.keycloak.util.JsonSerialization;
  *
  */
 public class KeycloakServiceProvider {
-
-	protected static final String REALM_NAME = "basyx-demo";
 	protected static final String MASTER_REALM_NAME = "master";
 	private static final String CLIENT_NAME = "basyx-demo";
 	private static final String MASTER_CLIENT_ID = "admin-cli";
@@ -54,12 +53,15 @@ public class KeycloakServiceProvider {
 	private static final String PASSWORD = "admin";
 	private static final String REALM_FILE_NAME = "Test_realm.json";
 	private static final String CLIENT_FILE_NAME = "Test_client.json";
-	protected static final String SERVER_ADDRESS = "http://127.0.0.1:9006";
-	protected static final String BASE_ADDRESS = SERVER_ADDRESS + "/auth/";
 	private Keycloak keycloak;
+	private final KeycloakConfiguration keycloakConfig;
 
-	public KeycloakServiceProvider() throws RealmCreationException, AddClientException {
+	public KeycloakServiceProvider(KeycloakConfiguration keycloakConfig) throws RealmCreationException, AddClientException, RealmDeletionException {
+		this.keycloakConfig = keycloakConfig;
+
 		buildKeycloak();
+
+		deleteRealm();
 
 		createRealm();
 
@@ -67,7 +69,7 @@ public class KeycloakServiceProvider {
 	}
 
 	private void buildKeycloak() {
-		keycloak = KeycloakBuilder.builder().serverUrl(BASE_ADDRESS).realm(MASTER_REALM_NAME).clientId(MASTER_CLIENT_ID).username(USERNAME).password(PASSWORD).build();
+		keycloak = KeycloakBuilder.builder().serverUrl(keycloakConfig.getServerUrl()).realm(MASTER_REALM_NAME).clientId(MASTER_CLIENT_ID).username(USERNAME).password(PASSWORD).build();
 	}
 
 	private void createRealm() throws RealmCreationException {
@@ -89,7 +91,7 @@ public class KeycloakServiceProvider {
 	}
 
 	private RealmResource getRealmResource() {
-		return keycloak.realms().realm(REALM_NAME);
+		return keycloak.realms().realm(keycloakConfig.getRealm());
 	}
 
 	private ClientRepresentation createClientRepresentationFromJson() {
@@ -113,15 +115,15 @@ public class KeycloakServiceProvider {
 	}
 
 	private ClientRepresentation getClientRepresentation() {
-		return keycloak.realm(REALM_NAME).clients().findByClientId(CLIENT_NAME).get(0);
+		return keycloak.realm(keycloakConfig.getRealm()).clients().findByClientId(CLIENT_NAME).get(0);
 	}
 
 	private ClientResource getClientResource(ClientRepresentation clientRepresentation) {
-		return keycloak.realm(REALM_NAME).clients().get(clientRepresentation.getId());
+		return keycloak.realm(keycloakConfig.getRealm()).clients().get(clientRepresentation.getId());
 	}
 
 	public void deleteRealm() throws RealmDeletionException {
-		keycloak.realm(REALM_NAME).remove();
+		keycloak.realm(keycloakConfig.getRealm()).remove();
 	}
 
 }

@@ -30,6 +30,7 @@ import java.util.Set;
 import org.eclipse.basyx.examples.scenarios.authorization.exception.AddClientException;
 import org.eclipse.basyx.examples.scenarios.authorization.exception.RealmCreationException;
 import org.eclipse.basyx.examples.scenarios.authorization.exception.RealmDeletionException;
+import org.eclipse.basyx.examples.snippets.configuration.KeycloakConfiguration;
 import org.eclipse.basyx.vab.protocol.http.connector.IAuthorizationSupplier;
 import org.eclipse.basyx.vab.protocol.http.connector.OAuth2ClientCredentialsBasedAuthorizationSupplier;
 
@@ -40,7 +41,6 @@ import org.eclipse.basyx.vab.protocol.http.connector.OAuth2ClientCredentialsBase
  *
  */
 public class AuthorizationProvider {
-	private static final String TOKEN_ENDPOINT_URL = KeycloakServiceProvider.SERVER_ADDRESS + "/auth/realms/" + KeycloakServiceProvider.REALM_NAME + "/protocol/openid-connect/token";
 	private static final String REGISTRY_AUTHORITY_READ = "urn:org.eclipse.basyx:scope:aas-registry:read";
 	private static final String REGISTRY_AUTHORITY_WRITE = "urn:org.eclipse.basyx:scope:aas-registry:write";
 	private static final String SERVER_AAS_API_AUTHORITY_READ = "urn:org.eclipse.basyx:scope:aas-api:read";
@@ -52,12 +52,21 @@ public class AuthorizationProvider {
 	private static final String SERVER_SM_AGGREGATOR_AUTHORITY_READ = "urn:org.eclipse.basyx:scope:sm-aggregator:read";
 	private static final String SERVER_SM_AGGREGATOR_AUTHORITY_WRITE = "urn:org.eclipse.basyx:scope:sm-aggregator:write";
 
+	private static KeycloakConfiguration keycloakConfig;
 	private static KeycloakServiceProvider restService;
+
+	private static String tokenEndpointUrl;
 
 	static {
 		try {
-			restService = new KeycloakServiceProvider();
-		} catch (RealmCreationException | AddClientException e) {
+			keycloakConfig = new KeycloakConfiguration();
+
+			keycloakConfig.loadFromResource(KeycloakConfiguration.KEYCLOAK_CONTEXT_FILE_PATH);
+
+			tokenEndpointUrl = keycloakConfig.getServerUrl() + "/realms/" + keycloakConfig.getRealm() + "/protocol/openid-connect/token";
+
+			restService = new KeycloakServiceProvider(keycloakConfig);
+		} catch (RealmCreationException | AddClientException | RealmDeletionException e) {
 			e.printStackTrace();
 		}
 	}
@@ -65,7 +74,7 @@ public class AuthorizationProvider {
 	public IAuthorizationSupplier getAuthorizationSupplier() {
 		Set<String> scopes = prepareClientScopes();
 
-		return new OAuth2ClientCredentialsBasedAuthorizationSupplier(TOKEN_ENDPOINT_URL, KeycloakServiceProvider.REALM_NAME, restService.getClientSecret(), scopes);
+		return new OAuth2ClientCredentialsBasedAuthorizationSupplier(tokenEndpointUrl, keycloakConfig.getRealm(), restService.getClientSecret(), scopes);
 	}
 
 	private Set<String> prepareClientScopes() {

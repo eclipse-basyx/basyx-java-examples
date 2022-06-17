@@ -133,7 +133,7 @@ public class StaticDynamicScenario {
 	 * 
 	 * @param bundles
 	 *            the Set of Bundles
-	 * @param aasID
+	 * @param aasIdShort
 	 *            the Id of the AAS of the wanted Bundle
 	 * @return the Bundle containing the AAS with the specified Id or null if it
 	 *         does not exist

@@ -25,18 +25,21 @@
 package org.eclipse.basyx.examples.scenarios.authorization;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-
 import org.eclipse.basyx.aas.registration.api.IAASRegistry;
 import org.eclipse.basyx.components.IComponent;
 import org.eclipse.basyx.components.aas.AASServerComponent;
 import org.eclipse.basyx.components.aas.configuration.AASServerBackend;
 import org.eclipse.basyx.components.aas.configuration.BaSyxAASServerConfiguration;
+import org.eclipse.basyx.components.configuration.BaSyxConfiguration;
 import org.eclipse.basyx.components.configuration.BaSyxContextConfiguration;
 import org.eclipse.basyx.components.registry.RegistryComponent;
 import org.eclipse.basyx.components.registry.configuration.BaSyxRegistryConfiguration;
 import org.eclipse.basyx.components.registry.configuration.RegistryBackend;
 import org.eclipse.basyx.components.servlet.submodel.SubmodelServlet;
+import org.eclipse.basyx.examples.scenarios.authorization.exception.RealmDeletionException;
+import org.eclipse.basyx.examples.snippets.configuration.KeycloakConfiguration;
 import org.eclipse.basyx.extensions.aas.manager.authorized.AuthorizedConnectedAASManager;
 import org.eclipse.basyx.extensions.aas.registration.authorization.AuthorizedAASRegistryProxy;
 import org.eclipse.basyx.submodel.metamodel.api.identifier.IIdentifier;
@@ -59,8 +62,8 @@ import org.eclipse.basyx.vab.protocol.http.server.BaSyxHTTPServer;
  * <p>
  * Note : Keycloak instance should be running before working with this scenario.
  * <br/>
- * 
- * Keycloak instance running on : 127.0.0.1:9006 <br/>
+ *
+ * Keycloak instance running on : see KeycloakContext.properties <br/>
  * KEYCLOAK_USER=admin <br/>
  * KEYCLOAK_PASSWORD=admin <br/>
  * </p>
@@ -113,6 +116,12 @@ public class AuthorizedRegistryScenario {
 		createSubmodelOnAasCloudServer();
 
 		registerEdgeSubmodelIdentifierIntoAuthorizedRegistry();
+
+		addShutdownHook();
+	}
+
+	private void addShutdownHook() {
+		Runtime.getRuntime().addShutdownHook(new Thread(this::stop));
 	}
 
 	private void registerEdgeSubmodelIdentifierIntoAuthorizedRegistry() {
@@ -162,7 +171,20 @@ public class AuthorizedRegistryScenario {
 
 	private BaSyxRegistryConfiguration configureAuthorizedBasyxRegistry() {
 		BaSyxRegistryConfiguration registryConfig = new BaSyxRegistryConfiguration(RegistryBackend.INMEMORY);
-		registryConfig.enableAuthorization();
+
+		registryConfig.loadFromResource(AUTHORIZED_REGISTRY_CONTEXT_PATH);
+
+//		registryConfig.enableAuthorization();
+//		registryConfig.setAuthorizationStrategy(AuthorizationStrategy.GrantedAuthority.name());
+//		registryConfig.setAuthorizationStrategyGrantedAuthorityGrantedAuthorityAuthenticator(org.eclipse.basyx.extensions.shared.authorization.AuthenticationGrantedAuthorityAuthenticator.class.getName());
+//		registryConfig.setAuthorizationStrategyGrantedAuthoritySubjectInformationProvider(org.eclipse.basyx.extensions.shared.authorization.AuthenticationContextProvider.class.getName());
+
+		KeycloakConfiguration keycloakConfig = new KeycloakConfiguration();
+
+		keycloakConfig.loadFromResource(KeycloakConfiguration.KEYCLOAK_CONTEXT_FILE_PATH);
+
+		registryConfig.setAuthorizationStrategyJwtBearerTokenAuthenticationConfigurationProviderKeycloakRealm(keycloakConfig.getRealm());
+		registryConfig.setAuthorizationStrategyJwtBearerTokenAuthenticationConfigurationProviderKeycloakServerUrl(keycloakConfig.getServerUrl());
 
 		return registryConfig;
 	}
@@ -197,7 +219,20 @@ public class AuthorizedRegistryScenario {
 		contextConfig.loadFromResource(CLOUD_EDGE_DEPLOYMENT_SCENARIO_CONTEXT_FILE_PATH);
 
 		BaSyxAASServerConfiguration aasServerConfig = new BaSyxAASServerConfiguration(AASServerBackend.INMEMORY, "", REGISTRY_ENDPOINT);
-		aasServerConfig.enableAuthorization();
+
+		aasServerConfig.loadFromResource(CLOUD_EDGE_DEPLOYMENT_SCENARIO_CONTEXT_FILE_PATH);
+
+		//aasServerConfig.enableAuthorization();
+		//aasServerConfig.setAuthorizationStrategy(AuthorizationStrategy.GrantedAuthority.name());
+		//aasServerConfig.setAuthorizationStrategyGrantedAuthorityGrantedAuthorityAuthenticator(org.eclipse.basyx.extensions.shared.authorization.AuthenticationGrantedAuthorityAuthenticator.class.getName());
+		//aasServerConfig.setAuthorizationStrategyGrantedAuthoritySubjectInformationProvider(org.eclipse.basyx.extensions.shared.authorization.AuthenticationContextProvider.class.getName());
+
+		KeycloakConfiguration keycloakConfig = new KeycloakConfiguration();
+
+		keycloakConfig.loadFromResource(KeycloakConfiguration.KEYCLOAK_CONTEXT_FILE_PATH);
+
+		aasServerConfig.setAuthorizationStrategyJwtBearerTokenAuthenticationConfigurationProviderKeycloakRealm(keycloakConfig.getRealm());
+		aasServerConfig.setAuthorizationStrategyJwtBearerTokenAuthenticationConfigurationProviderKeycloakServerUrl(keycloakConfig.getServerUrl());
 
 		AASServerComponent cloudServer = new AASServerComponent(contextConfig, aasServerConfig);
 
@@ -210,5 +245,11 @@ public class AuthorizedRegistryScenario {
 		startedComponents.stream().forEach(IComponent::stopComponent);
 
 		edgeServer.shutdown();
+
+		try {
+			authorizationProvider.deleteRealm();
+		} catch (RealmDeletionException e) {
+			throw new RuntimeException(e);
+		}
 	}
 }
