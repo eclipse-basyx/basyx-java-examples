@@ -26,6 +26,7 @@ package org.eclipse.basyx.examples.scenarios.authorization;
 
 import java.io.IOException;
 import java.io.InputStream;
+import javax.ws.rs.NotFoundException;
 import org.eclipse.basyx.examples.scenarios.authorization.exception.AddClientException;
 import org.eclipse.basyx.examples.scenarios.authorization.exception.RealmCreationException;
 import org.eclipse.basyx.examples.scenarios.authorization.exception.RealmDeletionException;
@@ -37,6 +38,8 @@ import org.keycloak.admin.client.resource.RealmResource;
 import org.keycloak.representations.idm.ClientRepresentation;
 import org.keycloak.representations.idm.RealmRepresentation;
 import org.keycloak.util.JsonSerialization;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class provides Keycloak services such as creating Realm, adding clients
@@ -46,6 +49,8 @@ import org.keycloak.util.JsonSerialization;
  *
  */
 public class KeycloakServiceProvider {
+	private static final Logger logger = LoggerFactory.getLogger(KeycloakServiceProvider.class);
+
 	protected static final String MASTER_REALM_NAME = "master";
 	private static final String CLIENT_NAME = "basyx-demo";
 	private static final String MASTER_CLIENT_ID = "admin-cli";
@@ -61,7 +66,7 @@ public class KeycloakServiceProvider {
 
 		buildKeycloak();
 
-		deleteRealm();
+		deleteRealmIfExists();
 
 		createRealm();
 
@@ -122,8 +127,12 @@ public class KeycloakServiceProvider {
 		return keycloak.realm(keycloakConfig.getRealm()).clients().get(clientRepresentation.getId());
 	}
 
-	public void deleteRealm() throws RealmDeletionException {
-		keycloak.realm(keycloakConfig.getRealm()).remove();
+	public void deleteRealmIfExists() throws RealmDeletionException {
+		try {
+			keycloak.realm(keycloakConfig.getRealm()).remove();
+		} catch (final NotFoundException e) {
+			logger.debug(e.getMessage(), e);
+		}
 	}
 
 }

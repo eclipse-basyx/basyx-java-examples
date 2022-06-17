@@ -94,6 +94,6 @@ public class AuthorizationProvider {
 	}
 
 	public void deleteRealm() throws RealmDeletionException {
-		restService.deleteRealm();
+		restService.deleteRealmIfExists();
 	}
 }
