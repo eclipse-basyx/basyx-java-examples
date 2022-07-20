@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.eclipse.basyx</groupId>
   <artifactId>basyx.examples</artifactId>
-  <version>1.1.0</version>
+  <version>1.1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>BaSyx Examples</name>
   
@@ -104,28 +104,28 @@
 		<dependency>
 			<groupId>org.eclipse.basyx</groupId>
 			<artifactId>basyx.components.lib</artifactId>
-			<version>1.1.0-SNAPSHOT</version>
+			<version>1.1.0</version>
 		</dependency>
 		
 		<!-- Add explicit SQLRegistry dependency -->
 		<dependency>
 			<groupId>org.eclipse.basyx</groupId>
 			<artifactId>basyx.components.registry</artifactId>
-			<version>1.1.0-SNAPSHOT</version>
+			<version>1.1.0</version>
 		</dependency>
 				
 		<!-- Add explicit AAS Server component dependency -->
 		<dependency>
 			<groupId>org.eclipse.basyx</groupId>
 			<artifactId>basyx.components.AASServer</artifactId>
-			<version>1.1.0-SNAPSHOT</version>
+			<version>1.1.0</version>
 		</dependency>
 		
 		<!-- Adds additional classes of the BaSys SDK for tests -->
 		<dependency>
 			<groupId>org.eclipse.basyx</groupId>
 			<artifactId>basyx.sdk</artifactId>
-			<version>1.1.0-SNAPSHOT</version>
+			<version>1.1.0</version>
 			<classifier>tests</classifier>
 			<scope>test</scope>
 		</dependency>
