@@ -55,7 +55,7 @@ jobs:
     - name: Build Examples with Maven
       run: mvn -B package --file main/basyx.examples/pom.xml
     - name: Build AasWrapper with Maven
-      run: mvn -B package --file main/basyx.aasWrapper/pom.xml -Dmaven.javadoc.skip=true
+      run: mvn -B package --file main/basyx.aasWrapper/pom.xml
     - name: Build DashboardAas with Maven
       run: mvn -B package --file main/basyx.dashboardAAS/pom.xml
     - name: Build Hello_world with Maven

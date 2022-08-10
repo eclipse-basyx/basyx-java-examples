@@ -118,6 +118,7 @@ public class GenericHTTPInterface extends BasysHTTPServlet {
 	 * <pre>
 	 * Handle HTTP POST operation. Creates a new Property, Operation, Event,
 	 * Submodel or AAS or invokes an operation.
+	 * </pre>
 	 */
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
