@@ -94,6 +94,7 @@ public class Server {
 	 */
 	private static void startRegistry() {
 		BaSyxContextConfiguration contextConfig = new BaSyxContextConfiguration(4000, "/registry");
+		contextConfig.setAccessControlAllowOrigin("*");
 		BaSyxRegistryConfiguration registryConfig = new BaSyxRegistryConfiguration(RegistryBackend.INMEMORY);
 		RegistryComponent registry = new RegistryComponent(contextConfig, registryConfig);
 
@@ -106,6 +107,7 @@ public class Server {
 	 */
 	private static void startAASServer() {
 		BaSyxContextConfiguration contextConfig = new BaSyxContextConfiguration(4001, "/aasServer");
+		contextConfig.setAccessControlAllowOrigin("*");
 		BaSyxAASServerConfiguration aasServerConfig = new BaSyxAASServerConfiguration(AASServerBackend.INMEMORY, "", REGISTRYPATH);
 		AASServerComponent aasServer = new AASServerComponent(contextConfig, aasServerConfig);
 
