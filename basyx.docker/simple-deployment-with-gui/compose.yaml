@@ -14,7 +14,7 @@ services:
     image: eclipsebasyx/aas-server:1.2.0-SNAPSHOT-CORS
     container_name: aas
     ports:
-        - 8081:4001
+        - 4001:4001
     environment:
         - basyxaas_registry_path=http://registry:4000/registry/
         - basyxaas_aas_backend=InMemory
@@ -22,7 +22,7 @@ services:
         - basyxcontext_contextport=4001
         - basyxaas_aas_source=aasx/01_Festo.aasx
         - waiting_for=[{"host":"registry","port":"4000"}]
-        
+
   gui: 
     image: eclipsebasyx/aas-gui:v220729
     container_name: aasGui 
