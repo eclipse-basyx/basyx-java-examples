@@ -28,11 +28,11 @@ jobs:
 
     steps:
     - name: Checkout Examples
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         path: main
     - name: Checkout BaSyx Components - Development Branch  
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         repository: eclipse-basyx/basyx-java-components
         path: components
