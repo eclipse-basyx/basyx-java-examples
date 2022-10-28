@@ -169,7 +169,7 @@
 		<dependency>
 		    <groupId>org.keycloak</groupId>
 		    <artifactId>keycloak-admin-client</artifactId>
-		    <version>16.1.1</version>
+		    <version>19.0.3</version>
 		</dependency>
   </dependencies>
 </project>
