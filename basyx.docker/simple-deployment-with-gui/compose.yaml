@@ -7,7 +7,7 @@ services:
         - basyxregistry_registry_backend=InMemory
         - basyxcontext_contextpath=/registry
         - basyxcontext_contextport=4000
-        - basyxcontext_accesscontrolalloworigin=http://localhost:8080
+        - basyxcontext_accesscontrolalloworigin=*
     container_name: registry
 
   aas:
@@ -22,6 +22,7 @@ services:
         - basyxcontext_contextport=4001
         - basyxaas_aas_source=aasx/01_Festo.aasx
         - waiting_for=[{"host":"registry","port":"4000"}]
+        - basyxcontext_accesscontrolalloworigin=*
 
   gui: 
     image: eclipsebasyx/aas-gui:v220729
