@@ -22,7 +22,9 @@
  * 
  * SPDX-License-Identifier: MIT
  ******************************************************************************/
-package org.eclipse.basyx.examples.scenarios.authorization;
+package org.eclipse.basyx.examples.scenarios.authorization.registry_using_components;
+
+import static org.eclipse.basyx.examples.scenarios.authorization.ShutdownHookUtil.addShutdownHook;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +38,8 @@ import org.eclipse.basyx.components.registry.RegistryComponent;
 import org.eclipse.basyx.components.registry.configuration.BaSyxRegistryConfiguration;
 import org.eclipse.basyx.components.registry.configuration.RegistryBackend;
 import org.eclipse.basyx.components.servlet.submodel.SubmodelServlet;
+import org.eclipse.basyx.examples.scenarios.authorization.AuthorizationProvider;
+import org.eclipse.basyx.examples.scenarios.authorization.AuthorizedComponentFactory;
 import org.eclipse.basyx.examples.scenarios.authorization.exception.RealmDeletionException;
 import org.eclipse.basyx.examples.snippets.configuration.KeycloakConfiguration;
 import org.eclipse.basyx.extensions.aas.manager.authorized.AuthorizedConnectedAASManager;
@@ -74,7 +78,7 @@ import org.eclipse.basyx.vab.protocol.http.server.BaSyxHTTPServer;
  * @author danish
  *
  */
-public class AuthorizedRegistryScenario {
+public class AuthorizedRegistryUsingComponentsScenario {
 	private static final String CLOUD_ENDPOINT = "http://localhost:8081/cloud";
 	protected static final String REGISTRY_ENDPOINT = "http://localhost:8080/registry";
 	private static final String AUTHORIZED_REGISTRY_CONTEXT_PATH = "AuthorizedRegistryContext.properties";
@@ -86,7 +90,7 @@ public class AuthorizedRegistryScenario {
 
 	private AuthorizedConnectedAASManager aasManager;
 
-	private static AuthorizedComponentFactory componentFactory = new AuthorizedComponentFactory();
+	private static AuthorizedComponentFactory componentFactory = new AuthorizedComponentFactory(AuthorizedRegistryUsingComponentsScenario.REGISTRY_ENDPOINT);
 
 	public static final IIdentifier aasIdentifier = componentFactory.getAAS().getIdentification();
 
@@ -99,15 +103,13 @@ public class AuthorizedRegistryScenario {
 	private BaSyxHTTPServer edgeServer;
 
 	public static void main(String[] args) {
-		new AuthorizedRegistryScenario();
+		new AuthorizedRegistryUsingComponentsScenario();
 	}
 
-	public AuthorizedRegistryScenario() {
+	public AuthorizedRegistryUsingComponentsScenario() {
 		startAuthorizedRegistryServer();
 
 		createAuthorizedAASRegistryProxy();
-
-		startAASAndSubmodelServer();
 
 		createAssetAdministrationShellOnCloudServer();
 
@@ -115,11 +117,7 @@ public class AuthorizedRegistryScenario {
 
 		registerEdgeSubmodelIdentifierIntoAuthorizedRegistry();
 
-		addShutdownHook();
-	}
-
-	private void addShutdownHook() {
-		Runtime.getRuntime().addShutdownHook(new Thread(this::stop));
+		addShutdownHook(this::stop);
 	}
 
 	private void registerEdgeSubmodelIdentifierIntoAuthorizedRegistry() {
@@ -140,12 +138,6 @@ public class AuthorizedRegistryScenario {
 		aasManager = new AuthorizedConnectedAASManager(registry, authorizationProvider.getAuthorizationSupplier());
 
 		aasManager.createAAS(componentFactory.getAAS(), CLOUD_ENDPOINT);
-	}
-
-	private void startAASAndSubmodelServer() {
-		startEdgeServer();
-
-		startCloudServer();
 	}
 
 	private void startAuthorizedRegistryServer() {
@@ -184,49 +176,6 @@ public class AuthorizedRegistryScenario {
 
 	private BaSyxContextConfiguration configureBasyxContext(int port, String registryPath) {
 		return new BaSyxContextConfiguration(port, registryPath);
-	}
-
-	private void startEdgeServer() {
-		BaSyxContextConfiguration contextConfig = configureBasyxContext(8082, "");
-
-		BaSyxContext context = contextConfig.createBaSyxContext();
-
-		Submodel edgeSubmodel = componentFactory.createEdgeSubmodel();
-
-		SubmodelServlet smServlet = new SubmodelServlet(edgeSubmodel);
-
-		context.addServletMapping("/oven/" + AuthorizedComponentFactory.EDGESM_ID_SHORT + "/*", smServlet);
-
-		startEdgeServer(context);
-	}
-
-	private void startEdgeServer(BaSyxContext context) {
-		edgeServer = new BaSyxHTTPServer(context);
-
-		edgeServer.start();
-	}
-
-	private void startCloudServer() {
-		BaSyxContextConfiguration contextConfig = new BaSyxContextConfiguration();
-
-		contextConfig.loadFromResource(CLOUD_EDGE_DEPLOYMENT_SCENARIO_CONTEXT_FILE_PATH);
-
-		BaSyxAASServerConfiguration aasServerConfig = new BaSyxAASServerConfiguration(AASServerBackend.INMEMORY, "", REGISTRY_ENDPOINT);
-
-		aasServerConfig.loadFromResource(CLOUD_EDGE_DEPLOYMENT_SCENARIO_CONTEXT_FILE_PATH);
-
-		KeycloakConfiguration keycloakConfig = new KeycloakConfiguration();
-
-		keycloakConfig.loadFromResource(KeycloakConfiguration.KEYCLOAK_CONTEXT_FILE_PATH);
-
-		aasServerConfig.setAuthorizationStrategyJwtBearerTokenAuthenticationConfigurationProviderKeycloakRealm(keycloakConfig.getRealm());
-		aasServerConfig.setAuthorizationStrategyJwtBearerTokenAuthenticationConfigurationProviderKeycloakServerUrl(keycloakConfig.getServerUrl());
-
-		AASServerComponent cloudServer = new AASServerComponent(contextConfig, aasServerConfig);
-
-		cloudServer.startComponent();
-
-		startedComponents.add(cloudServer);
 	}
 
 	public void stop() {

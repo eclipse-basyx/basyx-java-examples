@@ -26,6 +26,7 @@ package org.eclipse.basyx.examples.scenarios.authorization;
 
 import org.eclipse.basyx.aas.manager.ConnectedAssetAdministrationShellManager;
 import org.eclipse.basyx.aas.registration.api.IAASRegistry;
+import org.eclipse.basyx.examples.scenarios.authorization.registry_using_components.AuthorizedRegistryUsingComponentsScenario;
 import org.eclipse.basyx.examples.scenarios.cloudedgedeployment.ComponentFactory;
 import org.eclipse.basyx.extensions.aas.registration.authorization.AuthorizedAASRegistryProxy;
 
@@ -36,8 +37,13 @@ import org.eclipse.basyx.extensions.aas.registration.authorization.AuthorizedAAS
  *
  */
 public class AuthorizedComponentFactory extends ComponentFactory {
-
 	private static AuthorizationProvider authorizationProvider = new AuthorizationProvider();
+
+	private final String registryEndpoint;
+
+	public AuthorizedComponentFactory(String registryEndpoint) {
+		this.registryEndpoint = registryEndpoint;
+	}
 
 	/**
 	 * Creates a ConnectedAssetAdministrationShellManager connected to the
@@ -46,7 +52,7 @@ public class AuthorizedComponentFactory extends ComponentFactory {
 	 */
 	@Override
 	protected ConnectedAssetAdministrationShellManager getManager() {
-		IAASRegistry registry = new AuthorizedAASRegistryProxy(AuthorizedRegistryScenario.REGISTRY_ENDPOINT, authorizationProvider.getAuthorizationSupplier());
+		IAASRegistry registry = new AuthorizedAASRegistryProxy(registryEndpoint, authorizationProvider.getAuthorizationSupplier());
 
 		return new ConnectedAssetAdministrationShellManager(registry);
 	}
