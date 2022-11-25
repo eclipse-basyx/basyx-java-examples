@@ -109,6 +109,7 @@ public class StaticDynamicScenario {
 		// Load a registry context configuration using a .properties file
 		BaSyxContextConfiguration contextConfig = new BaSyxContextConfiguration();
 		contextConfig.loadFromResource("RegistryContext.properties");
+		contextConfig.setAccessControlAllowOrigin("*");
 		BaSyxRegistryConfiguration registryConfig = new BaSyxRegistryConfiguration(RegistryBackend.INMEMORY);
 		RegistryComponent registry = new RegistryComponent(contextConfig, registryConfig);
 		registry.startComponent();
@@ -121,6 +122,7 @@ public class StaticDynamicScenario {
 	private void startAASServer() {
 		// Create a server at port 4001 with the endpoint "/aasx"
 		BaSyxContextConfiguration contextConfig = new BaSyxContextConfiguration(4001, "/aasx");
+		contextConfig.setAccessControlAllowOrigin("*");
 		AASServerComponent aasServer = new AASServerComponent(contextConfig);
 
 		// Start the created server
