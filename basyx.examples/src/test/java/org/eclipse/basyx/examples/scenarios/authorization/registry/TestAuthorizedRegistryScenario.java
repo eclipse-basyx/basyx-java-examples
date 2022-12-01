@@ -22,7 +22,7 @@
  * 
  * SPDX-License-Identifier: MIT
  ******************************************************************************/
-package org.eclipse.basyx.examples.scenarios.authorization.registry_using_components;
+package org.eclipse.basyx.examples.scenarios.authorization.registry;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -32,7 +32,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-
 import org.eclipse.basyx.aas.metamodel.api.IAssetAdministrationShell;
 import org.eclipse.basyx.aas.metamodel.map.descriptor.AASDescriptor;
 import org.eclipse.basyx.aas.metamodel.map.descriptor.SubmodelDescriptor;
@@ -40,7 +39,6 @@ import org.eclipse.basyx.aas.registration.api.IAASRegistry;
 import org.eclipse.basyx.examples.scenarios.authorization.AuthorizationProvider;
 import org.eclipse.basyx.examples.scenarios.authorization.AuthorizedComponentFactory;
 import org.eclipse.basyx.examples.scenarios.authorization.exception.RealmDeletionException;
-import org.eclipse.basyx.examples.scenarios.authorization.registry_using_components.AuthorizedRegistryUsingComponentsScenario;
 import org.eclipse.basyx.extensions.aas.manager.authorized.AuthorizedConnectedAASManager;
 import org.eclipse.basyx.extensions.aas.registration.authorization.AuthorizedAASRegistryProxy;
 import org.eclipse.basyx.submodel.metamodel.api.ISubmodel;
@@ -61,13 +59,13 @@ public class TestAuthorizedRegistryScenario {
 	private static final int EXPECTED_TEMP = 555;
 	private static final String ENDPOINT_KEY = "address";
 
-	private static AuthorizedRegistryUsingComponentsScenario scenario;
+	private static AuthorizedRegistryScenario scenario;
 
 	private static AuthorizationProvider authorizationProvider = new AuthorizationProvider();
 
 	@BeforeClass
 	public static void startup() {
-		scenario = new AuthorizedRegistryUsingComponentsScenario();
+		scenario = new AuthorizedRegistryScenario();
 	}
 
 	@AfterClass
@@ -78,14 +76,14 @@ public class TestAuthorizedRegistryScenario {
 	}
 
 	private IAASRegistry getRegistry() {
-		return new AuthorizedAASRegistryProxy(AuthorizedRegistryUsingComponentsScenario.REGISTRY_ENDPOINT, authorizationProvider.getAuthorizationSupplier());
+		return new AuthorizedAASRegistryProxy(AuthorizedRegistryScenario.REGISTRY_ENDPOINT, authorizationProvider.getAuthorizationSupplier());
 	}
 
 	@Test
 	public void checkIfAasHasTheCorrectIdShort() {
 		AuthorizedConnectedAASManager manager = getAuthorizedConnectedAASManager();
 
-		IAssetAdministrationShell aas = manager.retrieveAAS(AuthorizedRegistryUsingComponentsScenario.aasIdentifier);
+		IAssetAdministrationShell aas = manager.retrieveAAS(AuthorizedRegistryScenario.aasIdentifier);
 
 		Assert.assertEquals(AuthorizedComponentFactory.AAS_ID_SHORT, aas.getIdShort());
 	}
@@ -135,7 +133,7 @@ public class TestAuthorizedRegistryScenario {
 	public void checkIfEdgeSmAndDocuSmArePresentInSubmodel() {
 		AuthorizedConnectedAASManager manager = getAuthorizedConnectedAASManager();
 
-		IAssetAdministrationShell aas = manager.retrieveAAS(AuthorizedRegistryUsingComponentsScenario.aasIdentifier);
+		IAssetAdministrationShell aas = manager.retrieveAAS(AuthorizedRegistryScenario.aasIdentifier);
 
 		Map<String, ISubmodel> submodels = manager.retrieveSubmodels(aas.getIdentification());
 
@@ -161,7 +159,7 @@ public class TestAuthorizedRegistryScenario {
 	}
 
 	private ISubmodel getDocuSubmodel(AuthorizedConnectedAASManager manager) {
-		ISubmodel docuSM = manager.retrieveSubmodel(AuthorizedRegistryUsingComponentsScenario.aasIdentifier, AuthorizedRegistryUsingComponentsScenario.docuSubmodelIdentifier);
+		ISubmodel docuSM = manager.retrieveSubmodel(AuthorizedRegistryScenario.aasIdentifier, AuthorizedRegistryScenario.docuSubmodelIdentifier);
 		return docuSM;
 	}
 
@@ -206,7 +204,7 @@ public class TestAuthorizedRegistryScenario {
 	}
 
 	private ISubmodel getEdgeSubmodel(AuthorizedConnectedAASManager manager) {
-		ISubmodel edgeSM = manager.retrieveSubmodel(AuthorizedRegistryUsingComponentsScenario.aasIdentifier, AuthorizedRegistryUsingComponentsScenario.edgeSubmodelIdentifier);
+		ISubmodel edgeSM = manager.retrieveSubmodel(AuthorizedRegistryScenario.aasIdentifier, AuthorizedRegistryScenario.edgeSubmodelIdentifier);
 		return edgeSM;
 	}
 

@@ -1,4 +1,4 @@
-package org.eclipse.basyx.examples.scenarios.authorization.aas_using_components;
+package org.eclipse.basyx.examples.scenarios.authorization.shared;
 
 import java.util.function.Function;
 import org.eclipse.basyx.aas.metamodel.map.descriptor.CustomId;
@@ -7,8 +7,8 @@ import org.eclipse.basyx.submodel.metamodel.map.submodelelement.dataelement.prop
 import org.eclipse.basyx.submodel.metamodel.map.submodelelement.dataelement.property.valuetype.ValueType;
 import org.eclipse.basyx.submodel.metamodel.map.submodelelement.operation.Operation;
 
-public class BuildingSubmodel extends Submodel {
-  public BuildingSubmodel(final Building building) {
+public class ExampleSubmodel extends Submodel {
+  public ExampleSubmodel() {
     super("Building", new CustomId("odh.submodel.building"));
 
     //setIdShort("Building");

@@ -1,0 +1,141 @@
+[
+  {
+    "role": "admin",
+    "action": "urn:org.eclipse.basyx:scope:aas-aggregator:read",
+    "targetInformation": {
+      "aasId": "*",
+      "smId": "*",
+      "smElIdShortPath": "*"
+    }
+  },
+  {
+    "role": "admin",
+    "action": "urn:org.eclipse.basyx:scope:aas-aggregator:write",
+    "targetInformation": {
+      "aasId": "*",
+      "smId": "*",
+      "smElIdShortPath": "*"
+    }
+  },
+  {
+    "role": "admin",
+    "action": "urn:org.eclipse.basyx:scope:aas-api:read",
+    "targetInformation": {
+      "aasId": "*",
+      "smId": "*",
+      "smElIdShortPath": "*"
+    }
+  },
+  {
+    "role": "admin",
+    "action": "urn:org.eclipse.basyx:scope:aas-api:write",
+    "targetInformation": {
+      "aasId": "*",
+      "smId": "*",
+      "smElIdShortPath": "*"
+    }
+  },
+  {
+    "role": "admin",
+    "action": "urn:org.eclipse.basyx:scope:sm-aggregator:read",
+    "targetInformation": {
+      "aasId": "*",
+      "smId": "*",
+      "smElIdShortPath": "*"
+    }
+  },
+  {
+    "role": "admin",
+    "action": "urn:org.eclipse.basyx:scope:sm-aggregator:write",
+    "targetInformation": {
+      "aasId": "*",
+      "smId": "*",
+      "smElIdShortPath": "*"
+    }
+  },
+  {
+    "role": "admin",
+    "action": "urn:org.eclipse.basyx:scope:sm-api:read",
+    "targetInformation": {
+      "aasId": "*",
+      "smId": "*",
+      "smElIdShortPath": "*"
+    }
+  },
+  {
+    "role": "admin",
+    "action": "urn:org.eclipse.basyx:scope:sm-api:write",
+    "targetInformation": {
+      "aasId": "*",
+      "smId": "*",
+      "smElIdShortPath": "*"
+    }
+  },
+
+  {
+    "role": "reader",
+    "action": "urn:org.eclipse.basyx:scope:aas-aggregator:read",
+    "targetInformation": {
+      "aasId": "*",
+      "smId": "*",
+      "smElIdShortPath": "*"
+    }
+  },
+  {
+    "role": "reader",
+    "action": "urn:org.eclipse.basyx:scope:aas-api:read",
+    "targetInformation": {
+      "aasId": "*",
+      "smId": "*",
+      "smElIdShortPath": "*"
+    }
+  },
+  {
+    "role": "reader",
+    "action": "urn:org.eclipse.basyx:scope:sm-aggregator:read",
+    "targetInformation": {
+      "aasId": "*",
+      "smId": "*",
+      "smElIdShortPath": "*"
+    }
+  },
+  {
+    "role": "reader",
+    "action": "urn:org.eclipse.basyx:scope:sm-api:read",
+    "targetInformation": {
+      "aasId": "*",
+      "smId": "*",
+      "smElIdShortPath": "*"
+    }
+  },
+
+
+  {
+    "role": "admin",
+    "action": "urn:org.eclipse.basyx:scope:aas-registry:read",
+    "targetInformation": {
+      "aasId": "*",
+      "smId": "*",
+      "smElIdShortPath": "*"
+    }
+  },
+  {
+    "role": "admin",
+    "action": "urn:org.eclipse.basyx:scope:aas-registry:write",
+    "targetInformation": {
+      "aasId": "*",
+      "smId": "*",
+      "smElIdShortPath": "*"
+    }
+  },
+
+  {
+    "role": "reader",
+    "action": "urn:org.eclipse.basyx:scope:aas-registry:read",
+    "targetInformation": {
+      "aasId": "*",
+      "smId": "*",
+      "smElIdShortPath": "*"
+    }
+  }
+]
