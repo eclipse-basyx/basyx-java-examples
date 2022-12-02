@@ -3,6 +3,7 @@
     "role": "admin",
     "action": "urn:org.eclipse.basyx:scope:aas-aggregator:read",
     "targetInformation": {
+      "@type": "basyx",
       "aasId": "*",
       "smId": "*",
       "smElIdShortPath": "*"
@@ -12,6 +13,7 @@
     "role": "admin",
     "action": "urn:org.eclipse.basyx:scope:aas-aggregator:write",
     "targetInformation": {
+      "@type": "basyx",
       "aasId": "*",
       "smId": "*",
       "smElIdShortPath": "*"
@@ -21,6 +23,7 @@
     "role": "admin",
     "action": "urn:org.eclipse.basyx:scope:aas-api:read",
     "targetInformation": {
+      "@type": "basyx",
       "aasId": "*",
       "smId": "*",
       "smElIdShortPath": "*"
@@ -30,6 +33,7 @@
     "role": "admin",
     "action": "urn:org.eclipse.basyx:scope:aas-api:write",
     "targetInformation": {
+      "@type": "basyx",
       "aasId": "*",
       "smId": "*",
       "smElIdShortPath": "*"
@@ -39,6 +43,7 @@
     "role": "admin",
     "action": "urn:org.eclipse.basyx:scope:sm-aggregator:read",
     "targetInformation": {
+      "@type": "basyx",
       "aasId": "*",
       "smId": "*",
       "smElIdShortPath": "*"
@@ -48,6 +53,7 @@
     "role": "admin",
     "action": "urn:org.eclipse.basyx:scope:sm-aggregator:write",
     "targetInformation": {
+      "@type": "basyx",
       "aasId": "*",
       "smId": "*",
       "smElIdShortPath": "*"
@@ -57,6 +63,7 @@
     "role": "admin",
     "action": "urn:org.eclipse.basyx:scope:sm-api:read",
     "targetInformation": {
+      "@type": "basyx",
       "aasId": "*",
       "smId": "*",
       "smElIdShortPath": "*"
@@ -66,6 +73,7 @@
     "role": "admin",
     "action": "urn:org.eclipse.basyx:scope:sm-api:write",
     "targetInformation": {
+      "@type": "basyx",
       "aasId": "*",
       "smId": "*",
       "smElIdShortPath": "*"
@@ -76,6 +84,7 @@
     "role": "reader",
     "action": "urn:org.eclipse.basyx:scope:aas-aggregator:read",
     "targetInformation": {
+      "@type": "basyx",
       "aasId": "*",
       "smId": "*",
       "smElIdShortPath": "*"
@@ -85,6 +94,7 @@
     "role": "reader",
     "action": "urn:org.eclipse.basyx:scope:aas-api:read",
     "targetInformation": {
+      "@type": "basyx",
       "aasId": "*",
       "smId": "*",
       "smElIdShortPath": "*"
@@ -94,6 +104,7 @@
     "role": "reader",
     "action": "urn:org.eclipse.basyx:scope:sm-aggregator:read",
     "targetInformation": {
+      "@type": "basyx",
       "aasId": "*",
       "smId": "*",
       "smElIdShortPath": "*"
@@ -103,6 +114,7 @@
     "role": "reader",
     "action": "urn:org.eclipse.basyx:scope:sm-api:read",
     "targetInformation": {
+      "@type": "basyx",
       "aasId": "*",
       "smId": "*",
       "smElIdShortPath": "*"
@@ -114,6 +126,7 @@
     "role": "admin",
     "action": "urn:org.eclipse.basyx:scope:aas-registry:read",
     "targetInformation": {
+      "@type": "basyx",
       "aasId": "*",
       "smId": "*",
       "smElIdShortPath": "*"
@@ -123,6 +136,7 @@
     "role": "admin",
     "action": "urn:org.eclipse.basyx:scope:aas-registry:write",
     "targetInformation": {
+      "@type": "basyx",
       "aasId": "*",
       "smId": "*",
       "smElIdShortPath": "*"
@@ -133,6 +147,7 @@
     "role": "reader",
     "action": "urn:org.eclipse.basyx:scope:aas-registry:read",
     "targetInformation": {
+      "@type": "basyx",
       "aasId": "*",
       "smId": "*",
       "smElIdShortPath": "*"

@@ -14,7 +14,6 @@ import org.eclipse.basyx.examples.scenarios.authorization.shared.ExampleSubmodel
 import org.eclipse.basyx.examples.scenarios.authorization.shared.SharedConfig;
 import org.eclipse.basyx.extensions.aas.aggregator.authorization.AuthorizedAASAggregator;
 import org.eclipse.basyx.extensions.aas.aggregator.authorization.SimpleRbacAASAggregatorAuthorizer;
-import org.eclipse.basyx.extensions.aas.api.authorization.AuthorizedAASAPI;
 import org.eclipse.basyx.extensions.aas.api.authorization.AuthorizedDecoratingAASAPIFactory;
 import org.eclipse.basyx.extensions.aas.api.authorization.SimpleRbacAASAPIAuthorizer;
 import org.eclipse.basyx.extensions.aas.registration.authorization.AuthorizedAASRegistry;
@@ -31,7 +30,6 @@ import org.eclipse.basyx.extensions.shared.authorization.RbacRuleSet;
 import org.eclipse.basyx.extensions.submodel.aggregator.authorization.AuthorizedDecoratingSubmodelAggregatorFactory;
 import org.eclipse.basyx.extensions.submodel.aggregator.authorization.SimpleRbacSubmodelAggregatorAuthorizer;
 import org.eclipse.basyx.extensions.submodel.authorization.AuthorizedDecoratingSubmodelAPIFactory;
-import org.eclipse.basyx.extensions.submodel.authorization.AuthorizedSubmodelAPI;
 import org.eclipse.basyx.extensions.submodel.authorization.SimpleRbacSubmodelAPIAuthorizer;
 import org.eclipse.basyx.submodel.aggregator.SubmodelAggregatorFactory;
 import org.eclipse.basyx.submodel.metamodel.map.Submodel;
@@ -100,9 +98,8 @@ public class AuthorizedAASServerAndRegistryUsingSDKExecutable {
   private void startRegistry() {
     registryContextConfig = SharedConfig.getRegistryContextConfig();
 
-    BaSyxContext basyxContext = registryContextConfig.createBaSyxContext();
-
-    RbacRuleSet rbacRuleSet = RbacRuleSet.fromFile(securityConfig.getAuthorizationStrategySimpleRbacRulesFilePath());
+    final BaSyxContext basyxContext = registryContextConfig.createBaSyxContext();
+    final RbacRuleSet rbacRuleSet = new org.eclipse.basyx.components.registry.authorization.SimpleRbacSecurityFeature(securityConfig).getRbacRuleSet();
 
     basyxContext.addServletMapping("/*", new VABHTTPInterface<>(new AASRegistryModelProvider(
         new AuthorizedAASRegistry<>(
@@ -126,7 +123,7 @@ public class AuthorizedAASServerAndRegistryUsingSDKExecutable {
   private void createAASServer() {
     BaSyxContext basyxContext = aasServerContextConfig.createBaSyxContext();
 
-    RbacRuleSet rbacRuleSet = RbacRuleSet.fromFile(securityConfig.getAuthorizationStrategySimpleRbacRulesFilePath());
+    RbacRuleSet rbacRuleSet = new org.eclipse.basyx.components.aas.authorization.SimpleRbacSecurityFeature(securityConfig).getRbacRuleSet();
 
     final ISubjectInformationProvider<Jwt> subjectInformationProvider = new JWTAuthenticationContextProvider();
     final IRbacRuleChecker rbacRuleChecker = new PredefinedSetRbacRuleChecker(
