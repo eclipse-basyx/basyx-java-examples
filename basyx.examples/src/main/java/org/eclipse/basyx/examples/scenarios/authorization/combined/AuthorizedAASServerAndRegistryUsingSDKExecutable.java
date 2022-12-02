@@ -33,16 +33,23 @@ import org.eclipse.basyx.aas.registration.restapi.AASRegistryModelProvider;
 import org.eclipse.basyx.aas.restapi.AASAPIFactory;
 import org.eclipse.basyx.components.configuration.BaSyxContextConfiguration;
 import org.eclipse.basyx.components.configuration.BaSyxSecurityConfiguration;
+import org.eclipse.basyx.components.configuration.BaSyxSecurityConfiguration.AuthorizationStrategy;
 import org.eclipse.basyx.examples.scenarios.authorization.shared.ExampleShell;
 import org.eclipse.basyx.examples.scenarios.authorization.shared.ExampleSubmodel;
 import org.eclipse.basyx.examples.scenarios.authorization.shared.SharedConfig;
 import org.eclipse.basyx.extensions.aas.aggregator.authorization.internal.AuthorizedAASAggregator;
+import org.eclipse.basyx.extensions.aas.aggregator.authorization.internal.GrantedAuthorityAASAggregatorAuthorizer;
 import org.eclipse.basyx.extensions.aas.aggregator.authorization.internal.SimpleRbacAASAggregatorAuthorizer;
 import org.eclipse.basyx.extensions.aas.api.authorization.internal.AuthorizedDecoratingAASAPIFactory;
+import org.eclipse.basyx.extensions.aas.api.authorization.internal.GrantedAuthorityAASAPIAuthorizer;
 import org.eclipse.basyx.extensions.aas.api.authorization.internal.SimpleRbacAASAPIAuthorizer;
 import org.eclipse.basyx.extensions.aas.registration.authorization.internal.AuthorizedAASRegistry;
 import org.eclipse.basyx.extensions.aas.registration.authorization.internal.AuthorizedAASRegistryProxy;
+import org.eclipse.basyx.extensions.aas.registration.authorization.internal.GrantedAuthorityAASRegistryAuthorizer;
 import org.eclipse.basyx.extensions.aas.registration.authorization.internal.SimpleRbacAASRegistryAuthorizer;
+import org.eclipse.basyx.extensions.shared.authorization.internal.AuthenticationContextProvider;
+import org.eclipse.basyx.extensions.shared.authorization.internal.AuthenticationGrantedAuthorityAuthenticator;
+import org.eclipse.basyx.extensions.shared.authorization.internal.IGrantedAuthorityAuthenticator;
 import org.eclipse.basyx.extensions.shared.authorization.internal.IRbacRuleChecker;
 import org.eclipse.basyx.extensions.shared.authorization.internal.IRoleAuthenticator;
 import org.eclipse.basyx.extensions.shared.authorization.internal.ISubjectInformationProvider;
@@ -52,8 +59,10 @@ import org.eclipse.basyx.extensions.shared.authorization.internal.KeycloakServic
 import org.eclipse.basyx.extensions.shared.authorization.internal.PredefinedSetRbacRuleChecker;
 import org.eclipse.basyx.extensions.shared.authorization.internal.RbacRuleSet;
 import org.eclipse.basyx.extensions.submodel.aggregator.authorization.internal.AuthorizedDecoratingSubmodelAggregatorFactory;
+import org.eclipse.basyx.extensions.submodel.aggregator.authorization.internal.GrantedAuthoritySubmodelAggregatorAuthorizer;
 import org.eclipse.basyx.extensions.submodel.aggregator.authorization.internal.SimpleRbacSubmodelAggregatorAuthorizer;
 import org.eclipse.basyx.extensions.submodel.authorization.internal.AuthorizedDecoratingSubmodelAPIFactory;
+import org.eclipse.basyx.extensions.submodel.authorization.internal.GrantedAuthoritySubmodelAPIAuthorizer;
 import org.eclipse.basyx.extensions.submodel.authorization.internal.SimpleRbacSubmodelAPIAuthorizer;
 import org.eclipse.basyx.submodel.aggregator.SubmodelAggregatorFactory;
 import org.eclipse.basyx.submodel.metamodel.map.Submodel;
@@ -63,6 +72,7 @@ import org.eclipse.basyx.vab.protocol.http.server.BaSyxHTTPServer;
 import org.eclipse.basyx.vab.protocol.http.server.VABHTTPInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jwt.Jwt;
 
 /**
@@ -104,20 +114,36 @@ public class AuthorizedAASServerAndRegistryUsingSDKExecutable {
 
 		scenarioSetupKeycloakClient = new KeycloakService(keycloakServerUrl, keycloakRealm);
 
-		scenarioSetupKeycloakClient
-				.setCredentials(SharedConfig.KEYCLOAK_CLIENT_ID, SharedConfig.KEYCLOAK_CLIENT_SECRET, SharedConfig.SCENARIO_SETUP_USER_CREDENTIALS.getUserName(), SharedConfig.SCENARIO_SETUP_USER_CREDENTIALS.getPassword());
+		final String clientId;
+		final String clientSecret;
+		final AuthorizationStrategy strategy = AuthorizationStrategy.valueOf(securityConfig.getAuthorizationStrategy());
+		switch (strategy) {
+		case SimpleRbac: {
+			clientId = SharedConfig.KEYCLOAK_CLIENT_ID;
+			clientSecret = SharedConfig.KEYCLOAK_CLIENT_SECRET;
+			break;
+		}
+		case GrantedAuthority:
+			clientId = SharedConfig.KEYCLOAK_SCOPED_CLIENT_ID;
+			clientSecret = SharedConfig.KEYCLOAK_SCOPED_CLIENT_SECRET;
+			break;
+		default:
+			throw new UnsupportedOperationException("no handler");
+		}
+
+		scenarioSetupKeycloakClient.setCredentials(clientId, clientSecret, SharedConfig.SCENARIO_SETUP_USER_CREDENTIALS.getUserName(), SharedConfig.SCENARIO_SETUP_USER_CREDENTIALS.getPassword());
 	}
 
 	private BaSyxContextConfiguration registryContextConfig;
 
-	private void startRegistry() {
+	private <T> void startRegistry() {
 		registryContextConfig = SharedConfig.getRegistryContextConfig();
-
 		final BaSyxContext basyxContext = registryContextConfig.createBaSyxContext();
-		final RbacRuleSet rbacRuleSet = new org.eclipse.basyx.components.registry.authorization.SimpleRbacSecurityFeature(securityConfig).getRbacRuleSet();
 
-		basyxContext.addServletMapping("/*", new VABHTTPInterface<>(new AASRegistryModelProvider(
-				new AuthorizedAASRegistry<>(new InMemoryRegistry(), new SimpleRbacAASRegistryAuthorizer<>(new PredefinedSetRbacRuleChecker(rbacRuleSet), new KeycloakRoleAuthenticator()), new JWTAuthenticationContextProvider()))));
+		final org.eclipse.basyx.components.registry.authorization.Authorizers<T> authorizers = (org.eclipse.basyx.components.registry.authorization.Authorizers<T>) createRegistryAuthorizers();
+		final ISubjectInformationProvider<T> subjectInformationProvider = (ISubjectInformationProvider<T>) createSubjectInformationProvider();
+
+		basyxContext.addServletMapping("/*", new VABHTTPInterface<>(new AASRegistryModelProvider(new AuthorizedAASRegistry<>(new InMemoryRegistry(), authorizers.getAasRegistryAuthorizer(), subjectInformationProvider))));
 		basyxContext.setJwtBearerTokenAuthenticationConfiguration(scenarioSetupKeycloakClient.createJwtBearerTokenAuthenticationConfiguration());
 
 		BaSyxHTTPServer registryServer = new BaSyxHTTPServer(basyxContext);
@@ -125,21 +151,43 @@ public class AuthorizedAASServerAndRegistryUsingSDKExecutable {
 		registryServer.start();
 	}
 
-	private void createAASServer() {
-		BaSyxContext basyxContext = aasServerContextConfig.createBaSyxContext();
+	private org.eclipse.basyx.components.registry.authorization.Authorizers<?> createRegistryAuthorizers() {
+		final AuthorizationStrategy strategy = AuthorizationStrategy.valueOf(securityConfig.getAuthorizationStrategy());
+		switch (strategy) {
+		case SimpleRbac: {
+			return createRegistrySimpleRbacAuthorizers();
+		}
+		case GrantedAuthority:
+			return createRegistryGrantedAuthorityAuthorizers();
+		default:
+			throw new UnsupportedOperationException("no handler");
+		}
+	}
 
-		RbacRuleSet rbacRuleSet = new org.eclipse.basyx.components.aas.authorization.SimpleRbacSecurityFeature(securityConfig).getRbacRuleSet();
+	private org.eclipse.basyx.components.registry.authorization.Authorizers<Jwt> createRegistrySimpleRbacAuthorizers() {
+		final RbacRuleSet rbacRuleSet = new org.eclipse.basyx.components.aas.authorization.SimpleRbacSecurityFeature(securityConfig).getRbacRuleSet();
 
-		final ISubjectInformationProvider<Jwt> subjectInformationProvider = new JWTAuthenticationContextProvider();
 		final IRbacRuleChecker rbacRuleChecker = new PredefinedSetRbacRuleChecker(rbacRuleSet);
 		final IRoleAuthenticator<Jwt> roleAuthenticator = new KeycloakRoleAuthenticator();
 
+		return new org.eclipse.basyx.components.registry.authorization.Authorizers<>(new SimpleRbacAASRegistryAuthorizer<>(rbacRuleChecker, roleAuthenticator), null);
+	}
+
+	private org.eclipse.basyx.components.registry.authorization.Authorizers<Authentication> createRegistryGrantedAuthorityAuthorizers() {
+		final IGrantedAuthorityAuthenticator<Authentication> authenticator = new AuthenticationGrantedAuthorityAuthenticator();
+		return new org.eclipse.basyx.components.registry.authorization.Authorizers<>(new GrantedAuthorityAASRegistryAuthorizer<>(authenticator), null);
+	}
+
+	private <T> void createAASServer() {
+		final BaSyxContext basyxContext = aasServerContextConfig.createBaSyxContext();
+
+		final org.eclipse.basyx.components.aas.authorization.Authorizers<T> authorizers = (org.eclipse.basyx.components.aas.authorization.Authorizers<T>) createAASAuthorizers();
+		final ISubjectInformationProvider<T> subjectInformationProvider = (ISubjectInformationProvider<T>) createSubjectInformationProvider();
+
 		basyxContext.addServletMapping("/*", new VABHTTPInterface<>(new AASAggregatorProvider(new AuthorizedAASAggregator<>(
-				new AASAggregator(new AuthorizedDecoratingAASAPIFactory<>(new AASAPIFactory(), new SimpleRbacAASAPIAuthorizer<>(rbacRuleChecker, roleAuthenticator), subjectInformationProvider),
-						new AuthorizedDecoratingSubmodelAggregatorFactory<>(null, new SubmodelAggregatorFactory(
-								new AuthorizedDecoratingSubmodelAPIFactory<>(null, new VABSubmodelAPIFactory(), new SimpleRbacSubmodelAPIAuthorizer<>(rbacRuleChecker, roleAuthenticator), subjectInformationProvider)),
-								new SimpleRbacSubmodelAggregatorAuthorizer<>(rbacRuleChecker, roleAuthenticator), subjectInformationProvider)), new SimpleRbacAASAggregatorAuthorizer<>(rbacRuleChecker, roleAuthenticator),
-				subjectInformationProvider))));
+				new AASAggregator(new AuthorizedDecoratingAASAPIFactory<>(new AASAPIFactory(), authorizers.getAasApiAuthorizer(), subjectInformationProvider), new AuthorizedDecoratingSubmodelAggregatorFactory<>(null,
+						new SubmodelAggregatorFactory(new AuthorizedDecoratingSubmodelAPIFactory<>(null, new VABSubmodelAPIFactory(), authorizers.getSubmodelAPIAuthorizer(), subjectInformationProvider)),
+						authorizers.getSubmodelAggregatorAuthorizer(), subjectInformationProvider)), authorizers.getAasAggregatorAuthorizer(), subjectInformationProvider))));
 		basyxContext.setJwtBearerTokenAuthenticationConfiguration(scenarioSetupKeycloakClient.createJwtBearerTokenAuthenticationConfiguration());
 
 		final BaSyxHTTPServer aasServer = new BaSyxHTTPServer(basyxContext);
@@ -151,6 +199,48 @@ public class AuthorizedAASServerAndRegistryUsingSDKExecutable {
 		final Submodel submodel = new ExampleSubmodel();
 
 		pushAASAndSubmodel(shell, submodel);
+	}
+
+	private org.eclipse.basyx.components.aas.authorization.Authorizers<?> createAASAuthorizers() {
+		final AuthorizationStrategy strategy = AuthorizationStrategy.valueOf(securityConfig.getAuthorizationStrategy());
+		switch (strategy) {
+		case SimpleRbac: {
+			return createAASServerSimpleRbacAuthorizers();
+		}
+		case GrantedAuthority:
+			return createAASServerGrantedAuthorityAuthorizers();
+		default:
+			throw new UnsupportedOperationException("no handler");
+		}
+	}
+
+	private org.eclipse.basyx.components.aas.authorization.Authorizers<Jwt> createAASServerSimpleRbacAuthorizers() {
+		final RbacRuleSet rbacRuleSet = new org.eclipse.basyx.components.aas.authorization.SimpleRbacSecurityFeature(securityConfig).getRbacRuleSet();
+
+		final IRbacRuleChecker rbacRuleChecker = new PredefinedSetRbacRuleChecker(rbacRuleSet);
+		final IRoleAuthenticator<Jwt> roleAuthenticator = new KeycloakRoleAuthenticator();
+
+		return new org.eclipse.basyx.components.aas.authorization.Authorizers<>(new SimpleRbacAASAggregatorAuthorizer<>(rbacRuleChecker, roleAuthenticator), new SimpleRbacAASAPIAuthorizer<>(rbacRuleChecker, roleAuthenticator),
+				new SimpleRbacSubmodelAggregatorAuthorizer<>(rbacRuleChecker, roleAuthenticator), new SimpleRbacSubmodelAPIAuthorizer<>(rbacRuleChecker, roleAuthenticator), null);
+	}
+
+	private org.eclipse.basyx.components.aas.authorization.Authorizers<Authentication> createAASServerGrantedAuthorityAuthorizers() {
+		final IGrantedAuthorityAuthenticator<Authentication> authenticator = new AuthenticationGrantedAuthorityAuthenticator();
+		return new org.eclipse.basyx.components.aas.authorization.Authorizers<>(new GrantedAuthorityAASAggregatorAuthorizer<>(authenticator), new GrantedAuthorityAASAPIAuthorizer<>(authenticator),
+				new GrantedAuthoritySubmodelAggregatorAuthorizer<>(authenticator), new GrantedAuthoritySubmodelAPIAuthorizer<>(authenticator), null);
+	}
+
+	private ISubjectInformationProvider<?> createSubjectInformationProvider() {
+		final AuthorizationStrategy strategy = AuthorizationStrategy.valueOf(securityConfig.getAuthorizationStrategy());
+		switch (strategy) {
+		case SimpleRbac: {
+			return new JWTAuthenticationContextProvider();
+		}
+		case GrantedAuthority:
+			return new AuthenticationContextProvider();
+		default:
+			throw new UnsupportedOperationException("no handler");
+		}
 	}
 
 	private void pushAASAndSubmodel(final AssetAdministrationShell shell, final Submodel submodel) {

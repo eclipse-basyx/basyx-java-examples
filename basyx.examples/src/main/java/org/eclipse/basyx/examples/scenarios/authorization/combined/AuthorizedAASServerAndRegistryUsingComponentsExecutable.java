@@ -32,6 +32,7 @@ import org.eclipse.basyx.components.aas.AASServerComponent;
 import org.eclipse.basyx.components.aas.configuration.BaSyxAASServerConfiguration;
 import org.eclipse.basyx.components.configuration.BaSyxContextConfiguration;
 import org.eclipse.basyx.components.configuration.BaSyxSecurityConfiguration;
+import org.eclipse.basyx.components.configuration.BaSyxSecurityConfiguration.AuthorizationStrategy;
 import org.eclipse.basyx.components.registry.RegistryComponent;
 import org.eclipse.basyx.components.registry.configuration.BaSyxRegistryConfiguration;
 import org.eclipse.basyx.examples.scenarios.authorization.shared.ExampleShell;
@@ -82,8 +83,24 @@ public class AuthorizedAASServerAndRegistryUsingComponentsExecutable {
 
 		scenarioSetupKeycloakClient = new KeycloakService(keycloakServerUrl, keycloakRealm);
 
-		scenarioSetupKeycloakClient
-				.setCredentials(SharedConfig.KEYCLOAK_CLIENT_ID, SharedConfig.KEYCLOAK_CLIENT_SECRET, SharedConfig.SCENARIO_SETUP_USER_CREDENTIALS.getUserName(), SharedConfig.SCENARIO_SETUP_USER_CREDENTIALS.getPassword());
+		final String clientId;
+		final String clientSecret;
+		final AuthorizationStrategy strategy = AuthorizationStrategy.valueOf(securityConfig.getAuthorizationStrategy());
+		switch (strategy) {
+		case SimpleRbac: {
+			clientId = SharedConfig.KEYCLOAK_CLIENT_ID;
+			clientSecret = SharedConfig.KEYCLOAK_CLIENT_SECRET;
+			break;
+		}
+		case GrantedAuthority:
+			clientId = SharedConfig.KEYCLOAK_SCOPED_CLIENT_ID;
+			clientSecret = SharedConfig.KEYCLOAK_SCOPED_CLIENT_SECRET;
+			break;
+		default:
+			throw new UnsupportedOperationException("no handler");
+		}
+
+		scenarioSetupKeycloakClient.setCredentials(clientId, clientSecret, SharedConfig.SCENARIO_SETUP_USER_CREDENTIALS.getUserName(), SharedConfig.SCENARIO_SETUP_USER_CREDENTIALS.getPassword());
 	}
 
 	private BaSyxContextConfiguration registryContextConfig;

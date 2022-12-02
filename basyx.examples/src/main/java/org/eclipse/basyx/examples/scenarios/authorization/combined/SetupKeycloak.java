@@ -79,7 +79,7 @@ public class SetupKeycloak {
 		realm = createRealm();
 
 		createScopes();
-		createClient();
+		createClients();
 		createRoles();
 		createUsers();
 	}
@@ -104,6 +104,12 @@ public class SetupKeycloak {
 		});
 	}
 
+	private void createClients() {
+		createClient();
+		createScopedClient();
+		createScopelessClient();
+	}
+
 	private void createClient() {
 		final String clientId = SharedConfig.KEYCLOAK_CLIENT_ID;
 
@@ -117,7 +123,8 @@ public class SetupKeycloak {
 		clientRepresentation.setClientAuthenticatorType("client-secret");
 		clientRepresentation.setProtocol("openid-connect");
 		clientRepresentation.setSecret(SharedConfig.KEYCLOAK_CLIENT_SECRET);
-		clientRepresentation.setDefaultClientScopes(ALL_SCOPES);
+		//clientRepresentation.setDefaultClientScopes(Collections.emptyList());
+		//clientRepresentation.setFullScopeAllowed(true);
 
 		realm.clients().create(clientRepresentation);
 
@@ -129,6 +136,64 @@ public class SetupKeycloak {
 
 		newClientRepresentation.setPublicClient(false);
 		newClientRepresentation.setSecret(SharedConfig.KEYCLOAK_CLIENT_SECRET);
+
+		newClientResource.update(newClientRepresentation);
+	}
+
+	private void createScopedClient() {
+		final String clientId = SharedConfig.KEYCLOAK_SCOPED_CLIENT_ID;
+
+		final ClientRepresentation clientRepresentation = new ClientRepresentation();
+
+		//clientRepresentation.setId(clientId);
+		clientRepresentation.setClientId(clientId);
+		//clientRepresentation.setName(clientId);
+		clientRepresentation.setEnabled(true);
+
+		clientRepresentation.setClientAuthenticatorType("client-secret");
+		clientRepresentation.setProtocol("openid-connect");
+		clientRepresentation.setSecret(SharedConfig.KEYCLOAK_SCOPED_CLIENT_SECRET);
+		clientRepresentation.setDefaultClientScopes(ALL_SCOPES);
+
+		realm.clients().create(clientRepresentation);
+
+		final ClientRepresentation newClientRepresentation = realm.clients().findByClientId(clientId).get(0);
+
+		final String id = newClientRepresentation.getId();
+
+		final ClientResource newClientResource = realm.clients().get(id);
+
+		newClientRepresentation.setPublicClient(false);
+		newClientRepresentation.setSecret(SharedConfig.KEYCLOAK_SCOPED_CLIENT_SECRET);
+
+		newClientResource.update(newClientRepresentation);
+	}
+
+	private void createScopelessClient() {
+		final String clientId = SharedConfig.KEYCLOAK_SCOPELESS_CLIENT_ID;
+
+		final ClientRepresentation clientRepresentation = new ClientRepresentation();
+
+		//clientRepresentation.setId(clientId);
+		clientRepresentation.setClientId(clientId);
+		//clientRepresentation.setName(clientId);
+		clientRepresentation.setEnabled(true);
+
+		clientRepresentation.setClientAuthenticatorType("client-secret");
+		clientRepresentation.setProtocol("openid-connect");
+		clientRepresentation.setSecret(SharedConfig.KEYCLOAK_SCOPELESS_CLIENT_SECRET);
+		clientRepresentation.setDefaultClientScopes(Collections.emptyList());
+
+		realm.clients().create(clientRepresentation);
+
+		final ClientRepresentation newClientRepresentation = realm.clients().findByClientId(clientId).get(0);
+
+		final String id = newClientRepresentation.getId();
+
+		final ClientResource newClientResource = realm.clients().get(id);
+
+		newClientRepresentation.setPublicClient(false);
+		newClientRepresentation.setSecret(SharedConfig.KEYCLOAK_SCOPELESS_CLIENT_SECRET);
 
 		newClientResource.update(newClientRepresentation);
 	}
