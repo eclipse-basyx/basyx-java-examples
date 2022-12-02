@@ -14,7 +14,7 @@ import org.eclipse.basyx.examples.scenarios.authorization.shared.ExampleShell;
 import org.eclipse.basyx.examples.scenarios.authorization.shared.ExampleSubmodel;
 import org.eclipse.basyx.examples.scenarios.authorization.shared.SharedConfig;
 import org.eclipse.basyx.extensions.aas.registration.authorization.AuthorizedAASRegistryProxy;
-import org.eclipse.basyx.extensions.shared.authorization.KeycloakService;
+import org.eclipse.basyx.extensions.shared.authorization.internal.KeycloakService;
 import org.eclipse.basyx.submodel.metamodel.map.Submodel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
