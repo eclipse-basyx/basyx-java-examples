@@ -59,11 +59,10 @@ public class SetupKeycloak {
 
     realm = createRealm();
 
+    createScopes();
     createClient();
     createRoles();
     createUsers();
-
-    addScopes();
   }
 
   private RealmResource createRealm() {
@@ -99,6 +98,7 @@ public class SetupKeycloak {
     clientRepresentation.setClientAuthenticatorType("client-secret");
     clientRepresentation.setProtocol("openid-connect");
     clientRepresentation.setSecret(SharedConfig.KEYCLOAK_CLIENT_SECRET);
+    clientRepresentation.setDefaultClientScopes(ALL_SCOPES);
 
     realm.clients().create(clientRepresentation);
 
@@ -217,7 +217,7 @@ public class SetupKeycloak {
       AASRegistryScopes.WRITE_SCOPE
   );
 
-  private void addScopes() {
+  private void createScopes() {
     ALL_SCOPES.forEach(this::addScope);
   }
 
