@@ -26,8 +26,6 @@ package org.eclipse.basyx.examples.scenarios.authorization;
 
 import java.util.HashSet;
 import java.util.Set;
-
-import java.util.function.Predicate;
 import org.eclipse.basyx.examples.scenarios.authorization.exception.AddClientException;
 import org.eclipse.basyx.examples.scenarios.authorization.exception.RealmCreationException;
 import org.eclipse.basyx.examples.scenarios.authorization.exception.RealmDeletionException;
@@ -70,12 +68,6 @@ public class AuthorizationProvider {
 		} catch (RealmCreationException | AddClientException | RealmDeletionException e) {
 			e.printStackTrace();
 		}
-	}
-
-	public static Predicate makePredicate(String issuer) {
-		return (claimValue) -> {
-			return claimValue != null && issuer.equals(claimValue.toString());
-		};
 	}
 
 	public IAuthorizationSupplier getAuthorizationSupplier() {

@@ -1,3 +1,27 @@
+/*******************************************************************************
+ * Copyright (C) 2022 the Eclipse BaSyx Authors
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * SPDX-License-Identifier: MIT
+ ******************************************************************************/
 package org.eclipse.basyx.examples.scenarios.authorization.combined;
 
 import java.util.ArrayList;
@@ -32,228 +56,198 @@ import org.keycloak.representations.idm.RolesRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 
 public class SetupKeycloak {
-  public static final String ROLE_ADMIN = "admin";
-  public static final String ROLE_READER = "reader";
+	public static final String ROLE_ADMIN = "admin";
+	public static final String ROLE_READER = "reader";
 
-  public static void main(String[] args) {
-    new SetupKeycloak();
-  }
+	public static void main(String[] args) {
+		new SetupKeycloak();
+	}
 
-  private Keycloak keycloak;
-  private final RealmResource realm;
+	private Keycloak keycloak;
+	private final RealmResource realm;
 
-  public SetupKeycloak() {
-    final BaSyxSecurityConfiguration securityConfig = SharedConfig.getSecurityConfig();
+	public SetupKeycloak() {
+		final BaSyxSecurityConfiguration securityConfig = SharedConfig.getSecurityConfig();
 
-    final String serverUrl = securityConfig.getAuthorizationStrategyJwtBearerTokenAuthenticationConfigurationProviderKeycloakServerUrl();
+		final String serverUrl = securityConfig.getAuthorizationStrategyJwtBearerTokenAuthenticationConfigurationProviderKeycloakServerUrl();
 
-    final KeycloakBuilder keycloakBuilder = KeycloakBuilder.builder()
-        .serverUrl(serverUrl)
-        .realm("master")
-        .clientId("admin-cli")
-        .username(SharedConfig.KEYCLOAK_ADMIN_USER_CREDENTIALS.getUserName())
-        .password(SharedConfig.KEYCLOAK_ADMIN_USER_CREDENTIALS.getPassword())
-        .grantType(OAuth2Constants.PASSWORD);
+		final KeycloakBuilder keycloakBuilder = KeycloakBuilder.builder().serverUrl(serverUrl).realm("master").clientId("admin-cli").username(SharedConfig.KEYCLOAK_ADMIN_USER_CREDENTIALS.getUserName())
+				.password(SharedConfig.KEYCLOAK_ADMIN_USER_CREDENTIALS.getPassword()).grantType(OAuth2Constants.PASSWORD);
 
-    keycloak = keycloakBuilder.build();
+		keycloak = keycloakBuilder.build();
 
-    realm = createRealm();
+		realm = createRealm();
 
-    createScopes();
-    createClient();
-    createRoles();
-    createUsers();
-  }
+		createScopes();
+		createClient();
+		createRoles();
+		createUsers();
+	}
 
-  private RealmResource createRealm() {
-    final RealmRepresentation realmRepresentation = new RealmRepresentation();
+	private RealmResource createRealm() {
+		final RealmRepresentation realmRepresentation = new RealmRepresentation();
 
-    final BaSyxSecurityConfiguration securityConfig = SharedConfig.getSecurityConfig();
+		final BaSyxSecurityConfiguration securityConfig = SharedConfig.getSecurityConfig();
 
-    final String name = securityConfig.getAuthorizationStrategyJwtBearerTokenAuthenticationConfigurationProviderKeycloakRealm();
+		final String name = securityConfig.getAuthorizationStrategyJwtBearerTokenAuthenticationConfigurationProviderKeycloakRealm();
 
-    realmRepresentation.setId(name);
-    realmRepresentation.setEnabled(true);
-    realmRepresentation.setRealm(name);
-    realmRepresentation.setRoles(new RolesRepresentation());
+		realmRepresentation.setId(name);
+		realmRepresentation.setEnabled(true);
+		realmRepresentation.setRealm(name);
+		realmRepresentation.setRoles(new RolesRepresentation());
 
-    final Optional<RealmResource> realm = findRealmByName(name);
+		final Optional<RealmResource> realm = findRealmByName(name);
 
-    return realm.orElseGet(() -> {
-      keycloak.realms().create(realmRepresentation);
-      return keycloak.realm(name);
-    });
-  }
+		return realm.orElseGet(() -> {
+			keycloak.realms().create(realmRepresentation);
+			return keycloak.realm(name);
+		});
+	}
 
-  private void createClient() {
-    final String clientId = SharedConfig.KEYCLOAK_CLIENT_ID;
+	private void createClient() {
+		final String clientId = SharedConfig.KEYCLOAK_CLIENT_ID;
 
-    final ClientRepresentation clientRepresentation = new ClientRepresentation();
+		final ClientRepresentation clientRepresentation = new ClientRepresentation();
 
-    //clientRepresentation.setId(clientId);
-    clientRepresentation.setClientId(clientId);
-    //clientRepresentation.setName(clientId);
-    clientRepresentation.setEnabled(true);
+		//clientRepresentation.setId(clientId);
+		clientRepresentation.setClientId(clientId);
+		//clientRepresentation.setName(clientId);
+		clientRepresentation.setEnabled(true);
 
-    clientRepresentation.setClientAuthenticatorType("client-secret");
-    clientRepresentation.setProtocol("openid-connect");
-    clientRepresentation.setSecret(SharedConfig.KEYCLOAK_CLIENT_SECRET);
-    clientRepresentation.setDefaultClientScopes(ALL_SCOPES);
+		clientRepresentation.setClientAuthenticatorType("client-secret");
+		clientRepresentation.setProtocol("openid-connect");
+		clientRepresentation.setSecret(SharedConfig.KEYCLOAK_CLIENT_SECRET);
+		clientRepresentation.setDefaultClientScopes(ALL_SCOPES);
 
-    realm.clients().create(clientRepresentation);
+		realm.clients().create(clientRepresentation);
 
-    final ClientRepresentation newClientRepresentation = realm.clients().findByClientId(clientId).get(0);
+		final ClientRepresentation newClientRepresentation = realm.clients().findByClientId(clientId).get(0);
 
-    final String id = newClientRepresentation.getId();
+		final String id = newClientRepresentation.getId();
 
-    final ClientResource newClientResource = realm.clients().get(id);
+		final ClientResource newClientResource = realm.clients().get(id);
 
-    newClientRepresentation.setPublicClient(false);
-    newClientRepresentation.setSecret(SharedConfig.KEYCLOAK_CLIENT_SECRET);
+		newClientRepresentation.setPublicClient(false);
+		newClientRepresentation.setSecret(SharedConfig.KEYCLOAK_CLIENT_SECRET);
 
-    newClientResource.update(newClientRepresentation);
-  }
+		newClientResource.update(newClientRepresentation);
+	}
 
-  private Optional<RealmResource> findRealmByName(final String name) {
-    try {
-      final RealmResource realm = keycloak.realm(name);
-      // check if this throws a NotFoundException
-      realm.toRepresentation();
-      return Optional.of(realm);
-    } catch (final NotFoundException e) {
-      return Optional.empty();
-    }
-  }
+	private Optional<RealmResource> findRealmByName(final String name) {
+		try {
+			final RealmResource realm = keycloak.realm(name);
+			// check if this throws a NotFoundException
+			realm.toRepresentation();
+			return Optional.of(realm);
+		} catch (final NotFoundException e) {
+			return Optional.empty();
+		}
+	}
 
-  private void createRoles() {
-    createRole(ROLE_ADMIN);
-    createRole(ROLE_READER);
-  }
+	private void createRoles() {
+		createRole(ROLE_ADMIN);
+		createRole(ROLE_READER);
+	}
 
-  private void createRole(final String name) {
-    final RoleRepresentation newRoleRepresentation = findRoleByName(name).orElseGet(RoleRepresentation::new);
+	private void createRole(final String name) {
+		final RoleRepresentation newRoleRepresentation = findRoleByName(name).orElseGet(RoleRepresentation::new);
 
-    newRoleRepresentation.setId(name);
-    newRoleRepresentation.setName(name);
+		newRoleRepresentation.setId(name);
+		newRoleRepresentation.setName(name);
 
-    createOrUpdateRole(newRoleRepresentation);
-  }
+		createOrUpdateRole(newRoleRepresentation);
+	}
 
-  private void createOrUpdateRole(final RoleRepresentation roleRepresentation) {
-    final Optional<RoleRepresentation> oldRoleRepresentation = findRoleByName(roleRepresentation.getName());
+	private void createOrUpdateRole(final RoleRepresentation roleRepresentation) {
+		final Optional<RoleRepresentation> oldRoleRepresentation = findRoleByName(roleRepresentation.getName());
 
-    if (oldRoleRepresentation.isPresent()) {
-      final RoleResource roleResource = realm.roles().get(oldRoleRepresentation.get().getName());
+		if (oldRoleRepresentation.isPresent()) {
+			final RoleResource roleResource = realm.roles().get(oldRoleRepresentation.get().getName());
 
-      roleResource.update(roleRepresentation);
-    } else {
-      realm.roles().create(roleRepresentation);
-    }
-  }
+			roleResource.update(roleRepresentation);
+		} else {
+			realm.roles().create(roleRepresentation);
+		}
+	}
 
-  private Optional<RoleRepresentation> findRoleByName(final String name) {
-    return realm.roles().list().stream().filter(r -> name.equals(r.getName())).findFirst();
-  }
+	private Optional<RoleRepresentation> findRoleByName(final String name) {
+		return realm.roles().list().stream().filter(r -> name.equals(r.getName())).findFirst();
+	}
 
-  private void createUsers() {
-    createUser(
-        SharedConfig.AUTHORIZED_READER_USER_CREDENTIALS.getUserName(),
-        SharedConfig.AUTHORIZED_READER_USER_CREDENTIALS.getPassword(),
-        Collections.singletonList(ROLE_READER)
-    );
-    createUser(
-        SharedConfig.SCENARIO_SETUP_USER_CREDENTIALS.getUserName(),
-        SharedConfig.SCENARIO_SETUP_USER_CREDENTIALS.getPassword(),
-        Collections.singletonList(ROLE_ADMIN)
-    );
-    createUser(
-        SharedConfig.UNAUTHORIZED_USER_CREDENTIALS.getUserName(),
-        SharedConfig.UNAUTHORIZED_USER_CREDENTIALS.getPassword(),
-        Collections.emptyList()
-    );
-  }
+	private void createUsers() {
+		createUser(SharedConfig.AUTHORIZED_READER_USER_CREDENTIALS.getUserName(), SharedConfig.AUTHORIZED_READER_USER_CREDENTIALS.getPassword(), Collections.singletonList(ROLE_READER));
+		createUser(SharedConfig.SCENARIO_SETUP_USER_CREDENTIALS.getUserName(), SharedConfig.SCENARIO_SETUP_USER_CREDENTIALS.getPassword(), Collections.singletonList(ROLE_ADMIN));
+		createUser(SharedConfig.UNAUTHORIZED_USER_CREDENTIALS.getUserName(), SharedConfig.UNAUTHORIZED_USER_CREDENTIALS.getPassword(), Collections.emptyList());
+	}
 
-  public void createUser(final String userName, final String password, final List<String> roleNames) {
-    final UserRepresentation userRepresentation = new UserRepresentation();
-    final CredentialRepresentation pwCredential = new CredentialRepresentation();
+	public void createUser(final String userName, final String password, final List<String> roleNames) {
+		final UserRepresentation userRepresentation = new UserRepresentation();
+		final CredentialRepresentation pwCredential = new CredentialRepresentation();
 
-    pwCredential.setTemporary(false);
-    pwCredential.setType(CredentialRepresentation.PASSWORD);
-    pwCredential.setValue(password);
-    userRepresentation.setUsername(userName);
-    userRepresentation.setCredentials(Collections.singletonList(
-        pwCredential
-    ));
-    userRepresentation.setEnabled(true);
+		pwCredential.setTemporary(false);
+		pwCredential.setType(CredentialRepresentation.PASSWORD);
+		pwCredential.setValue(password);
+		userRepresentation.setUsername(userName);
+		userRepresentation.setCredentials(Collections.singletonList(pwCredential));
+		userRepresentation.setEnabled(true);
 
-    realm.users().create(userRepresentation);
+		realm.users().create(userRepresentation);
 
-    final Optional<UserResource> userResource = findUserByName(userName);
+		final Optional<UserResource> userResource = findUserByName(userName);
 
-    userResource.ifPresent(user -> {
-      final List<RoleRepresentation> roles = roleNames.stream()
-          .map(roleName -> realm.roles().get(roleName).toRepresentation())
-          .collect(Collectors.toList());
+		userResource.ifPresent(user -> {
+			final List<RoleRepresentation> roles = roleNames.stream().map(roleName -> realm.roles().get(roleName).toRepresentation()).collect(Collectors.toList());
 
-      user.roles().realmLevel().add(roles);
-    });
-  }
+			user.roles().realmLevel().add(roles);
+		});
+	}
 
-  private Optional<UserResource> findUserByName(final String name) {
-    final Optional<UserRepresentation> representation = realm.users().list().stream().filter(u -> name.equals(u.getUsername())).findFirst();
-    return representation.map(repr -> realm.users().get(repr.getId()));
-  }
+	private Optional<UserResource> findUserByName(final String name) {
+		final Optional<UserRepresentation> representation = realm.users().list().stream().filter(u -> name.equals(u.getUsername())).findFirst();
+		return representation.map(repr -> realm.users().get(repr.getId()));
+	}
 
-  public static final List<String> ALL_SCOPES = Arrays.asList(
-      AASAggregatorScopes.READ_SCOPE,
-      AASAggregatorScopes.WRITE_SCOPE,
-      AASAPIScopes.READ_SCOPE,
-      AASAPIScopes.WRITE_SCOPE,
-      SubmodelAggregatorScopes.READ_SCOPE,
-      SubmodelAggregatorScopes.WRITE_SCOPE,
-      SubmodelAPIScopes.READ_SCOPE,
-      SubmodelAPIScopes.WRITE_SCOPE,
-      AASRegistryScopes.READ_SCOPE,
-      AASRegistryScopes.WRITE_SCOPE
-  );
+	public static final List<String> ALL_SCOPES = Arrays
+			.asList(AASAggregatorScopes.READ_SCOPE, AASAggregatorScopes.WRITE_SCOPE, AASAPIScopes.READ_SCOPE, AASAPIScopes.WRITE_SCOPE, SubmodelAggregatorScopes.READ_SCOPE, SubmodelAggregatorScopes.WRITE_SCOPE, SubmodelAPIScopes.READ_SCOPE,
+					SubmodelAPIScopes.WRITE_SCOPE, AASRegistryScopes.READ_SCOPE, AASRegistryScopes.WRITE_SCOPE);
 
-  private void createScopes() {
-    ALL_SCOPES.forEach(this::addScope);
-  }
+	private void createScopes() {
+		ALL_SCOPES.forEach(this::addScope);
+	}
 
-  private void addScope(final String name) {
-    final ClientScopeRepresentation clientScopeRepresentation = new ClientScopeRepresentation();
+	private void addScope(final String name) {
+		final ClientScopeRepresentation clientScopeRepresentation = new ClientScopeRepresentation();
 
-    clientScopeRepresentation.setDescription("");
-    clientScopeRepresentation.setName(name);
-    clientScopeRepresentation.setAttributes(new HashMap<>());
-    clientScopeRepresentation.setProtocolMappers(new ArrayList<>());
-    clientScopeRepresentation.setProtocol("openid-connect");
+		clientScopeRepresentation.setDescription("");
+		clientScopeRepresentation.setName(name);
+		clientScopeRepresentation.setAttributes(new HashMap<>());
+		clientScopeRepresentation.setProtocolMappers(new ArrayList<>());
+		clientScopeRepresentation.setProtocol("openid-connect");
 
-    final ClientScopeRepresentation effectiveClientScopeResource = createOrUpdateClientScope(clientScopeRepresentation);
+		final ClientScopeRepresentation effectiveClientScopeResource = createOrUpdateClientScope(clientScopeRepresentation);
 
-    final String id = effectiveClientScopeResource.getId();
+		final String id = effectiveClientScopeResource.getId();
 
-    if (realm.getDefaultDefaultClientScopes().stream().noneMatch(scope -> id.equals(scope.getId()))) {
-      realm.addDefaultDefaultClientScope(id);
-    }
-  }
+		if (realm.getDefaultDefaultClientScopes().stream().noneMatch(scope -> id.equals(scope.getId()))) {
+			realm.addDefaultDefaultClientScope(id);
+		}
+	}
 
-  private ClientScopeRepresentation createOrUpdateClientScope(final ClientScopeRepresentation clientScopeRepresentation) {
-    final Optional<ClientScopeRepresentation> oldClientScopeRepresentation = findClientScopeByName(clientScopeRepresentation.getName());
+	private ClientScopeRepresentation createOrUpdateClientScope(final ClientScopeRepresentation clientScopeRepresentation) {
+		final Optional<ClientScopeRepresentation> oldClientScopeRepresentation = findClientScopeByName(clientScopeRepresentation.getName());
 
-    if (oldClientScopeRepresentation.isPresent()) {
-      final ClientScopeResource clientScopeResource = realm.clientScopes().get(oldClientScopeRepresentation.get().getId());
+		if (oldClientScopeRepresentation.isPresent()) {
+			final ClientScopeResource clientScopeResource = realm.clientScopes().get(oldClientScopeRepresentation.get().getId());
 
-      clientScopeResource.update(clientScopeRepresentation);
-    } else {
-      realm.clientScopes().create(clientScopeRepresentation);
-    }
+			clientScopeResource.update(clientScopeRepresentation);
+		} else {
+			realm.clientScopes().create(clientScopeRepresentation);
+		}
 
-    return findClientScopeByName(clientScopeRepresentation.getName()).orElseThrow(AssertionError::new);
-  }
+		return findClientScopeByName(clientScopeRepresentation.getName()).orElseThrow(AssertionError::new);
+	}
 
-  private Optional<ClientScopeRepresentation> findClientScopeByName(final String name) {
-    return realm.clientScopes().findAll().stream().filter(s -> name.equals(s.getName())).findFirst();
-  }
+	private Optional<ClientScopeRepresentation> findClientScopeByName(final String name) {
+		return realm.clientScopes().findAll().stream().filter(s -> name.equals(s.getName())).findFirst();
+	}
 }
