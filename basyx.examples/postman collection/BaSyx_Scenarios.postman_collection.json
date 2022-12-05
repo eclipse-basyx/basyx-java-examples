@@ -1,0 +1,896 @@
+{
+	"info": {
+		"_postman_id": "77f5bc66-81d8-4cd5-8ff6-c8b74e98e58c",
+		"name": "BaSyx_Scenarios",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18579332"
+	},
+	"item": [
+		{
+			"name": "CloudEdgeDeployment",
+			"item": [
+				{
+					"name": "Registry",
+					"item": [
+						{
+							"name": "Query all registry entries",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/registry/api/v1/registry",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"registry",
+										"api",
+										"v1",
+										"registry"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Query specific AAS",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/registry/api/v1/registry/basyx.examples.oven",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"registry",
+										"api",
+										"v1",
+										"registry",
+										"basyx.examples.oven"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Query all Submodels of AAS",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/registry/api/v1/registry/basyx.examples.oven/submodels",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"registry",
+										"api",
+										"v1",
+										"registry",
+										"basyx.examples.oven",
+										"submodels"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Query specific Submodel",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/registry/api/v1/registry/basyx.examples.oven/submodels/basyx.examples.oven.oven_documentation_sm",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"registry",
+										"api",
+										"v1",
+										"registry",
+										"basyx.examples.oven",
+										"submodels",
+										"basyx.examples.oven.oven_documentation_sm"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register new AAS",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"endpoints\": [\r\n        {\r\n            \"address\": \"http://localhost:8081/cloud/shells/basyx.examples.test/aas\",\r\n            \"type\": \"http\"\r\n        }\r\n    ],\r\n    \"modelType\": {\r\n        \"name\": \"AssetAdministrationShellDescriptor\"\r\n    },\r\n    \"identification\": {\r\n        \"idType\": \"Custom\",\r\n        \"id\": \"basyx.examples.test\"\r\n    },\r\n    \"idShort\": \"test\",\r\n    \"asset\": {\r\n        \"identification\": {\r\n            \"idType\": \"Custom\",\r\n            \"id\": \"basyx.examples.OvenAsset\"\r\n        },\r\n        \"idShort\": \"OvenAsset\",\r\n        \"kind\": \"Instance\",\r\n        \"dataSpecification\": [],\r\n        \"modelType\": {\r\n            \"name\": \"Asset\"\r\n        },\r\n        \"embeddedDataSpecifications\": []\r\n    },\r\n    \"submodels\": []\r\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/registry/api/v1/registry/basyx.examples.test",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"registry",
+										"api",
+										"v1",
+										"registry",
+										"basyx.examples.test"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register new Submodel",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"endpoints\": [\r\n        {\r\n            \"address\": \"http://localhost:8081/cloud/shells/basyx.examples.oven/aas/submodels/test_sm/submodel\",\r\n            \"type\": \"http\"\r\n        }\r\n    ],\r\n    \"modelType\": {\r\n        \"name\": \"SubmodelDescriptor\"\r\n    },\r\n    \"identification\": {\r\n        \"idType\": \"Custom\",\r\n        \"id\": \"basyx.examples.oven.test_sm\"\r\n    },\r\n    \"idShort\": \"test_sm\"\r\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/registry/api/v1/registry/basyx.examples.oven/submodels/basyx.examples.oven.test_sm",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"registry",
+										"api",
+										"v1",
+										"registry",
+										"basyx.examples.oven",
+										"submodels",
+										"basyx.examples.oven.test_sm"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deregister AAS",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/registry/api/v1/registry/basyx.examples.oven",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"registry",
+										"api",
+										"v1",
+										"registry",
+										"basyx.examples.oven"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deregister Submodel",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/registry/api/v1/registry/basyx.examples.oven/submodels/basyx.examples.oven.oven_documentation_sm",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"registry",
+										"api",
+										"v1",
+										"registry",
+										"basyx.examples.oven",
+										"submodels",
+										"basyx.examples.oven.oven_documentation_sm"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "AAS",
+					"item": [
+						{
+							"name": "Get all AASs",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8081/cloud/shells",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"cloud",
+										"shells"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get specific AAS",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8081/cloud/shells/basyx.examples.oven/aas",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"cloud",
+										"shells",
+										"basyx.examples.oven",
+										"aas"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Upload AAS",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"conceptDictionary\": [],\r\n    \"identification\": {\r\n        \"idType\": \"Custom\",\r\n        \"id\": \"basyx.examples.test\"\r\n    },\r\n    \"idShort\": \"test\",\r\n    \"dataSpecification\": [],\r\n    \"modelType\": {\r\n        \"name\": \"AssetAdministrationShell\"\r\n    },\r\n    \"asset\": {\r\n        \"identification\": {\r\n            \"idType\": \"Custom\",\r\n            \"id\": \"basyx.examples.OvenAsset\"\r\n        },\r\n        \"idShort\": \"OvenAsset\",\r\n        \"kind\": \"Instance\",\r\n        \"dataSpecification\": [],\r\n        \"modelType\": {\r\n            \"name\": \"Asset\"\r\n        },\r\n        \"embeddedDataSpecifications\": []\r\n    },\r\n    \"embeddedDataSpecifications\": [],\r\n    \"views\": [],\r\n    \"submodels\": []\r\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8081/cloud/shells/basyx.examples.test",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"cloud",
+										"shells",
+										"basyx.examples.test"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete specific AAS",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8081/cloud/shells/basyx.examples.oven",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"cloud",
+										"shells",
+										"basyx.examples.oven"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Submodel",
+					"item": [
+						{
+							"name": "Operation",
+							"item": [
+								{
+									"name": "setTargetTemp Operation",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"requestId\": \"1\",\r\n    \"timeout\": 100,\r\n    \"inputArguments\": [\r\n        {\r\n            \"value\": {\r\n                \"idShort\": \"targetTemp\",\r\n                \"valueType\": \"integer\",\r\n                \"value\": 10,\r\n                \"modelType\": {\r\n                    \"name\": \"Property\"\r\n                }\r\n            }\r\n        }\r\n    ]\r\n}"
+										},
+										"url": {
+											"raw": "http://localhost:8081/cloud/shells/basyx.examples.oven/aas/submodels/temp/submodel/submodelElements/setTargetTemp/invoke",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8081",
+											"path": [
+												"cloud",
+												"shells",
+												"basyx.examples.oven",
+												"aas",
+												"submodels",
+												"temp",
+												"submodel",
+												"submodelElements",
+												"setTargetTemp",
+												"invoke"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "getCurrTemp Operation",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"requestId\": \"1\",\r\n    \"timeout\": 100,\r\n    \"inputArguments\": []\r\n}"
+										},
+										"url": {
+											"raw": "http://localhost:8081/cloud/shells/basyx.examples.oven/aas/submodels/temp/submodel/submodelElements/getCurrTemp/invoke",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8081",
+											"path": [
+												"cloud",
+												"shells",
+												"basyx.examples.oven",
+												"aas",
+												"submodels",
+												"temp",
+												"submodel",
+												"submodelElements",
+												"getCurrTemp",
+												"invoke"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "SubmodelElements",
+							"item": [
+								{
+									"name": "Get all Elements from Submodel",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8081/cloud/shells/basyx.examples.oven/aas/submodels/temp/submodel/submodelElements",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8081",
+											"path": [
+												"cloud",
+												"shells",
+												"basyx.examples.oven",
+												"aas",
+												"submodels",
+												"temp",
+												"submodel",
+												"submodelElements"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get all Element values",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8081/cloud/shells/basyx.examples.oven/aas/submodels/temp/submodel/values",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8081",
+											"path": [
+												"cloud",
+												"shells",
+												"basyx.examples.oven",
+												"aas",
+												"submodels",
+												"temp",
+												"submodel",
+												"values"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get specific Element",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8081/cloud/shells/basyx.examples.oven/aas/submodels/temp/submodel/submodelElements/curr_temp",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8081",
+											"path": [
+												"cloud",
+												"shells",
+												"basyx.examples.oven",
+												"aas",
+												"submodels",
+												"temp",
+												"submodel",
+												"submodelElements",
+												"curr_temp"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get value of Element",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8081/cloud/shells/basyx.examples.oven/aas/submodels/temp/submodel/submodelElements/curr_temp/value",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8081",
+											"path": [
+												"cloud",
+												"shells",
+												"basyx.examples.oven",
+												"aas",
+												"submodels",
+												"temp",
+												"submodel",
+												"submodelElements",
+												"curr_temp",
+												"value"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Set value of Element",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "12345"
+										},
+										"url": {
+											"raw": "http://localhost:8081/cloud/shells/basyx.examples.oven/aas/submodels/temp/submodel/submodelElements/curr_temp/value",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8081",
+											"path": [
+												"cloud",
+												"shells",
+												"basyx.examples.oven",
+												"aas",
+												"submodels",
+												"temp",
+												"submodel",
+												"submodelElements",
+												"curr_temp",
+												"value"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Upload Element",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"parent\": {\r\n        \"keys\": [\r\n            {\r\n                \"idType\": \"Custom\",\r\n                \"type\": \"Submodel\",\r\n                \"value\": \"basyx.examples.oven.oven_temperature\",\r\n                \"local\": true\r\n            }\r\n        ]\r\n    },\r\n    \"idShort\": \"test_temp\",\r\n    \"kind\": \"Instance\",\r\n    \"valueType\": \"integer\",\r\n    \"modelType\": {\r\n        \"name\": \"Property\"\r\n    },\r\n    \"value\": 54321\r\n}"
+										},
+										"url": {
+											"raw": "http://localhost:8081/cloud/shells/basyx.examples.oven/aas/submodels/temp/submodel/submodelElements/test_temp",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8081",
+											"path": [
+												"cloud",
+												"shells",
+												"basyx.examples.oven",
+												"aas",
+												"submodels",
+												"temp",
+												"submodel",
+												"submodelElements",
+												"test_temp"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete Element",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8081/cloud/shells/basyx.examples.oven/aas/submodels/temp/submodel/submodelElements/curr_temp",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8081",
+											"path": [
+												"cloud",
+												"shells",
+												"basyx.examples.oven",
+												"aas",
+												"submodels",
+												"temp",
+												"submodel",
+												"submodelElements",
+												"curr_temp"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Get all Submodels from AAS",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8081/cloud/shells/basyx.examples.oven/aas/submodels",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"cloud",
+										"shells",
+										"basyx.examples.oven",
+										"aas",
+										"submodels"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get specific Submodel",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8081/cloud/shells/basyx.examples.oven/aas/submodels/oven_doc/submodel",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"cloud",
+										"shells",
+										"basyx.examples.oven",
+										"aas",
+										"submodels",
+										"oven_doc",
+										"submodel"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Upload Submodel",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"parent\": {\r\n        \"keys\": [\r\n            {\r\n                \"idType\": \"Custom\",\r\n                \"type\": \"AssetAdministrationShell\",\r\n                \"value\": \"basyx.examples.oven\",\r\n                \"local\": true\r\n            }\r\n        ]\r\n    },\r\n    \"identification\": {\r\n        \"idType\": \"Custom\",\r\n        \"id\": \"basyx.examples.oven.test_submodel\"\r\n    },\r\n    \"idShort\": \"test_sm\",\r\n    \"kind\": \"Instance\",\r\n    \"dataSpecification\": [],\r\n    \"modelType\": {\r\n        \"name\": \"Submodel\"\r\n    },\r\n    \"embeddedDataSpecifications\": [],\r\n    \"submodelElements\": [\r\n        {\r\n            \"parent\": {\r\n                \"keys\": [\r\n                    {\r\n                        \"idType\": \"Custom\",\r\n                        \"type\": \"Submodel\",\r\n                        \"value\": \"basyx.examples.test_submodel\",\r\n                        \"local\": true\r\n                    }\r\n                ]\r\n            },\r\n            \"idShort\": \"test_value\",\r\n            \"kind\": \"Instance\",\r\n            \"valueType\": \"integer\",\r\n            \"modelType\": {\r\n                \"name\": \"Property\"\r\n            },\r\n            \"value\": 1234\r\n        }\r\n    ]\r\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8081/cloud/shells/basyx.examples.oven/aas/submodels/test_sm",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"cloud",
+										"shells",
+										"basyx.examples.oven",
+										"aas",
+										"submodels",
+										"test_sm"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete specific Submodel",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8081/cloud/shells/basyx.examples.oven/aas/submodels/oven_doc",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"cloud",
+										"shells",
+										"basyx.examples.oven",
+										"aas",
+										"submodels",
+										"oven_doc"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "StaticDynamic",
+			"item": [
+				{
+					"name": "AAS",
+					"item": [
+						{
+							"name": "Get all AASs",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:4001/aasx/shells",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4001",
+									"path": [
+										"aasx",
+										"shells"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get specific AAS",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:4001/aasx/shells/smart.festo.com%2Fdemo%2Faas%2F1%2F1%2F454576463545648365874/aas",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4001",
+									"path": [
+										"aasx",
+										"shells",
+										"smart.festo.com%2Fdemo%2Faas%2F1%2F1%2F454576463545648365874",
+										"aas"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete specific AAS",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:4001/aasx/shells/smart.festo.com%2Fdemo%2Faas%2F1%2F1%2F454576463545648365874",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4001",
+									"path": [
+										"aasx",
+										"shells",
+										"smart.festo.com%2Fdemo%2Faas%2F1%2F1%2F454576463545648365874"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Submodel",
+					"item": [
+						{
+							"name": "Get all Submodels from AAS",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:4001/aasx/shells/smart.festo.com%2Fdemo%2Faas%2F1%2F1%2F454576463545648365874/aas/submodels",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4001",
+									"path": [
+										"aasx",
+										"shells",
+										"smart.festo.com%2Fdemo%2Faas%2F1%2F1%2F454576463545648365874",
+										"aas",
+										"submodels"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get specific Submodel",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:4001/aasx/shells/smart.festo.com%2Fdemo%2Faas%2F1%2F1%2F454576463545648365874/aas/submodels/maintenance/submodel",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4001",
+									"path": [
+										"aasx",
+										"shells",
+										"smart.festo.com%2Fdemo%2Faas%2F1%2F1%2F454576463545648365874",
+										"aas",
+										"submodels",
+										"maintenance",
+										"submodel"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Upload Submodel",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"idShort\":\"maintenance\",\r\n   \"identification\":{\r\n      \"idType\":\"Custom\",\r\n      \"id\":\"maintenanceInformationSubmodel\"\r\n   },\r\n   \"dataSpecification\":[\r\n      \r\n   ],\r\n   \"embeddedDataSpecifications\":[\r\n      \r\n   ],\r\n   \"modelType\":{\r\n      \"name\":\"Submodel\"\r\n   },\r\n   \"kind\":\"Instance\",\r\n   \"submodelElements\":{\r\n      \"interval\":{\r\n         \"modelType\":{\r\n            \"name\":\"Property\"\r\n         },\r\n         \"kind\":\"Instance\",\r\n         \"value\":\"2 months\",\r\n         \"valueType\":\"string\",\r\n         \"idShort\":\"interval\",\r\n         \"parent\":{\r\n            \"keys\":[\r\n               {\r\n                  \"type\":\"Submodel\",\r\n                  \"local\":true,\r\n                  \"value\":\"\",\r\n                  \"idType\":\"IRDI\"\r\n               }\r\n            ]\r\n         }\r\n      }\r\n   }\r\n}"
+								},
+								"url": {
+									"raw": "http://localhost:4001/aasx/shells/smart.festo.com%2Fdemo%2Faas%2F1%2F1%2F454576463545648365874/aas/submodels/maintenance",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4001",
+									"path": [
+										"aasx",
+										"shells",
+										"smart.festo.com%2Fdemo%2Faas%2F1%2F1%2F454576463545648365874",
+										"aas",
+										"submodels",
+										"maintenance"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete specific Submodel",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:4001/aasx/shells/smart.festo.com%2Fdemo%2Faas%2F1%2F1%2F454576463545648365874/aas/submodels/maintenance",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4001",
+									"path": [
+										"aasx",
+										"shells",
+										"smart.festo.com%2Fdemo%2Faas%2F1%2F1%2F454576463545648365874",
+										"aas",
+										"submodels",
+										"maintenance"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Upload AASX",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "01_Festo.aasx"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:4001/aasx/shells/aasx",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4001",
+							"path": [
+								"aasx",
+								"shells",
+								"aasx"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

@@ -27,10 +27,10 @@ package org.eclipse.basyx.hello_world;
 import org.eclipse.basyx.aas.manager.ConnectedAssetAdministrationShellManager;
 import org.eclipse.basyx.aas.registration.proxy.AASRegistryProxy;
 import org.eclipse.basyx.submodel.metamodel.api.ISubmodel;
-import org.eclipse.basyx.submodel.metamodel.api.submodelelement.ISubmodelElement;
+import org.eclipse.basyx.submodel.metamodel.api.submodelelement.dataelement.IProperty;
 
 /**
- * This class connects to the server created in Server
+ * This class connects to the server created in HelloWorldServer
  * 
  * It retrieves the Submodel and prints the
  * idShort and Value of the contained Property to the console
@@ -42,13 +42,19 @@ public class Client {
 	public static void main(String[] args) {
 		// Create Manager
 		ConnectedAssetAdministrationShellManager manager =
-				new ConnectedAssetAdministrationShellManager(new AASRegistryProxy(Server.REGISTRYPATH));
+				new ConnectedAssetAdministrationShellManager(new AASRegistryProxy(HelloWorldServer.REGISTRYPATH));
 
 		// Retrieve submodel
-		ISubmodel submodel = manager.retrieveSubmodel(Server.OVENAASID, Server.DOCUSMID);
+		ISubmodel submodel = manager.retrieveSubmodel(HelloWorldServer.OVENAASID, HelloWorldServer.DOCUSMID);
 
 		// Retrieve MaxTemp Property
-		ISubmodelElement maxTemp = submodel.getSubmodelElement(Server.MAXTEMPID);
+		IProperty maxTemp = (IProperty) submodel.getSubmodelElement(HelloWorldServer.MAXTEMPID);
+
+		// Print value
+		System.out.println(maxTemp.getIdShort() + " is " + maxTemp.getValue());
+
+		// Set property value
+		maxTemp.setValue(123);
 
 		// Print value
 		System.out.println(maxTemp.getIdShort() + " is " + maxTemp.getValue());
