@@ -45,12 +45,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This example uses the Off-the-Shelf AAS Server component and applies the security configuration to enable authorization on the AAS Server. To be able to push data to the AAS Server, the credentials of the {@link
- * SharedConfig#SCENARIO_SETUP_USER_CREDENTIALS} Keycloak user will be used to retrieve an access token from the Keycloak server first before making the request to the AAS server. This is done by passing a Keycloak-specific {@link
- * org.eclipse.basyx.vab.protocol.api.IConnectorFactory} to {@link ConnectedAssetAdministrationShellManager}, injecting the token retrieval logic.
+ * This example uses the Off-the-Shelf AAS Server component and applies the
+ * security configuration to enable authorization on the AAS Server. To be able
+ * to push data to the AAS Server, the credentials of the
+ * {@link SharedConfig#SCENARIO_SETUP_USER_CREDENTIALS} Keycloak user will be
+ * used to retrieve an access token from the Keycloak server first before making
+ * the request to the AAS server. This is done by passing a Keycloak-specific
+ * {@link org.eclipse.basyx.vab.protocol.api.IConnectorFactory} to
+ * {@link ConnectedAssetAdministrationShellManager}, injecting the token
+ * retrieval logic.
  * <p>
- * This example also uses the Off-the-Shelf Registry Server component and applies security configuration analogously. The AAS is registered at the registry using the {@link AuthorizedAASRegistryProxy} class in the {@link
- * ConnectedAssetAdministrationShellManager} to populate the Authorization header for access.
+ * This example also uses the Off-the-Shelf Registry Server component and
+ * applies security configuration analogously. The AAS is registered at the
+ * registry using the {@link AuthorizedAASRegistryProxy} class in the
+ * {@link ConnectedAssetAdministrationShellManager} to populate the
+ * Authorization header for access.
  */
 public class AuthorizedAASServerAndRegistryUsingComponentsExecutable {
 	private static Logger logger = LoggerFactory.getLogger(AuthorizedAASServerAndRegistryUsingComponentsExecutable.class);

@@ -39,8 +39,8 @@ public class UnauthenticatedClient {
 
 	public void tryGET(final String targetUrl) {
 		try {
-			HttpClient httpClient = HttpClients.createDefault();
-			HttpGet httpGet = new HttpGet(targetUrl);
+			final HttpClient httpClient = HttpClients.createDefault();
+			final HttpGet httpGet = new HttpGet(targetUrl);
 
 			logger.info("requesting GET {} without access token", targetUrl);
 

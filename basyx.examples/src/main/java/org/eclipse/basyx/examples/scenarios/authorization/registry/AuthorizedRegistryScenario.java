@@ -76,141 +76,141 @@ import org.eclipse.basyx.vab.protocol.http.server.BaSyxHTTPServer;
  *
  */
 public class AuthorizedRegistryScenario {
-  private static final String CLOUD_ENDPOINT = "http://localhost:8081/cloud";
-  public static final String REGISTRY_ENDPOINT = "http://localhost:8080/registry";
-  private static final String AUTHORIZED_REGISTRY_CONTEXT_PATH = "AuthorizedRegistryContext.properties";
-  private static final String CLOUD_EDGE_DEPLOYMENT_SCENARIO_CONTEXT_FILE_PATH = "CloudEdgeDeploymentScenarioAASContext.properties";
+	private static final String CLOUD_ENDPOINT = "http://localhost:8081/cloud";
+	public static final String REGISTRY_ENDPOINT = "http://localhost:8080/registry";
+	private static final String AUTHORIZED_REGISTRY_CONTEXT_PATH = "AuthorizedRegistryContext.properties";
+	private static final String CLOUD_EDGE_DEPLOYMENT_SCENARIO_CONTEXT_FILE_PATH = "CloudEdgeDeploymentScenarioAASContext.properties";
 
-  private IAASRegistry registry;
+	private IAASRegistry registry;
 
-  private static AuthorizationProvider authorizationProvider = new AuthorizationProvider();
+	private static AuthorizationProvider authorizationProvider = new AuthorizationProvider();
 
-  private AuthorizedConnectedAASManager aasManager;
+	private AuthorizedConnectedAASManager aasManager;
 
-  private static AuthorizedComponentFactory componentFactory = new AuthorizedComponentFactory();
+	private static AuthorizedComponentFactory componentFactory = new AuthorizedComponentFactory();
 
-  public static final IIdentifier aasIdentifier = componentFactory.getAAS().getIdentification();
+	public static final IIdentifier aasIdentifier = componentFactory.getAAS().getIdentification();
 
-  public static final IIdentifier docuSubmodelIdentifier = componentFactory.getDocuSMDescriptor().getIdentifier();
+	public static final IIdentifier docuSubmodelIdentifier = componentFactory.getDocuSMDescriptor().getIdentifier();
 
-  public static final IIdentifier edgeSubmodelIdentifier = componentFactory.getEdgeSubmodelDescriptor().getIdentifier();
+	public static final IIdentifier edgeSubmodelIdentifier = componentFactory.getEdgeSubmodelDescriptor().getIdentifier();
 
-  private List<IComponent> startedComponents = new ArrayList<>();
+	private List<IComponent> startedComponents = new ArrayList<>();
 
-  private BaSyxHTTPServer edgeServer;
+	private BaSyxHTTPServer edgeServer;
 
-  public static void main(String[] args) {
-    new AuthorizedRegistryScenario();
-  }
+	public static void main(String[] args) {
+		new AuthorizedRegistryScenario();
+	}
 
-  public AuthorizedRegistryScenario() {
-    startAuthorizedRegistryServer();
+	public AuthorizedRegistryScenario() {
+		startAuthorizedRegistryServer();
 
-    createAuthorizedAASRegistryProxy();
+		createAuthorizedAASRegistryProxy();
 
-    startAASAndSubmodelServer();
+		startAASAndSubmodelServer();
 
-    createAssetAdministrationShellOnCloudServer();
+		createAssetAdministrationShellOnCloudServer();
 
-    createSubmodelOnAasCloudServer();
+		createSubmodelOnAasCloudServer();
 
-    registerEdgeSubmodelIdentifierIntoAuthorizedRegistry();
-  }
+		registerEdgeSubmodelIdentifierIntoAuthorizedRegistry();
+	}
 
-  private void registerEdgeSubmodelIdentifierIntoAuthorizedRegistry() {
-    registry.register(aasIdentifier, componentFactory.getEdgeSubmodelDescriptor());
-  }
+	private void registerEdgeSubmodelIdentifierIntoAuthorizedRegistry() {
+		registry.register(aasIdentifier, componentFactory.getEdgeSubmodelDescriptor());
+	}
 
-  private void createAuthorizedAASRegistryProxy() {
-    registry = new AuthorizedAASRegistryProxy(REGISTRY_ENDPOINT, authorizationProvider.getAuthorizationSupplier());
-  }
+	private void createAuthorizedAASRegistryProxy() {
+		registry = new AuthorizedAASRegistryProxy(REGISTRY_ENDPOINT, authorizationProvider.getAuthorizationSupplier());
+	}
 
-  private void createSubmodelOnAasCloudServer() {
-    Submodel docuSubmodel = componentFactory.getDocuSM();
+	private void createSubmodelOnAasCloudServer() {
+		Submodel docuSubmodel = componentFactory.getDocuSM();
 
-    aasManager.createSubmodel(aasIdentifier, docuSubmodel);
-  }
+		aasManager.createSubmodel(aasIdentifier, docuSubmodel);
+	}
 
-  private void createAssetAdministrationShellOnCloudServer() {
-    aasManager = new AuthorizedConnectedAASManager(registry, authorizationProvider.getAuthorizationSupplier());
+	private void createAssetAdministrationShellOnCloudServer() {
+		aasManager = new AuthorizedConnectedAASManager(registry, authorizationProvider.getAuthorizationSupplier());
 
-    aasManager.createAAS(componentFactory.getAAS(), CLOUD_ENDPOINT);
-  }
+		aasManager.createAAS(componentFactory.getAAS(), CLOUD_ENDPOINT);
+	}
 
-  private void startAASAndSubmodelServer() {
-    startEdgeServer();
+	private void startAASAndSubmodelServer() {
+		startEdgeServer();
 
-    startCloudServer();
-  }
+		startCloudServer();
+	}
 
-  private void startAuthorizedRegistryServer() {
-    BaSyxContextConfiguration contextConfig = new BaSyxContextConfiguration();
+	private void startAuthorizedRegistryServer() {
+		BaSyxContextConfiguration contextConfig = new BaSyxContextConfiguration();
 
-    contextConfig.loadFromResource(AUTHORIZED_REGISTRY_CONTEXT_PATH);
+		contextConfig.loadFromResource(AUTHORIZED_REGISTRY_CONTEXT_PATH);
 
-    BaSyxRegistryConfiguration registryConfig = configureAuthorizedBasyxRegistry();
+		BaSyxRegistryConfiguration registryConfig = configureAuthorizedBasyxRegistry();
 
-    IComponent component = startRegistryComponent(contextConfig, registryConfig);
+		IComponent component = startRegistryComponent(contextConfig, registryConfig);
 
-    startedComponents.add(component);
-  }
+		startedComponents.add(component);
+	}
 
-  private IComponent startRegistryComponent(BaSyxContextConfiguration contextConfig, BaSyxRegistryConfiguration registryConfig) {
-    IComponent registryComponent = new RegistryComponent(contextConfig, registryConfig);
-    registryComponent.startComponent();
+	private IComponent startRegistryComponent(BaSyxContextConfiguration contextConfig, BaSyxRegistryConfiguration registryConfig) {
+		IComponent registryComponent = new RegistryComponent(contextConfig, registryConfig);
+		registryComponent.startComponent();
 
-    return registryComponent;
-  }
+		return registryComponent;
+	}
 
-  private BaSyxRegistryConfiguration configureAuthorizedBasyxRegistry() {
-    BaSyxRegistryConfiguration registryConfig = new BaSyxRegistryConfiguration(RegistryBackend.INMEMORY);
-    registryConfig.enableAuthorization();
+	private BaSyxRegistryConfiguration configureAuthorizedBasyxRegistry() {
+		BaSyxRegistryConfiguration registryConfig = new BaSyxRegistryConfiguration(RegistryBackend.INMEMORY);
+		registryConfig.enableAuthorization();
 
-    return registryConfig;
-  }
+		return registryConfig;
+	}
 
-  private BaSyxContextConfiguration configureBasyxContext(int port, String registryPath) {
-    return new BaSyxContextConfiguration(port, registryPath);
-  }
+	private BaSyxContextConfiguration configureBasyxContext(int port, String registryPath) {
+		return new BaSyxContextConfiguration(port, registryPath);
+	}
 
-  private void startEdgeServer() {
-    BaSyxContextConfiguration contextConfig = configureBasyxContext(8082, "");
+	private void startEdgeServer() {
+		BaSyxContextConfiguration contextConfig = configureBasyxContext(8082, "");
 
-    BaSyxContext context = contextConfig.createBaSyxContext();
+		BaSyxContext context = contextConfig.createBaSyxContext();
 
-    Submodel edgeSubmodel = componentFactory.createEdgeSubmodel();
+		Submodel edgeSubmodel = componentFactory.createEdgeSubmodel();
 
-    SubmodelServlet smServlet = new SubmodelServlet(edgeSubmodel);
+		SubmodelServlet smServlet = new SubmodelServlet(edgeSubmodel);
 
-    context.addServletMapping("/oven/" + AuthorizedComponentFactory.EDGESM_ID_SHORT + "/*", smServlet);
+		context.addServletMapping("/oven/" + AuthorizedComponentFactory.EDGESM_ID_SHORT + "/*", smServlet);
 
-    startEdgeServer(context);
-  }
+		startEdgeServer(context);
+	}
 
-  private void startEdgeServer(BaSyxContext context) {
-    edgeServer = new BaSyxHTTPServer(context);
+	private void startEdgeServer(BaSyxContext context) {
+		edgeServer = new BaSyxHTTPServer(context);
 
-    edgeServer.start();
-  }
+		edgeServer.start();
+	}
 
-  private void startCloudServer() {
-    BaSyxContextConfiguration contextConfig = new BaSyxContextConfiguration();
+	private void startCloudServer() {
+		BaSyxContextConfiguration contextConfig = new BaSyxContextConfiguration();
 
-    contextConfig.loadFromResource(CLOUD_EDGE_DEPLOYMENT_SCENARIO_CONTEXT_FILE_PATH);
+		contextConfig.loadFromResource(CLOUD_EDGE_DEPLOYMENT_SCENARIO_CONTEXT_FILE_PATH);
 
-    BaSyxAASServerConfiguration aasServerConfig = new BaSyxAASServerConfiguration(AASServerBackend.INMEMORY, "", REGISTRY_ENDPOINT);
-    aasServerConfig.enableAuthorization();
+		BaSyxAASServerConfiguration aasServerConfig = new BaSyxAASServerConfiguration(AASServerBackend.INMEMORY, "", REGISTRY_ENDPOINT);
+		aasServerConfig.enableAuthorization();
 
-    AASServerComponent cloudServer = new AASServerComponent(contextConfig, aasServerConfig);
+		AASServerComponent cloudServer = new AASServerComponent(contextConfig, aasServerConfig);
 
-    cloudServer.startComponent();
+		cloudServer.startComponent();
 
-    startedComponents.add(cloudServer);
-  }
+		startedComponents.add(cloudServer);
+	}
 
-  public void stop() {
-    startedComponents.stream().forEach(IComponent::stopComponent);
+	public void stop() {
+		startedComponents.stream().forEach(IComponent::stopComponent);
 
-    edgeServer.shutdown();
-  }
+		edgeServer.shutdown();
+	}
 }

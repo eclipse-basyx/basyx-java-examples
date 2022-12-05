@@ -76,12 +76,21 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jwt.Jwt;
 
 /**
- * This example constructs an SDK-based AAS Server and applies the security configuration to enable authorization on the AAS Server. To be able to push data to the AAS Server, the credentials of the {@link
- * SharedConfig#SCENARIO_SETUP_USER_CREDENTIALS} Keycloak user will be used to retrieve an access token from the Keycloak server first before making the request to the AAS server. This is done by passing a Keycloak-specific {@link
- * org.eclipse.basyx.vab.protocol.api.IConnectorFactory} to {@link ConnectedAssetAdministrationShellManager}, injecting the token retrieval logic.
+ * This example constructs an SDK-based AAS Server and applies the security
+ * configuration to enable authorization on the AAS Server. To be able to push
+ * data to the AAS Server, the credentials of the
+ * {@link SharedConfig#SCENARIO_SETUP_USER_CREDENTIALS} Keycloak user will be
+ * used to retrieve an access token from the Keycloak server first before making
+ * the request to the AAS server. This is done by passing a Keycloak-specific
+ * {@link org.eclipse.basyx.vab.protocol.api.IConnectorFactory} to
+ * {@link ConnectedAssetAdministrationShellManager}, injecting the token
+ * retrieval logic.
  * <p>
- * This example also constructs an SDK-based Registry Server and applies security configuration analogously. The AAS is registered at the registry using the {@link AuthorizedAASRegistryProxy} class in the {@link
- * ConnectedAssetAdministrationShellManager} to populate the Authorization header for access.
+ * This example also constructs an SDK-based Registry Server and applies
+ * security configuration analogously. The AAS is registered at the registry
+ * using the {@link AuthorizedAASRegistryProxy} class in the
+ * {@link ConnectedAssetAdministrationShellManager} to populate the
+ * Authorization header for access.
  */
 public class AuthorizedAASServerAndRegistryUsingSDKExecutable {
 	private static Logger logger = LoggerFactory.getLogger(AuthorizedAASServerAndRegistryUsingSDKExecutable.class);
@@ -184,10 +193,12 @@ public class AuthorizedAASServerAndRegistryUsingSDKExecutable {
 		final org.eclipse.basyx.components.aas.authorization.Authorizers<T> authorizers = (org.eclipse.basyx.components.aas.authorization.Authorizers<T>) createAASAuthorizers();
 		final ISubjectInformationProvider<T> subjectInformationProvider = (ISubjectInformationProvider<T>) createSubjectInformationProvider();
 
-		basyxContext.addServletMapping("/*", new VABHTTPInterface<>(new AASAggregatorProvider(new AuthorizedAASAggregator<>(
-				new AASAggregator(new AuthorizedDecoratingAASAPIFactory<>(new AASAPIFactory(), authorizers.getAasApiAuthorizer(), subjectInformationProvider), new AuthorizedDecoratingSubmodelAggregatorFactory<>(null,
-						new SubmodelAggregatorFactory(new AuthorizedDecoratingSubmodelAPIFactory<>(null, new VABSubmodelAPIFactory(), authorizers.getSubmodelAPIAuthorizer(), subjectInformationProvider)),
-						authorizers.getSubmodelAggregatorAuthorizer(), subjectInformationProvider)), authorizers.getAasAggregatorAuthorizer(), subjectInformationProvider))));
+		basyxContext.addServletMapping("/*",
+				new VABHTTPInterface<>(new AASAggregatorProvider(new AuthorizedAASAggregator<>(new AASAggregator(new AuthorizedDecoratingAASAPIFactory<>(new AASAPIFactory(), authorizers.getAasApiAuthorizer(), subjectInformationProvider),
+						new AuthorizedDecoratingSubmodelAggregatorFactory<>(null,
+								new SubmodelAggregatorFactory(new AuthorizedDecoratingSubmodelAPIFactory<>(null, new VABSubmodelAPIFactory(), authorizers.getSubmodelAPIAuthorizer(), subjectInformationProvider)),
+								authorizers.getSubmodelAggregatorAuthorizer(), subjectInformationProvider)),
+						authorizers.getAasAggregatorAuthorizer(), subjectInformationProvider))));
 		basyxContext.setJwtBearerTokenAuthenticationConfiguration(scenarioSetupKeycloakClient.createJwtBearerTokenAuthenticationConfiguration());
 
 		final BaSyxHTTPServer aasServer = new BaSyxHTTPServer(basyxContext);

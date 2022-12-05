@@ -115,16 +115,16 @@ public class SetupKeycloak {
 
 		final ClientRepresentation clientRepresentation = new ClientRepresentation();
 
-		//clientRepresentation.setId(clientId);
+		// clientRepresentation.setId(clientId);
 		clientRepresentation.setClientId(clientId);
-		//clientRepresentation.setName(clientId);
+		// clientRepresentation.setName(clientId);
 		clientRepresentation.setEnabled(true);
 
 		clientRepresentation.setClientAuthenticatorType("client-secret");
 		clientRepresentation.setProtocol("openid-connect");
 		clientRepresentation.setSecret(SharedConfig.KEYCLOAK_CLIENT_SECRET);
-		//clientRepresentation.setDefaultClientScopes(Collections.emptyList());
-		//clientRepresentation.setFullScopeAllowed(true);
+		// clientRepresentation.setDefaultClientScopes(Collections.emptyList());
+		// clientRepresentation.setFullScopeAllowed(true);
 
 		realm.clients().create(clientRepresentation);
 
@@ -145,9 +145,9 @@ public class SetupKeycloak {
 
 		final ClientRepresentation clientRepresentation = new ClientRepresentation();
 
-		//clientRepresentation.setId(clientId);
+		// clientRepresentation.setId(clientId);
 		clientRepresentation.setClientId(clientId);
-		//clientRepresentation.setName(clientId);
+		// clientRepresentation.setName(clientId);
 		clientRepresentation.setEnabled(true);
 
 		clientRepresentation.setClientAuthenticatorType("client-secret");
@@ -174,9 +174,9 @@ public class SetupKeycloak {
 
 		final ClientRepresentation clientRepresentation = new ClientRepresentation();
 
-		//clientRepresentation.setId(clientId);
+		// clientRepresentation.setId(clientId);
 		clientRepresentation.setClientId(clientId);
-		//clientRepresentation.setName(clientId);
+		// clientRepresentation.setName(clientId);
 		clientRepresentation.setEnabled(true);
 
 		clientRepresentation.setClientAuthenticatorType("client-secret");
@@ -272,9 +272,8 @@ public class SetupKeycloak {
 		return representation.map(repr -> realm.users().get(repr.getId()));
 	}
 
-	public static final List<String> ALL_SCOPES = Arrays
-			.asList(AASAggregatorScopes.READ_SCOPE, AASAggregatorScopes.WRITE_SCOPE, AASAPIScopes.READ_SCOPE, AASAPIScopes.WRITE_SCOPE, SubmodelAggregatorScopes.READ_SCOPE, SubmodelAggregatorScopes.WRITE_SCOPE, SubmodelAPIScopes.READ_SCOPE,
-					SubmodelAPIScopes.WRITE_SCOPE, AASRegistryScopes.READ_SCOPE, AASRegistryScopes.WRITE_SCOPE);
+	public static final List<String> ALL_SCOPES = Arrays.asList(AASAggregatorScopes.READ_SCOPE, AASAggregatorScopes.WRITE_SCOPE, AASAPIScopes.READ_SCOPE, AASAPIScopes.WRITE_SCOPE, SubmodelAggregatorScopes.READ_SCOPE,
+			SubmodelAggregatorScopes.WRITE_SCOPE, SubmodelAPIScopes.READ_SCOPE, SubmodelAPIScopes.WRITE_SCOPE, AASRegistryScopes.READ_SCOPE, AASRegistryScopes.WRITE_SCOPE);
 
 	private void createScopes() {
 		ALL_SCOPES.forEach(this::addScope);

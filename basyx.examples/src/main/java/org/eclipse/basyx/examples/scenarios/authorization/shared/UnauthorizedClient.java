@@ -89,8 +89,8 @@ public class UnauthorizedClient {
 
 			logger.info("retrieved access token {}", bearerToken);
 
-			HttpClient httpClient = HttpClients.createDefault();
-			HttpGet httpGet = new HttpGet(targetUrl);
+			final HttpClient httpClient = HttpClients.createDefault();
+			final HttpGet httpGet = new HttpGet(targetUrl);
 
 			httpGet.setHeader("Authorization", bearerToken);
 
