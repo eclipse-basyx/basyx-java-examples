@@ -134,9 +134,9 @@ public class AuthorizedAASServerAndRegistryUsingComponentsExecutable {
 		addShutdownHook(aasServerComponent);
 		aasServerComponent.startComponent();
 
-		final AssetAdministrationShell shell = new ExampleShellFactory();
+		final AssetAdministrationShell shell = new ExampleShellFactory().create();
 
-		final Submodel submodel = new ExampleSubmodelFactory();
+		final Submodel submodel = new ExampleSubmodelFactory().create();
 
 		pushAASAndSubmodel(shell, submodel);
 	}
