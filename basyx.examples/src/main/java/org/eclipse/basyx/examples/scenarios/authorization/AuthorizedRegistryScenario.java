@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (C) 2022 the Eclipse BaSyx Authors
- *
+ * 
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -8,10 +8,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * 
  * The above copyright notice and this permission notice shall be
  * included in all copies or substantial portions of the Software.
- *
+ * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -19,7 +19,7 @@
  * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- *
+ * 
  * SPDX-License-Identifier: MIT
  ******************************************************************************/
 package org.eclipse.basyx.examples.scenarios.authorization;
@@ -47,35 +47,35 @@ import org.eclipse.basyx.vab.protocol.http.server.BaSyxHTTPServer;
 /**
  * Example scenario demonstrating a deployment with two servers with Authorized
  * AAS Registry
- *
+ * 
  * <p>
  * Server A is created as an empty server in the cloud. An AAS and a Submodel is
  * pushed to it.
- *
+ * 
  * Server B is created as a server hosted near a machine. It provides a Submodel
  * containing sensor value.
  * </p>
- *
+ * 
  * <p>
  * Note : Keycloak instance should be running before working with this scenario.
  * <br/>
- *
+ * 
  * Keycloak instance running on : 127.0.0.1:9006 <br/>
  * KEYCLOAK_USER=admin <br/>
  * KEYCLOAK_PASSWORD=admin <br/>
  * </p>
- *
+ * 
  * @see <a href="https://hub.docker.com/r/jboss/keycloak/">Keycloak Docker
  *      Hub</a>
  * @see <a href="https://www.keycloak.org/documentation">Keycloak
  *      Documentation</a>
- *
+ * 
  * @author danish
  *
  */
 public class AuthorizedRegistryScenario {
 	private static final String CLOUD_ENDPOINT = "http://localhost:8081/cloud";
-	public static final String REGISTRY_ENDPOINT = "http://localhost:8080/registry";
+	protected static final String REGISTRY_ENDPOINT = "http://localhost:8080/registry";
 	private static final String AUTHORIZED_REGISTRY_CONTEXT_PATH = "AuthorizedRegistryContext.properties";
 	private static final String CLOUD_EDGE_DEPLOYMENT_SCENARIO_CONTEXT_FILE_PATH = "CloudEdgeDeploymentScenarioAASContext.properties";
 

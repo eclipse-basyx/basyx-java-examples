@@ -32,13 +32,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+
 import org.eclipse.basyx.aas.metamodel.api.IAssetAdministrationShell;
 import org.eclipse.basyx.aas.metamodel.map.descriptor.AASDescriptor;
 import org.eclipse.basyx.aas.metamodel.map.descriptor.SubmodelDescriptor;
 import org.eclipse.basyx.aas.registration.api.IAASRegistry;
-import org.eclipse.basyx.examples.scenarios.authorization.AuthorizationProvider;
-import org.eclipse.basyx.examples.scenarios.authorization.AuthorizedComponentFactory;
-import org.eclipse.basyx.examples.scenarios.authorization.AuthorizedRegistryScenario;
 import org.eclipse.basyx.examples.scenarios.authorization.exception.RealmDeletionException;
 import org.eclipse.basyx.extensions.aas.manager.authorized.AuthorizedConnectedAASManager;
 import org.eclipse.basyx.extensions.aas.registration.authorization.AuthorizedAASRegistryProxy;
@@ -46,7 +44,6 @@ import org.eclipse.basyx.submodel.metamodel.api.ISubmodel;
 import org.eclipse.basyx.submodel.metamodel.api.submodelelement.dataelement.IProperty;
 import org.eclipse.basyx.submodel.metamodel.api.submodelelement.operation.IOperation;
 import org.junit.AfterClass;
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -86,7 +83,7 @@ public class TestAuthorizedRegistryScenario {
 
 		IAssetAdministrationShell aas = manager.retrieveAAS(AuthorizedRegistryScenario.aasIdentifier);
 
-		Assert.assertEquals(AuthorizedComponentFactory.AAS_ID_SHORT, aas.getIdShort());
+		assertEquals(AuthorizedComponentFactory.AAS_ID_SHORT, aas.getIdShort());
 	}
 
 	@Test
