@@ -38,6 +38,11 @@ import org.eclipse.basyx.extensions.shared.authorization.internal.KeycloakServic
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * A client that is authenticated but unauthorized regarding {@link org.eclipse.basyx.examples.scenarios.authorization.combined.AuthorizedAASServerAndRegistryUsingComponentsExecutable} and {@link org.eclipse.basyx.examples.scenarios.authorization.combined.AuthorizedAASServerAndRegistryUsingSDKExecutable}.
+ *
+ * @author wege
+ */
 public class UnauthorizedClient {
 	private static Logger logger = LoggerFactory.getLogger(UnauthorizedClient.class);
 

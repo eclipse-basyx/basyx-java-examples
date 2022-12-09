@@ -34,11 +34,11 @@ import java.util.stream.Collectors;
 import javax.ws.rs.NotFoundException;
 import org.eclipse.basyx.components.configuration.BaSyxSecurityConfiguration;
 import org.eclipse.basyx.examples.scenarios.authorization.shared.SharedConfig;
-import org.eclipse.basyx.extensions.aas.aggregator.authorization.internal.AASAggregatorScopes;
-import org.eclipse.basyx.extensions.aas.api.authorization.internal.AASAPIScopes;
-import org.eclipse.basyx.extensions.aas.registration.authorization.internal.AASRegistryScopes;
-import org.eclipse.basyx.extensions.submodel.aggregator.authorization.internal.SubmodelAggregatorScopes;
-import org.eclipse.basyx.extensions.submodel.authorization.internal.SubmodelAPIScopes;
+import org.eclipse.basyx.extensions.aas.aggregator.authorization.AASAggregatorScopes;
+import org.eclipse.basyx.extensions.aas.api.authorization.AASAPIScopes;
+import org.eclipse.basyx.extensions.aas.registration.authorization.AASRegistryScopes;
+import org.eclipse.basyx.extensions.submodel.aggregator.authorization.SubmodelAggregatorScopes;
+import org.eclipse.basyx.extensions.submodel.authorization.SubmodelAPIScopes;
 import org.keycloak.OAuth2Constants;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
@@ -55,6 +55,11 @@ import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.RolesRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 
+/**
+ * This class configures the Keycloak server for {@link AuthorizedAASServerAndRegistryUsingComponentsExecutable} and {@link AuthorizedAASServerAndRegistryUsingSDKExecutable}.
+ *
+ * @author wege
+ */
 public class SetupKeycloak {
 	public static final String ROLE_ADMIN = "admin";
 	public static final String ROLE_READER = "reader";
@@ -115,16 +120,12 @@ public class SetupKeycloak {
 
 		final ClientRepresentation clientRepresentation = new ClientRepresentation();
 
-		// clientRepresentation.setId(clientId);
 		clientRepresentation.setClientId(clientId);
-		// clientRepresentation.setName(clientId);
 		clientRepresentation.setEnabled(true);
 
 		clientRepresentation.setClientAuthenticatorType("client-secret");
 		clientRepresentation.setProtocol("openid-connect");
 		clientRepresentation.setSecret(SharedConfig.KEYCLOAK_CLIENT_SECRET);
-		// clientRepresentation.setDefaultClientScopes(Collections.emptyList());
-		// clientRepresentation.setFullScopeAllowed(true);
 
 		realm.clients().create(clientRepresentation);
 
@@ -145,9 +146,7 @@ public class SetupKeycloak {
 
 		final ClientRepresentation clientRepresentation = new ClientRepresentation();
 
-		// clientRepresentation.setId(clientId);
 		clientRepresentation.setClientId(clientId);
-		// clientRepresentation.setName(clientId);
 		clientRepresentation.setEnabled(true);
 
 		clientRepresentation.setClientAuthenticatorType("client-secret");
@@ -174,9 +173,7 @@ public class SetupKeycloak {
 
 		final ClientRepresentation clientRepresentation = new ClientRepresentation();
 
-		// clientRepresentation.setId(clientId);
 		clientRepresentation.setClientId(clientId);
-		// clientRepresentation.setName(clientId);
 		clientRepresentation.setEnabled(true);
 
 		clientRepresentation.setClientAuthenticatorType("client-secret");

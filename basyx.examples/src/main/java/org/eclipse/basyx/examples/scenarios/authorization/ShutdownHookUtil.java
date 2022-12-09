@@ -27,7 +27,15 @@ package org.eclipse.basyx.examples.scenarios.authorization;
 import org.eclipse.basyx.components.IComponent;
 import org.eclipse.basyx.vab.protocol.http.server.BaSyxHTTPServer;
 
+/**
+ * Utility class for runtime shutdown logic.
+ *
+ * @author wege
+ */
 public final class ShutdownHookUtil {
+	private ShutdownHookUtil() {
+	}
+
 	public static void addShutdownHook(IComponent component) {
 		Thread shutdownListener = new Thread(component::stopComponent);
 		Runtime.getRuntime().addShutdownHook(shutdownListener);

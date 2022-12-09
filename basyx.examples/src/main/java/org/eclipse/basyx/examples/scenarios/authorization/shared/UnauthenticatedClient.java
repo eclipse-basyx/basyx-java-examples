@@ -34,6 +34,11 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * A client that is unauthenticated regarding {@link org.eclipse.basyx.examples.scenarios.authorization.combined.AuthorizedAASServerAndRegistryUsingComponentsExecutable} and {@link org.eclipse.basyx.examples.scenarios.authorization.combined.AuthorizedAASServerAndRegistryUsingSDKExecutable}.
+ *
+ * @author wege
+ */
 public class UnauthenticatedClient {
 	private static Logger logger = LoggerFactory.getLogger(UnauthenticatedClient.class);
 

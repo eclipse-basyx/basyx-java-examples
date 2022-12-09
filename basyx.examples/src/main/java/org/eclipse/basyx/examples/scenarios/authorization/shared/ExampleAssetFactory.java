@@ -24,11 +24,17 @@
  ******************************************************************************/
 package org.eclipse.basyx.examples.scenarios.authorization.shared;
 
-import org.eclipse.basyx.aas.metamodel.map.AssetAdministrationShell;
+import org.eclipse.basyx.aas.metamodel.api.parts.asset.AssetKind;
 import org.eclipse.basyx.aas.metamodel.map.descriptor.CustomId;
+import org.eclipse.basyx.aas.metamodel.map.parts.Asset;
 
-public class ExampleShell extends AssetAdministrationShell {
-	public ExampleShell() {
-		super("exampleShell", new CustomId("shell.example"), new ExampleAsset());
+/**
+ * Factory to create an example {@link Asset}.
+ *
+ * @author wege
+ */
+public class ExampleAssetFactory {
+	public Asset create() {
+		return new Asset("exampleAsset", new CustomId("asset.example"), AssetKind.INSTANCE);
 	}
 }

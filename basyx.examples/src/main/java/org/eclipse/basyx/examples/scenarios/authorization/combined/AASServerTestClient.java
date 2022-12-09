@@ -33,6 +33,11 @@ import org.eclipse.basyx.examples.scenarios.authorization.shared.UnauthorizedCli
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * This class creates a client for testing the AAS servers in {@link AuthorizedAASServerAndRegistryUsingComponentsExecutable} and {@link AuthorizedAASServerAndRegistryUsingSDKExecutable}.
+ *
+ * @author wege
+ */
 public class AASServerTestClient {
 	private static Logger logger = LoggerFactory.getLogger(AASServerTestClient.class);
 

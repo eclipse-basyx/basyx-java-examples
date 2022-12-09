@@ -35,8 +35,8 @@ import org.eclipse.basyx.components.configuration.BaSyxSecurityConfiguration;
 import org.eclipse.basyx.components.configuration.BaSyxSecurityConfiguration.AuthorizationStrategy;
 import org.eclipse.basyx.components.registry.RegistryComponent;
 import org.eclipse.basyx.components.registry.configuration.BaSyxRegistryConfiguration;
-import org.eclipse.basyx.examples.scenarios.authorization.shared.ExampleShell;
-import org.eclipse.basyx.examples.scenarios.authorization.shared.ExampleSubmodel;
+import org.eclipse.basyx.examples.scenarios.authorization.shared.ExampleShellFactory;
+import org.eclipse.basyx.examples.scenarios.authorization.shared.ExampleSubmodelFactory;
 import org.eclipse.basyx.examples.scenarios.authorization.shared.SharedConfig;
 import org.eclipse.basyx.extensions.aas.registration.authorization.AuthorizedAASRegistryProxy;
 import org.eclipse.basyx.extensions.shared.authorization.internal.KeycloakService;
@@ -60,6 +60,8 @@ import org.slf4j.LoggerFactory;
  * registry using the {@link AuthorizedAASRegistryProxy} class in the
  * {@link ConnectedAssetAdministrationShellManager} to populate the
  * Authorization header for access.
+ *
+ * @author wege
  */
 public class AuthorizedAASServerAndRegistryUsingComponentsExecutable {
 	private static Logger logger = LoggerFactory.getLogger(AuthorizedAASServerAndRegistryUsingComponentsExecutable.class);
@@ -132,9 +134,9 @@ public class AuthorizedAASServerAndRegistryUsingComponentsExecutable {
 		addShutdownHook(aasServerComponent);
 		aasServerComponent.startComponent();
 
-		final AssetAdministrationShell shell = new ExampleShell();
+		final AssetAdministrationShell shell = new ExampleShellFactory();
 
-		final Submodel submodel = new ExampleSubmodel();
+		final Submodel submodel = new ExampleSubmodelFactory();
 
 		pushAASAndSubmodel(shell, submodel);
 	}

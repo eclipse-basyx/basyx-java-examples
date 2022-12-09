@@ -30,6 +30,11 @@ import org.eclipse.basyx.components.configuration.BaSyxContextConfiguration;
 import org.eclipse.basyx.components.configuration.BaSyxSecurityConfiguration;
 import org.eclipse.basyx.components.registry.configuration.BaSyxRegistryConfiguration;
 
+/**
+ * Configs for {@link org.eclipse.basyx.examples.scenarios.authorization.combined.AuthorizedAASServerAndRegistryUsingComponentsExecutable} and {@link org.eclipse.basyx.examples.scenarios.authorization.combined.AuthorizedAASServerAndRegistryUsingSDKExecutable}.
+ *
+ * @author wege
+ */
 public final class SharedConfig {
 	private SharedConfig() {
 	}
