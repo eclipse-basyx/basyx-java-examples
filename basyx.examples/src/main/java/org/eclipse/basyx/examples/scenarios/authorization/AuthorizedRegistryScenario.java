@@ -22,7 +22,7 @@
  *
  * SPDX-License-Identifier: MIT
  ******************************************************************************/
-package org.eclipse.basyx.examples.scenarios.authorization.registry;
+package org.eclipse.basyx.examples.scenarios.authorization;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,8 +37,6 @@ import org.eclipse.basyx.components.registry.RegistryComponent;
 import org.eclipse.basyx.components.registry.configuration.BaSyxRegistryConfiguration;
 import org.eclipse.basyx.components.registry.configuration.RegistryBackend;
 import org.eclipse.basyx.components.servlet.submodel.SubmodelServlet;
-import org.eclipse.basyx.examples.scenarios.authorization.AuthorizationProvider;
-import org.eclipse.basyx.examples.scenarios.authorization.AuthorizedComponentFactory;
 import org.eclipse.basyx.extensions.aas.manager.authorized.AuthorizedConnectedAASManager;
 import org.eclipse.basyx.extensions.aas.registration.authorization.AuthorizedAASRegistryProxy;
 import org.eclipse.basyx.submodel.metamodel.api.identifier.IIdentifier;

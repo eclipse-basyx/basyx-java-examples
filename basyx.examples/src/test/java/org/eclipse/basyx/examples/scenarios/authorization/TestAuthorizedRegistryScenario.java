@@ -22,7 +22,7 @@
  * 
  * SPDX-License-Identifier: MIT
  ******************************************************************************/
-package org.eclipse.basyx.examples.scenarios.authorization.registry;
+package org.eclipse.basyx.examples.scenarios.authorization;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -38,6 +38,7 @@ import org.eclipse.basyx.aas.metamodel.map.descriptor.SubmodelDescriptor;
 import org.eclipse.basyx.aas.registration.api.IAASRegistry;
 import org.eclipse.basyx.examples.scenarios.authorization.AuthorizationProvider;
 import org.eclipse.basyx.examples.scenarios.authorization.AuthorizedComponentFactory;
+import org.eclipse.basyx.examples.scenarios.authorization.AuthorizedRegistryScenario;
 import org.eclipse.basyx.examples.scenarios.authorization.exception.RealmDeletionException;
 import org.eclipse.basyx.extensions.aas.manager.authorized.AuthorizedConnectedAASManager;
 import org.eclipse.basyx.extensions.aas.registration.authorization.AuthorizedAASRegistryProxy;
