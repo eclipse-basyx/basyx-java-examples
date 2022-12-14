@@ -122,6 +122,8 @@ public class AuthorizedAASServerAndRegistryUsingComponentsExecutable {
 		final BaSyxRegistryConfiguration registryConfig = SharedConfig.getRegistryConfig();
 		final RegistryComponent registryComponent = new RegistryComponent(registryContextConfig, registryConfig);
 
+		registryComponent.setSecurityConfiguration(securityConfig);
+
 		addShutdownHook(registryComponent);
 		registryComponent.startComponent();
 	}
@@ -130,6 +132,8 @@ public class AuthorizedAASServerAndRegistryUsingComponentsExecutable {
 		final BaSyxAASServerConfiguration aasConfig = SharedConfig.getAasServerConfig();
 
 		final AASServerComponent aasServerComponent = new AASServerComponent(aasServerContextConfig, aasConfig);
+
+		aasServerComponent.setSecurityConfiguration(securityConfig);
 
 		addShutdownHook(aasServerComponent);
 		aasServerComponent.startComponent();
