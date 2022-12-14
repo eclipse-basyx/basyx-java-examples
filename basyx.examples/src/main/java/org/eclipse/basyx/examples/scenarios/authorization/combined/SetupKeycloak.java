@@ -56,7 +56,9 @@ import org.keycloak.representations.idm.RolesRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 
 /**
- * This class configures the Keycloak server for {@link AuthorizedAASServerAndRegistryUsingComponentsExecutable} and {@link AuthorizedAASServerAndRegistryUsingSDKExecutable}.
+ * This class configures the Keycloak server for
+ * {@link AuthorizedAASServerAndRegistryUsingComponentsExecutable} and
+ * {@link AuthorizedAASServerAndRegistryUsingSDKExecutable}.
  *
  * @author wege
  */

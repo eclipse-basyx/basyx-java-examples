@@ -35,7 +35,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * A client that is unauthenticated regarding {@link org.eclipse.basyx.examples.scenarios.authorization.combined.AuthorizedAASServerAndRegistryUsingComponentsExecutable} and {@link org.eclipse.basyx.examples.scenarios.authorization.combined.AuthorizedAASServerAndRegistryUsingSDKExecutable}.
+ * A client that is unauthenticated regarding
+ * {@link org.eclipse.basyx.examples.scenarios.authorization.combined.AuthorizedAASServerAndRegistryUsingComponentsExecutable}
+ * and
+ * {@link org.eclipse.basyx.examples.scenarios.authorization.combined.AuthorizedAASServerAndRegistryUsingSDKExecutable}.
  *
  * @author wege
  */
