@@ -4,7 +4,7 @@ The scenarios here show how to set up an AAS server and registry server with aut
 
 As a precondition, you need to have a non-TLS Keycloak server running on the url specified in the resources/combined/security.properties file (tested with Keycloak 20.0.0). You can adapt the url in there if needed.
 
-`docker run -p 9006:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:20.0.0 start-dev --hostname-port=9006`
+`docker run -p 9007:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:20.0.0 start-dev --hostname-port=9007`
 
 For the required Keycloak configuration, you can run the SetupKeycloak class to automatically create the realm, client, roles and users + user role mappings.
 
