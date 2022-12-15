@@ -59,7 +59,6 @@ public interface IPropertyWrapperService {
 	 * Explicitely generates a new value for a passive property.
 	 * 
 	 * @param propId
-	 * @return
 	 */
 	public void generatePassiveValue(String propId);
 
