@@ -54,7 +54,7 @@ public class KeycloakServiceProvider {
 	private static final String PASSWORD = "admin";
 	private static final String REALM_FILE_NAME = "Test_realm.json";
 	private static final String CLIENT_FILE_NAME = "Test_client.json";
-	protected static final String SERVER_ADDRESS = "http://127.0.0.1:9005";
+	protected static final String SERVER_ADDRESS = "http://127.0.0.1:9006";
 	protected static final String BASE_ADDRESS = SERVER_ADDRESS + "/auth/";
 	private Keycloak keycloak;
 
