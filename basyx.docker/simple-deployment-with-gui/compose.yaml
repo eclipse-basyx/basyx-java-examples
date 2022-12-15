@@ -1,6 +1,6 @@
 services:
   registry:
-    image: eclipsebasyx/aas-registry:1.2.0
+    image: eclipsebasyx/aas-registry:1.3.0
     ports:
         - 8082:4000
     environment:
@@ -11,7 +11,7 @@ services:
     container_name: registry
 
   aas:
-    image: eclipsebasyx/aas-server:1.2.0
+    image: eclipsebasyx/aas-server:1.3.0
     container_name: aas
     ports:
         - 4001:4001
