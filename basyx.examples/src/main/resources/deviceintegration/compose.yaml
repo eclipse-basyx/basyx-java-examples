@@ -29,7 +29,7 @@ services:
         - basyxcontext_accesscontrolalloworigin=*
         
   gui: 
-    image: eclipsebasyx/aas-gui:v230112
+    image: eclipsebasyx/aas-gui:v230113
     container_name: aasGui-device-integration 
     ports:
         - 3000:8080
