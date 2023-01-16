@@ -45,7 +45,7 @@ import io.moquette.broker.config.ResourceLoaderConfig;
  * After this scenario is started, the <i>compose.yml</i> file in
  * src/main/resources/deviceintegration can be started via <i>docker compose
  * up</i>. After successful start, the AAS Web GUI available on
- * http://localhost:8080 can be used for interacting with the scenario. As
+ * http://localhost:3000 can be used for interacting with the scenario. As
  * registry endpoint, choose <i>http://localhost:4000/registry</i><br>
  * <br>
  * For a detailed documentation, see the BaSyx wiki

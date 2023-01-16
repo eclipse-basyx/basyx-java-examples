@@ -32,7 +32,7 @@ services:
     image: eclipsebasyx/aas-gui:v230113
     container_name: aasGui-device-integration 
     ports:
-        - 3000:8080
+        - 3000:3000
         
   databridge:
     image: eclipsebasyx/databridge:1.0.0-milestone-01
