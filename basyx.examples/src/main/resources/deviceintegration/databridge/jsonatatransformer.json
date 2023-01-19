@@ -1,0 +1,8 @@
+[
+	{
+		"uniqueId": "temperatureTransformer",
+		"queryPath": "temperatureTransformer.jsonata",
+		"inputType": "JsonString",
+		"outputType": "JsonString"
+	}
+]

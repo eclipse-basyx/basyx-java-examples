@@ -1,0 +1,8 @@
+[
+	{
+		"datasource": "temperatureSensor",
+		"transformers": ["temperatureTransformer"],
+		"datasinks": ["TemperatureSubmodel"],
+		"trigger": "event"
+	}
+]

@@ -1,0 +1,39 @@
+services:
+  registry:
+    image: eclipsebasyx/aas-registry:1.3.0
+    ports:
+        - 4000:4000
+    environment:
+        - basyxregistry_registry_backend=InMemory
+        - basyxcontext_contextpath=/registry
+        - basyxcontext_contextport=4000
+        - basyxcontext_accesscontrolalloworigin=*
+    container_name: registry-device-integration
+
+  aas:
+    image: eclipsebasyx/aas-server:1.3.0
+    container_name: aas-device-integration
+    volumes:
+      - ./aasServer:/usr/share/config
+    ports:
+        - 4001:4001
+    environment:
+        - basyxaas_registry_path=http://registry:4000/registry/
+        - basyxaas_aas_backend=InMemory
+        - basyxcontext_contextpath=/aasServer
+        - basyxcontext_contextport=4001
+        - basyxaas_aas_source=/usr/share/config/Heater_AAS.aasx
+        - waiting_for=[{"host":"registry","port":"4000"}]
+        - basyxcontext_accesscontrolalloworigin=*
+        
+  gui: 
+    image: eclipsebasyx/aas-gui:v230113
+    container_name: aasGui-device-integration 
+    ports:
+        - 3000:3000
+        
+  databridge:
+    image: eclipsebasyx/databridge:1.0.0-milestone-01
+    container_name: databridge-device-integration
+    volumes:
+      - ./databridge:/usr/share/config
