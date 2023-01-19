@@ -45,8 +45,8 @@ import org.eclipse.basyx.vab.modelprovider.lambda.VABLambdaProviderHelper;
 import org.eclipse.basyx.vab.protocol.http.server.BaSyxContext;
 import org.eclipse.basyx.vab.protocol.http.server.BaSyxHTTPServer;
 import org.eclipse.basyx.vab.protocol.http.server.VABHTTPInterface;
-import org.eclipse.paho.client.mqttv3.IMqttClient;
-import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.IMqttAsyncClient;
+import org.eclipse.paho.client.mqttv3.MqttAsyncClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
@@ -73,7 +73,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
  */
 public class HeaterGateway implements IComponent, HeaterChangeListener {
 	private BaSyxHTTPServer heaterServer;
-	private IMqttClient mqttClient;
+	private IMqttAsyncClient mqttClient;
 
 	private GSONTools gsonTools = new GSONTools(new DefaultTypeFactory());
 	private HeaterDevice heater;
@@ -86,8 +86,8 @@ public class HeaterGateway implements IComponent, HeaterChangeListener {
 		mqttClient = createMqttClient();
 	}
 
-	private IMqttClient createMqttClient() throws MqttException {
-		return new MqttClient("tcp://localhost:1884", "device-integration-heater-device");
+	private IMqttAsyncClient createMqttClient() throws MqttException {
+		return new MqttAsyncClient("tcp://localhost:1884", "device-integration-heater-device");
 	}
 
 	private BaSyxHTTPServer createHeaterServer() {
