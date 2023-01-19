@@ -26,6 +26,13 @@
 
 package org.eclipse.basyx.examples.scenarios.deviceintegration;
 
+/**
+ * ChangeListener interface for listening for the current temperature of the
+ * heater device
+ * 
+ * @author schnicke
+ *
+ */
 public interface HeaterChangeListener {
 	public void currentTemperature(int temperature);
 }

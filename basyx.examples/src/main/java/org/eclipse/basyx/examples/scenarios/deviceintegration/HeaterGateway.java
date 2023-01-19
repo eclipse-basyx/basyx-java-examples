@@ -23,7 +23,6 @@
  * SPDX-License-Identifier: MIT
  ******************************************************************************/
 
-
 package org.eclipse.basyx.examples.scenarios.deviceintegration;
 
 import java.util.Collection;

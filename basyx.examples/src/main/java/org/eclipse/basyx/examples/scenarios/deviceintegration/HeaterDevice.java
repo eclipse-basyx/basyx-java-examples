@@ -23,7 +23,6 @@
  * SPDX-License-Identifier: MIT
  ******************************************************************************/
 
-
 package org.eclipse.basyx.examples.scenarios.deviceintegration;
 
 import org.eclipse.basyx.components.IComponent;
@@ -78,16 +77,17 @@ public class HeaterDevice implements IComponent {
 	}
 
 	private void heatingRunner() {
-			while (!stopHeaterThread) {
-				sleep(1000);
-				updateTemperature();
-				notifyTemperature();
-			}
+		while (!stopHeaterThread) {
+			sleep(1000);
+			updateTemperature();
+			notifyTemperature();
+		}
 	}
 
 	private void notifyTemperature() {
-		if (listener == null) return;
-		
+		if (listener == null)
+			return;
+
 		listener.currentTemperature(currentTemperature);
 	}
 
@@ -108,7 +108,7 @@ public class HeaterDevice implements IComponent {
 
 	@Override
 	public void startComponent() {
-			heaterThread.start();
+		heaterThread.start();
 	}
 
 	@Override
