@@ -23,7 +23,7 @@
  * SPDX-License-Identifier: MIT
  ******************************************************************************/
 
-package org.eclipse.basyx.examples.scenarios.deviceintegration;
+package org.eclipse.basyx.examples.heater;
 
 import org.eclipse.basyx.components.IComponent;
 import org.eclipse.paho.client.mqttv3.MqttException;

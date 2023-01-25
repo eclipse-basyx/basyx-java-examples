@@ -24,7 +24,7 @@
  ******************************************************************************/
 
 
-package org.eclipse.basyx.examples.scenarios.deviceintegration;
+package org.eclipse.basyx.examples.heater;
 
 /**
  * ChangeListener interface for listening for the current temperature of the

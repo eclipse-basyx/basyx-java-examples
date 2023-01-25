@@ -1,3 +1,4 @@
+package org.eclipse.basyx.examples.heater;
 /*******************************************************************************
  * Copyright (C) 2023 the Eclipse BaSyx Authors
  * 
@@ -23,29 +24,25 @@
  * SPDX-License-Identifier: MIT
  ******************************************************************************/
 
-package org.eclipse.basyx.examples.scenarios.deviceintegration;
 
 import java.io.IOException;
 
+import org.eclipse.paho.client.mqttv3.IMqttAsyncClient;
+import org.eclipse.paho.client.mqttv3.MqttAsyncClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
-import io.moquette.broker.Server;
-import io.moquette.broker.config.ClasspathResourceLoader;
-import io.moquette.broker.config.IConfig;
-import io.moquette.broker.config.IResourceLoader;
-import io.moquette.broker.config.ResourceLoaderConfig;
-
 /**
- * This scenario starts an MQTT broker on <i>tcp://localhost:1884</i> and a
- * simulated heater device with its gateway component. For detailed
+ * This scenario starts a simulated heater device with its gateway component.
+ * The scenario assumed that the MQTT broker is already running. For detailed
  * documentation of the heater and its HTTP/REST and MQTT interface, see
  * {@link HeaterGateway}.<br>
  * <br>
- * After this scenario is started, the <i>compose.yml</i> file in
- * src/main/resources/deviceintegration can be started via <i>docker compose
- * up</i>. After successful start, the AAS Web GUI available on
- * http://localhost:3000 can be used for interacting with the scenario. As
- * registry endpoint, choose <i>http://localhost:4000/registry</i><br>
+ * Building this project will create a Docker Image for the Heater asset that is
+ * utilized in the the <i>compose.yml</i> file in src/main/resources. By
+ * <i>docker compose up</i>, the complete scenario can be started. After
+ * successful start, the AAS Web GUI available on http://localhost:3000 can be
+ * used for interacting with the scenario. As registry endpoint, choose
+ * <i>http://localhost:4000/registry</i><br>
  * <br>
  * For a detailed documentation, see the BaSyx wiki
  * 
@@ -54,22 +51,10 @@ import io.moquette.broker.config.ResourceLoaderConfig;
  */
 public class DeviceIntegrationScenario {
 	public static void main(String[] args) throws IOException, MqttException {
-		startMqttBroker();
-		startGateway();
+		new HeaterSmartAsset(createMqttClient()).startComponent();
 	}
 
-	private static void startGateway() throws MqttException {
-		HeaterDevice heater = new HeaterDevice();
-		HeaterGateway gateway = new HeaterGateway(heater);
-
-		gateway.startComponent();
+	private static IMqttAsyncClient createMqttClient() throws MqttException {
+		return new MqttAsyncClient("tcp://mqtt:1884", "device-integration-heater-device");
 	}
-
-	private static void startMqttBroker() throws IOException {
-		Server mqttBroker = new Server();
-		IResourceLoader classpathLoader = new ClasspathResourceLoader();
-		final IConfig classPathConfig = new ResourceLoaderConfig(classpathLoader);
-		mqttBroker.startServer(classPathConfig);
-	}
-
 }

@@ -1,4 +1,5 @@
 services:
+
   registry:
     image: eclipsebasyx/aas-registry:1.3.0
     ports:
@@ -25,15 +26,52 @@ services:
         - basyxaas_aas_source=/usr/share/config/Heater_AAS.aasx
         - waiting_for=[{"host":"registry","port":"4000"}]
         - basyxcontext_accesscontrolalloworigin=*
+    depends_on:
+      heaterAsset:
+        condition: service_healthy
+        
+  heaterAsset:
+    image: eclipsebasyx/example-asset:0.0.1
+    ports: 
+        - 8082:8082
+    container_name: asset-device-integration
+    depends_on:
+      mqtt:
+        condition: service_healthy
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider heaterAsset:8082/heater/targetTemperature/last || exit 1
+      interval: 5s
+      retries: 3
+      start_period: 1s
+      timeout: 10s
+
         
   gui: 
     image: eclipsebasyx/aas-gui:v230113
     container_name: aasGui-device-integration 
     ports:
         - 3000:3000
-        
+  
+  mqtt:
+    image: eclipse-mosquitto:2.0.15
+    ports:
+      - 1884:1884
+    volumes:
+      - ./mosquitto:/mosquitto/config
+    healthcheck:
+      test: ["CMD-SHELL", mosquitto_sub -p 1884 -t 'topic' -C 1 -E -i probe -W 3]
+      interval: 5s
+      retries: 3
+      start_period: 1s
+      timeout: 10s   
+  
   databridge:
-    image: eclipsebasyx/databridge:1.0.0-milestone-01
+    image: eclipsebasyx/databridge:1.0.0-milestone-02
     container_name: databridge-device-integration
     volumes:
       - ./databridge:/usr/share/config
+    depends_on:
+      mqtt:
+        condition: service_healthy
+      heaterAsset:
+        condition: service_healthy

@@ -62,3 +62,5 @@ launchSettings.json
 .project
 *.pubxml
 Properties
+*/.classpath
+*/.settings
