@@ -25,7 +25,7 @@ services:
         - basyxcontext_accesscontrolalloworigin=*
 
   gui: 
-    image: eclipsebasyx/aas-gui:v230201
+    image: eclipsebasyx/aas-gui:v230221
     container_name: simple-deployment-aasGui 
     ports:
         - 3000:3000
