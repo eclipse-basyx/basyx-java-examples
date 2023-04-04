@@ -196,7 +196,7 @@ public class AuthorizedRegistryScenario {
 
 		contextConfig.loadFromResource(CLOUD_EDGE_DEPLOYMENT_SCENARIO_CONTEXT_FILE_PATH);
 
-		BaSyxAASServerConfiguration aasServerConfig = new BaSyxAASServerConfiguration(AASServerBackend.INMEMORY, "", REGISTRY_ENDPOINT);
+		BaSyxAASServerConfiguration aasServerConfig = new BaSyxAASServerConfiguration(AASServerBackend.INMEMORY, "");
 		aasServerConfig.enableAuthorization();
 
 		AASServerComponent cloudServer = new AASServerComponent(contextConfig, aasServerConfig);
