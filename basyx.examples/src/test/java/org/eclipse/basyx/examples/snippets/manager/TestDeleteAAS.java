@@ -32,6 +32,8 @@ import org.eclipse.basyx.submodel.metamodel.api.identifier.IdentifierType;
 import org.eclipse.basyx.submodel.metamodel.map.identifier.Identifier;
 import org.eclipse.basyx.vab.exception.provider.ResourceNotFoundException;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Test for the DeleteAAS snippet
@@ -40,6 +42,8 @@ import org.junit.Test;
  *
  */
 public class TestDeleteAAS extends AbstractSnippetTest {
+	
+	private Logger logger = LoggerFactory.getLogger(TestDeleteAAS.class);
 
 	@Test
 	public void testDeleteAAS() {
@@ -48,7 +52,7 @@ public class TestDeleteAAS extends AbstractSnippetTest {
 		IIdentifier aasIdentifier = new Identifier(IdentifierType.CUSTOM, AAS_ID);
 
 		// Delete the AAS
-		DeleteAAS.deleteAAS(aasIdentifier, registryComponent.getRegistryPath());
+		deleteAas(aasIdentifier);
 
 		// Try to retrieve deleted AAS; should throw ResourceNotFoundException
 		try {
@@ -57,6 +61,14 @@ public class TestDeleteAAS extends AbstractSnippetTest {
 		} catch (ResourceNotFoundException e) {
 		}
 
+	}
+
+	private void deleteAas(IIdentifier aasIdentifier) {
+		try {
+			DeleteAAS.deleteAAS(aasIdentifier, registryComponent.getRegistryPath());
+		} catch (ResourceNotFoundException e) {	
+			logger.info("The AAS with id {} has already been unregistered from registry.", aasIdentifier.getId());
+		}
 	}
 
 }
