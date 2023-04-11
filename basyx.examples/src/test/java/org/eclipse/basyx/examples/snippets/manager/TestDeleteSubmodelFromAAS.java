@@ -34,6 +34,8 @@ import org.eclipse.basyx.submodel.metamodel.api.identifier.IdentifierType;
 import org.eclipse.basyx.submodel.metamodel.map.identifier.Identifier;
 import org.eclipse.basyx.vab.exception.provider.ResourceNotFoundException;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Test for the DeleteSubmodelFromAAS snippet
@@ -42,6 +44,8 @@ import org.junit.Test;
  *
  */
 public class TestDeleteSubmodelFromAAS extends AbstractSnippetTest {
+	
+	private Logger logger = LoggerFactory.getLogger(TestDeleteSubmodelFromAAS.class);
 
 	@Test
 	public void testDeleteSubmodel() {
@@ -51,7 +55,7 @@ public class TestDeleteSubmodelFromAAS extends AbstractSnippetTest {
 		IIdentifier smIdentifier = new Identifier(IdentifierType.CUSTOM, SM_ID);
 
 		// Delete the Submodel
-		DeleteSubmodelFromAAS.deleteSubmodelFromAAS(smIdentifier, aasIdentifier, registryComponent.getRegistryPath());
+		deleteSubmodel(aasIdentifier, smIdentifier);
 
 		// Get the AAS as ConnectedAAS
 		ConnectedAssetAdministrationShellManager manager = getManager();
@@ -64,6 +68,14 @@ public class TestDeleteSubmodelFromAAS extends AbstractSnippetTest {
 		} catch (ResourceNotFoundException e) {
 		}
 
+	}
+	
+	private void deleteSubmodel(IIdentifier aasIdentifier, IIdentifier smIdentifier) {
+		try {
+			DeleteSubmodelFromAAS.deleteSubmodelFromAAS(smIdentifier, aasIdentifier, registryComponent.getRegistryPath());
+		} catch (ResourceNotFoundException e) {	
+			logger.info("The Submodel with id {} has already been unregistered from registry.", smIdentifier.getId());
+		}
 	}
 
 }
