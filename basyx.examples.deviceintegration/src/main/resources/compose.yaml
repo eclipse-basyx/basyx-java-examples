@@ -74,7 +74,7 @@ services:
       timeout: 10s   
   
   databridge:
-    image: eclipsebasyx/databridge:1.0.0-milestone-03
+    image: eclipsebasyx/databridge:1.0.0-milestone-06
     container_name: databridge-device-integration
     volumes:
       - ./databridge:/usr/share/config
