@@ -25,9 +25,9 @@ services:
         - basyxcontext_accesscontrolalloworigin=*
 
   gui: 
-    image: eclipsebasyx/aas-gui:v230403
+    image: eclipsebasyx/aas-gui:v230703
     container_name: simple-deployment-aasGui 
     ports:
         - 3000:3000
     environment:
-        -  VITE_REGISTRY_PATH="http://localhost:4000/registry"
+        -  VITE_REGISTRY_PATH="http://localhost:8082/registry"

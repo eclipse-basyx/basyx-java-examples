@@ -53,7 +53,7 @@ services:
 
         
   gui: 
-    image: eclipsebasyx/aas-gui:v230221
+    image: eclipsebasyx/aas-gui:v230703
     container_name: aasGui-device-integration 
     ports:
         - 3000:3000
