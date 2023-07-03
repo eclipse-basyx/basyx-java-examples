@@ -1,0 +1,54 @@
+services:
+  registry:
+    image: eclipsebasyx/aas-registry:1.4.0
+    container_name: mongo-deployment-registry
+    ports:
+        - 8082:4000
+    environment:
+        - basyxregistry_registry_backend=MongoDB
+        - basyxcontext_contextpath=/registry
+        - basyxcontext_contextport=4000
+        - basyxcontext_accesscontrolalloworigin=*
+        - basyxmongodb_dbname=admin
+        - basyxmongodb_dbconnectionstring=mongodb://mongo:27017/
+        - basyxmongodb_dbcollectioregistry=basyxregistry 
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+  mongo:
+    image: mongo:5.0.10
+    container_name: mongo-deployment-mongo
+    environment:
+        - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
+        - ME_CONFIG_MONGODB_ADMINPASSWORD= admin
+        - ME_CONFIG_MONGODB_URL= mongodb://admin:admin@mongo:27017/
+    healthcheck:
+      test: mongo
+      interval: 10s
+      retries: 5
+      start_period: 1s
+      timeout: 5s
+    ports:
+      - 27017:27017
+
+  aas:
+    image: eclipsebasyx/aas-server:1.4.0
+    container_name: mongo-deployment-aas
+    ports:
+        - 4001:4001
+    environment:
+        - basyxaas_registry_path=http://registry:4000/registry/
+        - basyxaas_aas_backend=MongoDB
+        - basyxcontext_contextpath=/aasServer
+        - basyxcontext_contextport=4001
+        - basyxaas_aas_source=aasx/01_Festo.aasx
+        - waiting_for=[{"host":"registry","port":"4000"}]
+        - basyxcontext_accesscontrolalloworigin=*
+        - basyxmongodb_dbname=admin
+        - basyxmongodb_dbconnectionstring=mongodb://mongo:27017/
+        - basyxmongodb_dbcollectionaas=basyxaas
+        - basyxmongodb_dbcollectionsubmodels=basyxsubmodel 
+    depends_on:
+      mongo:
+        condition: service_healthy
