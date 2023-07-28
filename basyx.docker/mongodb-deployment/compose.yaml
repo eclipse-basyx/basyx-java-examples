@@ -11,7 +11,7 @@ services:
         - basyxcontext_accesscontrolalloworigin=*
         - basyxmongodb_dbname=admin
         - basyxmongodb_dbconnectionstring=mongodb://mongo:27017/
-        - basyxmongodb_dbcollectioregistry=basyxregistry 
+        - basyxmongodb_dbcollectionregistry=basyxregistry 
     depends_on:
       mongo:
         condition: service_healthy
