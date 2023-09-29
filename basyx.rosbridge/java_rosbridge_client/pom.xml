@@ -1,0 +1,43 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.ipr.fabos</groupId>
+  <artifactId>java-rosbridge-client</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>java-rosbridge-client</name>
+
+
+	<properties>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
+ 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<dependencies>
+
+		<dependency>
+	    	<groupId>javax.websocket</groupId>
+	    	<artifactId>javax.websocket-api</artifactId>
+		    <version>1.1</version>
+		</dependency>
+		
+		<dependency>
+    		<groupId>org.glassfish.tyrus</groupId>
+    		<artifactId>tyrus-server</artifactId>
+    		<version>1.17</version>
+		</dependency>
+
+		<dependency>
+    		<groupId>com.google.code.gson</groupId>
+   			<artifactId>gson</artifactId>
+    		<version>2.9.0</version>
+		</dependency>
+
+
+  </dependencies>
+
+	<modules>
+		<module>java_rosbridge_client.core</module>
+		<module>java_rosbridge_client.communication</module>
+	</modules>
+</project>
