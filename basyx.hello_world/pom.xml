@@ -32,7 +32,7 @@
 		<dependency>
 			<groupId>org.eclipse.basyx</groupId>
 			<artifactId>basyx.components.lib</artifactId>
-			<version>1.4.0</version>
+			<version>1.5.0</version>
 		</dependency>
 		
 		<!-- Add Registry Server component dependency -->
