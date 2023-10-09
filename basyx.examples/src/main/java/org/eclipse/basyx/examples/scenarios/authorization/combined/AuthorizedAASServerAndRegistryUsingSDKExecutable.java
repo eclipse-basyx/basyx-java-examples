@@ -43,8 +43,8 @@ import org.eclipse.basyx.extensions.aas.aggregator.authorization.internal.Simple
 import org.eclipse.basyx.extensions.aas.api.authorization.internal.AuthorizedDecoratingAASAPIFactory;
 import org.eclipse.basyx.extensions.aas.api.authorization.internal.GrantedAuthorityAASAPIAuthorizer;
 import org.eclipse.basyx.extensions.aas.api.authorization.internal.SimpleRbacAASAPIAuthorizer;
-import org.eclipse.basyx.extensions.aas.registration.authorization.internal.AuthorizedAASRegistry;
 import org.eclipse.basyx.extensions.aas.registration.authorization.AuthorizedAASRegistryProxy;
+import org.eclipse.basyx.extensions.aas.registration.authorization.internal.AuthorizedAASRegistry;
 import org.eclipse.basyx.extensions.aas.registration.authorization.internal.GrantedAuthorityAASRegistryAuthorizer;
 import org.eclipse.basyx.extensions.aas.registration.authorization.internal.SimpleRbacAASRegistryAuthorizer;
 import org.eclipse.basyx.extensions.shared.authorization.internal.AuthenticationContextProvider;
@@ -147,6 +147,7 @@ public class AuthorizedAASServerAndRegistryUsingSDKExecutable {
 
 	private BaSyxContextConfiguration registryContextConfig;
 
+	@SuppressWarnings("unchecked")
 	private <T> void startRegistry() {
 		registryContextConfig = SharedConfig.getRegistryContextConfig();
 		final BaSyxContext basyxContext = registryContextConfig.createBaSyxContext();
@@ -189,6 +190,7 @@ public class AuthorizedAASServerAndRegistryUsingSDKExecutable {
 		return new org.eclipse.basyx.components.registry.authorization.internal.Authorizers<>(new GrantedAuthorityAASRegistryAuthorizer<>(authenticator), null);
 	}
 
+	@SuppressWarnings("unchecked")
 	private <T> void createAASServer() {
 		final BaSyxContext basyxContext = aasServerContextConfig.createBaSyxContext();
 
