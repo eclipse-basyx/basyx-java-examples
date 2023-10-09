@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.eclipse.basyx</groupId>
 		<artifactId>basyx.components.docker</artifactId>
-		<version>1.2.0</version>
+		<version>1.5.0</version>
 	</parent>
 	
 	<artifactId>basyx.components.AASWrapper</artifactId>

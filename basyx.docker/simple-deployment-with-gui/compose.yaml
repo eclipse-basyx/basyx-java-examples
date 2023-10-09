@@ -1,14 +1,14 @@
 services:
   registry:
+    container_name: example-registry
     image: eclipsebasyx/aas-registry:1.4.0
     ports:
-        - 8082:4000
+        - 4000:4000
     environment:
         - basyxregistry_registry_backend=InMemory
         - basyxcontext_contextpath=/registry
         - basyxcontext_contextport=4000
         - basyxcontext_accesscontrolalloworigin=*
-    container_name: simple-deployment-registry
 
   aas:
     image: eclipsebasyx/aas-server:1.4.0
@@ -30,4 +30,4 @@ services:
     ports:
         - 3000:3000
     environment:
-        -  VITE_REGISTRY_PATH="http://localhost:8082/registry"
+        -  VITE_REGISTRY_PATH="http://localhost:4000/registry"
