@@ -1,0 +1,87 @@
+services:
+
+  registry:
+    image: eclipsebasyx/aas-registry:1.4.0
+    ports:
+        - 4000:4000
+    environment:
+        - basyxregistry_registry_backend=InMemory
+        - basyxcontext_contextpath=/registry
+        - basyxcontext_contextport=4000
+        - basyxcontext_accesscontrolalloworigin=*
+    container_name: registry-device-integration
+
+  aas:
+    image: eclipsebasyx/aas-server:1.4.0
+    container_name: aas-device-integration
+    volumes:
+      - ./aasServer:/usr/share/config
+    ports:
+        - 4001:4001
+    environment:
+        - basyxaas_registry_path=http://registry:4000/registry/
+        - basyxaas_aas_backend=InMemory
+        - basyxcontext_contextpath=/aasServer
+        - basyxcontext_contextport=4001
+        - basyxaas_aas_source=/usr/share/config/Heater_AAS.aasx
+        - waiting_for=[{"host":"registry","port":"4000"}]
+        - basyxcontext_accesscontrolalloworigin=*
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider aas:4001/health || exit 1
+      interval: 5s
+      retries: 3
+      start_period: 1s
+      timeout: 10s
+    depends_on:
+      heaterAsset:
+        condition: service_healthy
+        
+  heaterAsset:
+    image: eclipsebasyx/example-asset:0.0.1
+    ports: 
+        - 8082:8082
+    container_name: asset-device-integration
+    depends_on:
+      mqtt:
+        condition: service_healthy
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider heaterAsset:8082/heater/targetTemperature/last || exit 1
+      interval: 5s
+      retries: 3
+      start_period: 1s
+      timeout: 10s
+
+        
+  gui: 
+    image: eclipsebasyx/aas-gui:v230703
+    container_name: aasGui-device-integration 
+    ports:
+        - 3000:3000
+    environment:
+    -  VITE_REGISTRY_PATH="http://localhost:4000/registry"
+  
+  mqtt:
+    image: eclipse-mosquitto:2.0.15
+    ports:
+      - 1884:1884
+    volumes:
+      - ./mosquitto:/mosquitto/config
+    healthcheck:
+      test: ["CMD-SHELL", mosquitto_sub -p 1884 -t 'topic' -C 1 -E -i probe -W 3]
+      interval: 5s
+      retries: 3
+      start_period: 1s
+      timeout: 10s   
+  
+  databridge:
+    image: eclipsebasyx/databridge:1.0.0-milestone-06
+    container_name: databridge-device-integration
+    volumes:
+      - ./databridge:/usr/share/config
+    depends_on:
+      aas:
+        condition: service_healthy
+      mqtt:
+        condition: service_healthy
+      heaterAsset:
+        condition: service_healthy

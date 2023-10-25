@@ -1,0 +1,7 @@
+[
+	{
+		"uniqueId": "TemperatureSubmodel",
+		"submodelEndpoint": "http://host.docker.internal:4001/aasServer/shells/heaterAAS/aas/submodels/temperatureSensor/submodel",
+		"idShortPath": "currentTemperature"
+	}
+]
