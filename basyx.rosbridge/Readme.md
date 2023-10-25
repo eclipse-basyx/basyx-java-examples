@@ -126,16 +126,16 @@ with the following body
 For ROS, the answer can be found in the official ROS documentation (see http://wiki.ros.org/ROS/Tutorials/CreatingMsgAndSrv). For using basyx_ros_bridge, examples 
 can be found in "java_rosbridge_client.communication", where Java variants of all common ROS messages and services are available. Important notes on creating
 new message/service files in Java can be found below. 
-Important Point 1: The files should be located inside a package that is equivalently named to ROS.
+- Important Point 1: The files should be located inside a package that is equivalently named to ROS.
 If ROS messages are e.g. found under std_msgs and in Java under all_msgs/std_msgs, the pipeline will not work and the
 error message "[...] is not a valid type string" can be observed in the terminal under ROS executing rosbridge_websocket.
-Important Point 2: Unsigned integers in ROS messages/services are always treated as signed ones of the next higher size in Java when using
+- Important Point 2: Unsigned integers in ROS messages/services are always treated as signed ones of the next higher size in Java when using
 the pipeline --> uint8 becomes Short, and so on. Furthermore, not the pimitive datatypes, but the corresponding classes (e.g. Float instead of float) must be used.
-Important Point 3: A Java implementation of a ROS message must always inherit from "RosMessage" and be named like the message in ROS.
-Important Point 4: A Java implementation of a ROS service always consist of 3 parts: One named like the service itself and inheriting from "RosService", and two more
+- Important Point 3: A Java implementation of a ROS message must always inherit from "RosMessage" and be named like the message in ROS.
+- Important Point 4: A Java implementation of a ROS service always consist of 3 parts: One named like the service itself and inheriting from "RosService", and two more
 representing the arguments/response of the service, inheriting from "RosServiceArgs"/"RosServiceResp". The class inheriting from "RosService" also needs to have a custom constructor,
 where the classes implementing the arguments/response need to be set. Orient yourself on the examples, e.g. in "std_srv" of "java_rosbridge_client.communication".
-Important Point 5: Name all elements of a message/service exactly like in ROS. Do not follow Java naming conventions here.
+- Important Point 5: Name all elements of a message/service exactly like in ROS. Do not follow Java naming conventions here.
 
 
 **Class XYZ (from some of the packages) is not found, import does not work. What to do?**
@@ -147,5 +147,8 @@ java_rosbridge_client.core and your Maven project should resolve the issue.
 
 Patrick Schlosser, IAR-IPR, Karlsruhe Institute of Technology
 
-This work was funded by the German Federal Ministry for Economic
-Affairs and Climate Action in the research project ’FabOS’
+# Funding
+
+This work was created as part of the research project ’FabOS’,
+funded by the German Federal Ministry for Economic
+Affairs and Climate Action
