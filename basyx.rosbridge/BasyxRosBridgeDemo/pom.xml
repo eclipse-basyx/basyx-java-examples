@@ -1,0 +1,64 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>BasyxRosBridgeDemo</groupId>
+  <artifactId>BasyxRosBridgeDemo</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>BasyxRosBridgeDemo</name>
+
+	<properties>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
+ 		<project.build.sourceEncoding>Cp1252</project.build.sourceEncoding>
+	</properties>
+
+	<dependencies>
+		<dependency>
+    		<groupId>org.ipr.fabos</groupId>
+    		<artifactId>basyx_ros_bridge</artifactId>
+    		<version>0.0.1-SNAPSHOT</version>
+  		</dependency>
+
+		<dependency>
+    		<groupId>org.ipr.fabos</groupId>
+    		<artifactId>java_rosbridge_client.core</artifactId>
+    		<version>0.0.1-SNAPSHOT</version>
+  		</dependency>
+
+		<dependency>
+    		<groupId>org.ipr.fabos</groupId>
+    		<artifactId>java_rosbridge_client.communication</artifactId>
+    		<version>0.0.1-SNAPSHOT</version>
+  		</dependency>
+
+
+<!-- Add BaSys components from local repository. Maven build of SDK must generate a jar and place it into the repository to update -->
+		<dependency>
+			<groupId>org.eclipse.basyx</groupId>
+			<artifactId>basyx.components.lib</artifactId>
+			<version>1.3.0</version>
+		</dependency>
+		
+		<!-- Add explicit SQLRegistry dependency -->
+		<dependency>
+			<groupId>org.eclipse.basyx</groupId>
+			<artifactId>basyx.components.registry</artifactId>
+			<version>1.3.0</version>
+		</dependency>
+				
+		<!-- Add explicit AAS Server component dependency -->
+		<dependency>
+			<groupId>org.eclipse.basyx</groupId>
+			<artifactId>basyx.components.AASServer</artifactId>
+			<version>1.3.0</version>
+		</dependency>
+		
+		<!-- Adds additional classes of the BaSys SDK for tests -->
+		<dependency>
+			<groupId>org.eclipse.basyx</groupId>
+			<artifactId>basyx.sdk</artifactId>
+			<version>1.3.0</version>
+			<classifier>tests</classifier>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>
