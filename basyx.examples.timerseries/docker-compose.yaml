@@ -1,0 +1,52 @@
+version: "3.8"
+services:
+  # AAS Server
+  aas:
+    image: eclipsebasyx/aas-server:1.5.0
+    container_name: aas-timeseries
+    ports:
+      - 4001:4001
+
+  ## AAS Registry
+  registry:
+    image: eclipsebasyx/aas-registry:1.5.0
+    container_name: registry-timeseries
+    ports:
+      - 4000:4000
+
+  ## InfluxDB
+  influxdb:
+    image: influxdb:2.6-alpine
+    container_name: influxdb
+    volumes:
+      - ./influxdb/var/lib/influxdb2:/var/lib/influxdb2:rw
+      - ./influxdb/config.yml:/etc/influxdb2/config.yml:rw
+      - ./influxdb/scripts:/docker-entrypoint-initdb.d:rw
+    env_file:
+      - ./influxdb/.env
+    entrypoint: [ "./entrypoint.sh" ]
+    ports:
+      - 8086:8086
+
+  ## data uploader
+  dlsdata:
+    image: python:3.8-alpine
+    container_name: airsensordata
+    volumes:
+      - ./influxdb/data_scripts:/usr/src/influxdbclient
+    command: sh -c "echo 'hello' && pip install influxdb-client && cd /usr/src/influxdbclient && python3 client.py"
+    depends_on:
+      - influxdb
+
+  # Time series submode
+  timeseries_submodel:
+    image: eclipsebasyx/timeseries-example:0.1.0
+    container_name: timeseries-submodel
+    build:
+      context: .
+    ports:
+      - 8002:8002
+    depends_on:
+      - aas
+      - registry
+      - influxdb
