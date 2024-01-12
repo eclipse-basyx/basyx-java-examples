@@ -1,6 +1,8 @@
 # Eclipse BaSyx Java Examples
 [![BaSyx Logo](https://www.eclipse.org/basyx/img/basyxlogo.png)](https://www.eclipse.org/basyx/)
 
+This repository contains BaSyx Java V1. If you're looking for BaSyx Java V2, see [here](https://github.com/eclipse-basyx/basyx-java-server-sdk).
+
 The Eclipse BaSyx Java Examples are part of the [Eclipse BaSyx middleware](https://www.eclipse.org/basyx/). They have been created within the [BaSys](https://www.basys40.de/) project and showcase the utilization of code and components provided by the [BaSyx Java SDK](https://github.com/eclipse-basyx/basyx-java-sdk) and [BaSyx Java Components](https://github.com/eclipse-basyx/basyx-java-components).
 ## Eclipse Wiki
 A detailed technical and user documentation can be found in the [Eclipse BaSyx wiki](https://wiki.eclipse.org/BaSyx). For the Java SDK, you can find instructions about [how to install](https://wiki.eclipse.org/BaSyx_/_Download_/_Java_Setup) and find [introductory](https://wiki.eclipse.org/BaSyx_/_Introductory_Examples) and [extended](https://wiki.eclipse.org/BaSyx_/_Examples) code examples and further [scenarios](https://wiki.eclipse.org/BaSyx_/_Scenarios). Also, see the description of the individual [components and their API](https://wiki.eclipse.org/BaSyx_/_Documentation_/_API).
