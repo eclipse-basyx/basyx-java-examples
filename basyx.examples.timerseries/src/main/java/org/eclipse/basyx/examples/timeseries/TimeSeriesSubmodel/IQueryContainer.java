@@ -29,6 +29,9 @@ import java.time.Instant;
 import java.util.HashMap;
 
 /* 
+ * A Class that implements this interface
+ * can act as a container of influxDB queried data
+ * 
  * author Al-Obaidi
  */
 public interface IQueryContainer {

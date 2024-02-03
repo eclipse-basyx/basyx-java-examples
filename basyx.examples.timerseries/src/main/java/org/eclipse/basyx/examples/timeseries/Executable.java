@@ -48,7 +48,7 @@ import org.eclipse.basyx.vab.protocol.http.server.BaSyxContext;
 import org.eclipse.basyx.vab.protocol.http.server.BaSyxHTTPServer;
 import org.eclipse.basyx.vab.protocol.http.server.VABHTTPInterface;
 
-import org.eclipse.basyx.examples.timeseries.TimeSeriesSubmodel.TimeSeriesSubmodel;
+import org.eclipse.basyx.examples.timeseries.TimeSeriesSubmodel.TimeSeriesSubmodelFactory;
 
 /*
  * Builds an AirSensor AAS from the provided AirSensor.aasx
@@ -82,11 +82,6 @@ public class Executable {
         waitUntilRegistryIsReady(registryProxy);
         waitUntilEndpointIsReady(AASSERVER_ENDPOINT + "/shells");
 
-        TimeSeriesSubmodel timeSeriesAirSensorSm = new TimeSeriesSubmodel(TimeSeriesSubmodel.Database.influxDB,
-                AASX_PATH,
-                AAS_ID_SHORT);
-        Submodel timeSeriesSubmodel = timeSeriesAirSensorSm.instantiateTimeSeriesSubmodel(AirSensor.class);
-
         ConnectedAssetAdministrationShellManager aasManager = new ConnectedAssetAdministrationShellManager(
                 registryProxy);
 
@@ -95,22 +90,17 @@ public class Executable {
         AssetAdministrationShell AirSensorAAS = (AssetAdministrationShell) AirSensorAasxBundle.getAAS();
         aasManager.createAAS(AirSensorAAS, AASSERVER_ENDPOINT);
 
-        BaSyxContext context = new BaSyxContext("/AirSensor", "", "localhost",
-                8002);
-        SubmodelProvider smOperationsProvider = new SubmodelProvider(timeSeriesSubmodel);
-        HttpServlet smOperationsServlet = new VABHTTPInterface<IModelProvider>(smOperationsProvider);
-        context.addServletMapping("/TimeSeries/*", smOperationsServlet);
+        TimeSeriesSubmodelFactory timeSeriesFactory = new TimeSeriesSubmodelFactory(
+                TimeSeriesSubmodelFactory.Database.influxDB,
+                AASX_PATH,
+                AAS_ID_SHORT);
+        Submodel airSensorTimeSeriesSubmodel = timeSeriesFactory.createTimeSeriesSubmodel(AirSensor.class);
 
-        // add submodel to aas
-        aasManager.retrieveAAS(AirSensorAAS.getIdentification()).addSubmodel(timeSeriesSubmodel);
-        // register submodel
+        aasManager.retrieveAAS(AirSensorAAS.getIdentification()).addSubmodel(airSensorTimeSeriesSubmodel);
         registryProxy.register(AirSensorAAS.getIdentification(),
-                new SubmodelDescriptor(timeSeriesSubmodel,
+                new SubmodelDescriptor(airSensorTimeSeriesSubmodel,
                         TIMESERIES_SUBMODEL_ENDPOINT));
-
-        context.setAccessControlAllowOrigin("*"); // accessible from anywhere
-        BaSyxHTTPServer server = new BaSyxHTTPServer(context);
-        server.start();
+        startTimeSeriesSubmodelServer(airSensorTimeSeriesSubmodel);
     }
 
     /*
@@ -148,6 +138,17 @@ public class Executable {
                 Thread.sleep(5000);
             }
         }
+    }
+
+    private static void startTimeSeriesSubmodelServer(Submodel timeSeriesSubmodel) {
+        BaSyxContext context = new BaSyxContext("/AirSensor", "", "localhost",
+                8002);
+        SubmodelProvider smOperationsProvider = new SubmodelProvider(timeSeriesSubmodel);
+        HttpServlet smOperationsServlet = new VABHTTPInterface<IModelProvider>(smOperationsProvider);
+        context.addServletMapping("/TimeSeries/*", smOperationsServlet);
+        context.setAccessControlAllowOrigin("*"); // accessible from anywhere
+        BaSyxHTTPServer server = new BaSyxHTTPServer(context);
+        server.start();
     }
 
 }

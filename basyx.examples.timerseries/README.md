@@ -1,6 +1,6 @@
 # BaSyx Time Series example
 
-This is an example a query operation implementation in a time series submodel according to the proposed operations from the [IDTA TimeSeries Submodel](https://github.com/admin-shell-io/submodel-templates/tree/main/published/Time%20Series%20Data/1/1) with influxDB as the database.
+This is an example of a query operation implementation in a time series submodel according to the proposed operations from the [IDTA TimeSeries Submodel](https://github.com/admin-shell-io/submodel-templates/tree/main/published/Time%20Series%20Data/1/1) with influxDB as the database.
 
 The example has two implementations of the query operation
 

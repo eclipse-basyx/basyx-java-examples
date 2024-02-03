@@ -48,7 +48,7 @@ import org.eclipse.basyx.examples.timeseries.AASXImporter;
  * 
  * author Al-Obaidi
  */
-public class TimeSeriesSubmodel {
+public class TimeSeriesSubmodelFactory {
 
     private static final String TIMESERIES_SUBMODEL_IDSHORT = "TimeSeries";
     private static final String METADATA_SME_IDSHORT = "Metadata";
@@ -65,7 +65,7 @@ public class TimeSeriesSubmodel {
     private Database database;
     private java.lang.Class<IQueryContainer> queryContainer;
 
-    public TimeSeriesSubmodel(Database db, String pathToAas, String AasIdShort)
+    public TimeSeriesSubmodelFactory(Database db, String pathToAas, String AasIdShort)
             throws Exception {
         AASBundle submodelSpecAAS = AASXImporter.getAasFromAasx(pathToAas,
                 AasIdShort);
@@ -87,17 +87,17 @@ public class TimeSeriesSubmodel {
         queryContainer = (Class<IQueryContainer>) c;
     }
 
-    public <T extends IQueryContainer> Submodel instantiateTimeSeriesSubmodel(java.lang.Class<T> c) throws Exception {
+    public <T extends IQueryContainer> Submodel createTimeSeriesSubmodel(java.lang.Class<T> c) throws Exception {
         switch (database) {
             case influxDB:
                 setAnnotatedClass(c);
-                return instantiateInfluxDBTimeSeriesSubmodel();
+                return createInfluxDBTimeSeriesSubmodel();
             default:
                 throw new Exception("Query operations not implemented for " + database.toString());
         }
     }
 
-    private Submodel instantiateInfluxDBTimeSeriesSubmodel() throws Exception {
+    private Submodel createInfluxDBTimeSeriesSubmodel() throws Exception {
         if (!queryContainer.isAnnotationPresent(Measurement.class)) {
             throw new Exception(
                     "You have to use setAnnotatedClass method to provide a class annotated with com.influxdb.annotations.Measurement");
@@ -110,9 +110,7 @@ public class TimeSeriesSubmodel {
                 .getSubmodelElement(METADATA_SME_IDSHORT)).getSubmodelElement(NAME_SME_IDSHORT)).getValue().get("en");
 
         // Expects range of time in ISO UTC, ex: '2011-12-03T10:15:30Z'
-        InfluxDBInvokables dbInvokables = new InfluxDBInvokables(recordName,
-                recordMetadata,
-                queryContainer);
+        InfluxDBInvokables dbInvokables = new InfluxDBInvokables(recordName, recordMetadata, queryContainer);
         Function<Object[], Object> readRecordsInvokable = dbInvokables.setupReadRecordsInvokable();
         ((Operation) timeSeriesSm.getOperations().get(READRECORDS_OPERATION_IDSHORT))
                 .setInvokable(readRecordsInvokable);

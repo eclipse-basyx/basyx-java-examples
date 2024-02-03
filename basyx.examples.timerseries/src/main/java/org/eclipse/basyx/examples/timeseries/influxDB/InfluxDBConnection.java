@@ -33,6 +33,8 @@ import com.influxdb.client.QueryApi;
 import com.influxdb.query.FluxTable;
 
 /*
+ * convenience class for creating connection to
+ * inlfuxDB
  * author Al-Obaidi
  */
 public class InfluxDBConnection {
@@ -88,7 +90,6 @@ public class InfluxDBConnection {
     public List<FluxTable> queryData(String query) {
         QueryApi queryApi = client.getQueryApi();
         return queryApi.query(query);
-
     }
 
     /*

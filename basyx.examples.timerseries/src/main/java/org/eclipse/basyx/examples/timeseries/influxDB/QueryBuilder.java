@@ -26,6 +26,8 @@
 package org.eclipse.basyx.examples.timeseries.influxDB;
 
 /*
+ * Builds an influxDB query
+ * and provides methods for adding filters, and pivots
  * author Al-Obaidi
  */
 public class QueryBuilder {

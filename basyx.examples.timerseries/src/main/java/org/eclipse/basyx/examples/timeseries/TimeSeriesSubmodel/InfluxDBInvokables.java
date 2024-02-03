@@ -49,12 +49,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 
 public class InfluxDBInvokables {
-    final static String INFLUXDB_TOKEN = "d28e8bebb73e59c0cd88e8a1ac7855aa";
-    final static String INFLUXDB_BUCKET = "airsensors";
-    final static String INFLUXDB_ORG = "basyx";
-    final static String INFLUXDB_URL = "http://influxdb:8086";
-    final static String PIVOT_RULE = "rowKey: [\"_time\"], columnKey: [\"_field\"],valueColumn: \"_value\"";
-    final static String FILTER_RULE = "fn: (r) => r._measurement == \"%s\"";
+    static final String INFLUXDB_TOKEN = "d28e8bebb73e59c0cd88e8a1ac7855aa";
+    static final String INFLUXDB_BUCKET = "airsensors";
+    static final String INFLUXDB_ORG = "basyx";
+    static final String INFLUXDB_URL = "http://influxdb:8086";
+    static final String PIVOT_RULE = "rowKey: [\"_time\"], columnKey: [\"_field\"],valueColumn: \"_value\"";
+    static final String FILTER_RULE = "fn: (r) => r._measurement == \"%s\"";
+
     private InfluxDBConnection inConn;
     private String recordName;
     private SubmodelElementCollection recordMetadata;
@@ -66,9 +67,7 @@ public class InfluxDBInvokables {
         this.recordMetadata = recordMetadata;
         this.queryContainer = queryContainer;
         inConn = new InfluxDBConnection(INFLUXDB_URL,
-                INFLUXDB_TOKEN, INFLUXDB_TOKEN,
-                INFLUXDB_ORG);
-
+                INFLUXDB_TOKEN, INFLUXDB_TOKEN, INFLUXDB_ORG);
     }
 
     public Function<Object[], Object> setupReadRecordsInvokable() {
@@ -103,11 +102,13 @@ public class InfluxDBInvokables {
         String[] timeSpanAsArray = timeSpan[0].toString().split(",", 0);
         String from = timeSpanAsArray[0].split("=")[1].strip();
         String to = timeSpanAsArray[1].replace("}", "").split("=")[1].strip();
-        // This doesn't work at
+
+        // This doesn't seem to work
         // RangeValue timeRangeValue = RangeValue.createAsFacade(timeSpan)
         // timeSpan[0]);
         // String from = timeRangeValue.getMin().toString();
         // String to = timeRangeValue.getMax().toString();
+
         QueryBuilder fluxQueryBuilder = new QueryBuilder(INFLUXDB_BUCKET);
         fluxQueryBuilder.timeFilter(from,
                 to);
@@ -123,30 +124,15 @@ public class InfluxDBInvokables {
         SubmodelElementCollection outputRecords = new SubmodelElementCollection("Records");
         long c = 0;
         for (IQueryContainer dataContainer : dataContainers) {
-            SubmodelElementCollection record = new SubmodelElementCollection("rec" + Long.toString(c));
-            Property time = (Property) recordMetadata.getSubmodelElement("Time").getLocalCopy();
-            time.setKind(ModelingKind.INSTANCE);
-            time.setValue(dataContainer.getTime().toString());
-            record.addSubmodelElement(time);
-
-            // time is not included in this map
-            HashMap<String, Object> dataContainerFields = dataContainer.getFieldsMap();
-
-            recordMetadata.getSubmodelElements().forEach((name, variable) -> {
-                if (!name.equals("Time")) {
-                    Property element = (Property) variable.getLocalCopy();
-                    element.setValue(dataContainerFields.get(name));
-                    record.addSubmodelElement(element);
-                }
-            });
-            outputRecords.addSubmodelElement(record);
+            String recordName = "rec" + Long.toString(c);
+            outputRecords.addSubmodelElement(createDataRecordSMC(dataContainer, recordName));
             c++;
         }
         return outputRecords.getSubmodelElements();
     }
 
     private String influxDbQueryToRecordsProperty(List<IQueryContainer> dataContainers)
-            throws IllegalArgumentException, IllegalAccessException, JsonProcessingException {
+            throws IllegalArgumentException, JsonProcessingException, IllegalAccessException {
         List<Map<String, Object>> queryResult = new ArrayList<>();
         for (IQueryContainer dataContainer : dataContainers) {
             Map<String, Object> dataContainerMap = dataContainer.getFieldsMap();
@@ -154,8 +140,27 @@ public class InfluxDBInvokables {
             queryResult.add(dataContainerMap);
         }
         ObjectMapper objMapper = new ObjectMapper();
-        String json = objMapper.writeValueAsString(queryResult);
-        return json;
+        return objMapper.writeValueAsString(queryResult);
     }
 
+    private SubmodelElementCollection createDataRecordSMC(IQueryContainer dataContainer, String recordName)
+            throws IllegalAccessException {
+        SubmodelElementCollection record = new SubmodelElementCollection();
+        Property time = (Property) recordMetadata.getSubmodelElement("Time").getLocalCopy();
+        time.setKind(ModelingKind.INSTANCE);
+        time.setValue(dataContainer.getTime().toString());
+        record.addSubmodelElement(time);
+
+        // time is not included in this map
+        HashMap<String, Object> dataContainerFields = dataContainer.getFieldsMap();
+
+        recordMetadata.getSubmodelElements().forEach((name, variable) -> {
+            if (!name.equals("Time")) {
+                Property element = (Property) variable.getLocalCopy();
+                element.setValue(dataContainerFields.get(name));
+                record.addSubmodelElement(element);
+            }
+        });
+        return record;
+    }
 }
