@@ -1,7 +1,10 @@
-# Eclipse BaSyx Java Examples
+# Eclipse BaSyx Java V1 Examples
 [![BaSyx Logo](https://www.eclipse.org/basyx/img/basyxlogo.png)](https://www.eclipse.org/basyx/)
 
-This repository contains BaSyx Java V1. If you're looking for BaSyx Java V2, see [here](https://github.com/eclipse-basyx/basyx-java-server-sdk).
+> [!WARNING]
+> This repository contains BaSyx Java V1.
+>
+> We recommend to use [BaSyx Java V2](https://github.com/eclipse-basyx/basyx-java-server-sdk) to ensure compatibility to the latest specifications of IDTA.
 
 The Eclipse BaSyx Java Examples are part of the [Eclipse BaSyx middleware](https://www.eclipse.org/basyx/). They have been created within the [BaSys](https://www.basys40.de/) project and showcase the utilization of code and components provided by the [BaSyx Java SDK](https://github.com/eclipse-basyx/basyx-java-sdk) and [BaSyx Java Components](https://github.com/eclipse-basyx/basyx-java-components).
 ## Eclipse Wiki
