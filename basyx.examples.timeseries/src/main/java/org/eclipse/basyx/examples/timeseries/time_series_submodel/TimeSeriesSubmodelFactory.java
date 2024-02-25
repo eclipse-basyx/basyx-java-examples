@@ -23,7 +23,7 @@
  * SPDX-License-Identifier: MIT
  ******************************************************************************/
 
-package org.eclipse.basyx.examples.timeseries.TimeSeriesSubmodel;
+package org.eclipse.basyx.examples.timeseries.time_series_submodel;
 
 import java.util.function.Function;
 
@@ -111,14 +111,12 @@ public class TimeSeriesSubmodelFactory {
 
         // Expects range of time in ISO UTC, ex: '2011-12-03T10:15:30Z'
         InfluxDBInvokables dbInvokables = new InfluxDBInvokables(recordName, recordMetadata, queryContainer);
-        Function<Object[], Object> readRecordsInvokable = dbInvokables.setupReadRecordsInvokable();
         ((Operation) timeSeriesSm.getOperations().get(READRECORDS_OPERATION_IDSHORT))
-                .setInvokable(readRecordsInvokable);
+                .setInvokable(dbInvokables.setupReadRecordsInvokable());
 
         // Expects range of time in ISO UTC, ex: '2011-12-03T10:15:30Z'
-        Function<Object[], Object> readRecordsShortInvokable = dbInvokables.setupReadRecordsShortInvokable();
         ((Operation) timeSeriesSm.getOperations().get(READRECORDSSHORT_OPERATION_IDSHORT))
-                .setInvokable(readRecordsShortInvokable);
+                .setInvokable(dbInvokables.setupReadRecordsShortInvokable());
         return (Submodel) timeSeriesSm;
     }
 

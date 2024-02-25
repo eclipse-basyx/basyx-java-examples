@@ -48,7 +48,7 @@ import org.eclipse.basyx.vab.protocol.http.server.BaSyxContext;
 import org.eclipse.basyx.vab.protocol.http.server.BaSyxHTTPServer;
 import org.eclipse.basyx.vab.protocol.http.server.VABHTTPInterface;
 
-import org.eclipse.basyx.examples.timeseries.TimeSeriesSubmodel.TimeSeriesSubmodelFactory;
+import org.eclipse.basyx.examples.timeseries.time_series_submodel.TimeSeriesSubmodelFactory;
 
 /*
  * Builds an AirSensor AAS from the provided AirSensor.aasx

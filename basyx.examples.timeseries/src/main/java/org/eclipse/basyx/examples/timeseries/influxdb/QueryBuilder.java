@@ -23,27 +23,44 @@
  * SPDX-License-Identifier: MIT
  ******************************************************************************/
 
-package org.eclipse.basyx.examples.timeseries;
-
-import java.util.Set;
-import java.lang.Exception;
-
-import org.eclipse.basyx.aas.bundle.AASBundle;
-import org.eclipse.basyx.aas.factory.aasx.AASXToMetamodelConverter;
+package org.eclipse.basyx.examples.timeseries.influxdb;
 
 /*
- * Given path, and IdShort of AAS, imports an aasx and returns the AASBundle within
- * 
+ * Builds an influxDB query
+ * and provides methods for adding filters, and pivots
  * author Al-Obaidi
  */
-public class AASXImporter {
-    public static AASBundle getAasFromAasx(String path, String aasIdShort) throws Exception {
-        AASXToMetamodelConverter aasxConverter = new AASXToMetamodelConverter(path);
-        Set<AASBundle> aasBundles = aasxConverter.retrieveAASBundles();
-        for (AASBundle aasBundle : aasBundles) {
-            if (aasIdShort.equals(aasBundle.getAAS().getIdShort()))
-                return aasBundle;
-        }
-        throw new Exception("AAS not found in AASX");
+public class QueryBuilder {
+    private String query;
+
+    public QueryBuilder(String dbName) {
+        this.query = "from(bucket: \"" + dbName + "\")";
+    }
+
+    public void timeFilter(String startTime, String endTime) {
+        this.query = this.query + "|> range(start: " + startTime + ", stop: " + endTime + ")";
+    }
+
+    public void addFilter(String filter) {
+        String filterFunction = " |> filter(" + filter + ") ";
+        this.query = this.query + filterFunction;
+    }
+
+    public void addFilters(String filter) {
+        this.query = this.query + filter;
+    }
+
+    public void addPivot(String filter) {
+        String filterFunction = " |> pivot(" + filter + ") ";
+        this.query = this.query + filterFunction;
+    }
+
+    public String buildQuery() {
+        return this.toString();
+    }
+
+    @Override
+    public String toString() {
+        return this.query;
     }
 }

@@ -25,48 +25,26 @@
 
 package org.eclipse.basyx.examples.timeseries;
 
-import java.lang.reflect.Field;
-import java.time.Instant;
-import java.util.HashMap;
+import java.util.Set;
+import java.lang.Exception;
 
-import com.influxdb.annotations.Column;
-import com.influxdb.annotations.Measurement;
-
-import org.eclipse.basyx.examples.timeseries.TimeSeriesSubmodel.IQueryContainer;
+import org.eclipse.basyx.aas.bundle.AASBundle;
+import org.eclipse.basyx.aas.factory.aasx.AASXToMetamodelConverter;
 
 /*
- * Implements annotations to act as a container for AirSensor data in an influxDB database
+ * Given path, and IdShort of AAS, imports an aasx and returns the AASBundle within
  * 
  * author Al-Obaidi
  */
-@Measurement(name = "AirSensors")
-public class AirSensor implements IQueryContainer {
-    @Column(name = "humidity")
-    public double humidity;
+public class AASXImporter {
 
-    @Column(name = "temperature")
-    public double temperature;
-
-    @Column(name = "co")
-    public double co;
-
-    @Column(timestamp = true)
-    public Instant time;
-
-    // get time
-    public Instant getTime() {
-        return time;
-    }
-
-    // gets all _fields as keys and set their values
-    public HashMap<String, Object> getFieldsMap() throws IllegalArgumentException, IllegalAccessException {
-        HashMap<String, Object> fieldsMap = new HashMap<String, Object>();
-        Field[] fList = AirSensor.class.getFields();
-        for (Field f : fList) {
-            if (!f.getName().equals("time")) {
-                fieldsMap.put(f.getName(), f.get(this));
-            }
+    public static AASBundle getAasFromAasx(String path, String aasIdShort) throws Exception {
+        AASXToMetamodelConverter aasxConverter = new AASXToMetamodelConverter(path);
+        Set<AASBundle> aasBundles = aasxConverter.retrieveAASBundles();
+        for (AASBundle aasBundle : aasBundles) {
+            if (aasIdShort.equals(aasBundle.getAAS().getIdShort()))
+                return aasBundle;
         }
-        return fieldsMap;
+        throw new Exception("AAS not found in AASX");
     }
 }

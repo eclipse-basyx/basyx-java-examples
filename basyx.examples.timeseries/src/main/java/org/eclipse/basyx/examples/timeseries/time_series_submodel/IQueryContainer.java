@@ -23,7 +23,7 @@
  * SPDX-License-Identifier: MIT
  ******************************************************************************/
 
-package org.eclipse.basyx.examples.timeseries.TimeSeriesSubmodel;
+package org.eclipse.basyx.examples.timeseries.time_series_submodel;
 
 import java.time.Instant;
 import java.util.HashMap;

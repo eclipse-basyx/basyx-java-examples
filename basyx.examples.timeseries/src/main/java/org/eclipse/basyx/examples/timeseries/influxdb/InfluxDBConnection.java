@@ -23,7 +23,7 @@
  * SPDX-License-Identifier: MIT
  ******************************************************************************/
 
-package org.eclipse.basyx.examples.timeseries.influxDB;
+package org.eclipse.basyx.examples.timeseries.influxdb;
 
 import java.util.List;
 

@@ -23,44 +23,49 @@
  * SPDX-License-Identifier: MIT
  ******************************************************************************/
 
-package org.eclipse.basyx.examples.timeseries.influxDB;
+package org.eclipse.basyx.examples.timeseries;
+
+import java.lang.reflect.Field;
+import java.time.Instant;
+import java.util.HashMap;
+
+import com.influxdb.annotations.Column;
+import com.influxdb.annotations.Measurement;
+
+import org.eclipse.basyx.examples.timeseries.time_series_submodel.IQueryContainer;
 
 /*
- * Builds an influxDB query
- * and provides methods for adding filters, and pivots
+ * Implements annotations to act as a container for AirSensor data in an influxDB database
+ * 
  * author Al-Obaidi
  */
-public class QueryBuilder {
-    private String query;
+@Measurement(name = "AirSensors")
+public class AirSensor implements IQueryContainer {
+    @Column(name = "humidity")
+    public double humidity;
 
-    public QueryBuilder(String dbName) {
-        this.query = "from(bucket: \"" + dbName + "\")";
+    @Column(name = "temperature")
+    public double temperature;
+
+    @Column(name = "co")
+    public double co;
+
+    @Column(timestamp = true)
+    public Instant time;
+
+    public Instant getTime() {
+        return time;
     }
 
-    public void timeFilter(String startTime, String endTime) {
-        this.query = this.query + "|> range(start: " + startTime + ", stop: " + endTime + ")";
-    }
-
-    public void addFilter(String filter) {
-        String filterFunction = " |> filter(" + filter + ") ";
-        this.query = this.query + filterFunction;
-    }
-
-    public void addFilters(String filter) {
-        this.query = this.query + filter;
-    }
-
-    public void addPivot(String filter) {
-        String filterFunction = " |> pivot(" + filter + ") ";
-        this.query = this.query + filterFunction;
-    }
-
-    public String buildQuery() {
-        return this.toString();
-    }
-
-    @Override
-    public String toString() {
-        return this.query;
+    // gets all _fields as keys and set their values
+    public HashMap<String, Object> getFieldsMap() throws IllegalArgumentException, IllegalAccessException {
+        HashMap<String, Object> fieldsMap = new HashMap<String, Object>();
+        Field[] fields = AirSensor.class.getFields();
+        for (Field f : fields) {
+            if (!f.getName().equals("time")) {
+                fieldsMap.put(f.getName(), f.get(this));
+            }
+        }
+        return fieldsMap;
     }
 }

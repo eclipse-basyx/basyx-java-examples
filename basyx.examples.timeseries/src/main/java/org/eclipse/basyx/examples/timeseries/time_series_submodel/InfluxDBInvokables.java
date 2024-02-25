@@ -23,7 +23,7 @@
  * SPDX-License-Identifier: MIT
  ******************************************************************************/
 
-package org.eclipse.basyx.examples.timeseries.TimeSeriesSubmodel;
+package org.eclipse.basyx.examples.timeseries.time_series_submodel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,8 +36,8 @@ import org.eclipse.basyx.submodel.metamodel.api.submodelelement.ISubmodelElement
 import org.eclipse.basyx.submodel.metamodel.map.submodelelement.SubmodelElementCollection;
 import org.eclipse.basyx.submodel.metamodel.map.submodelelement.dataelement.property.Property;
 
-import org.eclipse.basyx.examples.timeseries.influxDB.QueryBuilder;
-import org.eclipse.basyx.examples.timeseries.influxDB.InfluxDBConnection;
+import org.eclipse.basyx.examples.timeseries.influxdb.QueryBuilder;
+import org.eclipse.basyx.examples.timeseries.influxdb.InfluxDBConnection;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
