@@ -2,14 +2,14 @@ version: "3.8"
 services:
   # AAS Server
   aas:
-    image: eclipsebasyx/aas-server:1.5.0
+    image: eclipsebasyx/aas-server:1.5.1
     container_name: aas-timeseries
     ports:
       - 4001:4001
 
   ## AAS Registry
   registry:
-    image: eclipsebasyx/aas-registry:1.5.0
+    image: eclipsebasyx/aas-registry:1.5.1
     container_name: registry-timeseries
     ports:
       - 4000:4000
